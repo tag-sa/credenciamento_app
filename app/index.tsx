@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { axiosApi } from "./services/axios";
 import { showMessage } from "react-native-flash-message";
 import { COLORS } from "../constants";
+import CustomInputWithTextAndIcon from "./components/Input/CustomInputWithTextAndIcon";
+import { useRouter } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import {
   ScrollView,
   View,
@@ -10,9 +14,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import CustomInputWithTextAndIcon from "./components/Input/CustomInputWithTextAndIcon";
-import { useRouter } from "expo-router";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { auth } from "./services/auth";
 
 export default function App() {
   const router = useRouter();
@@ -21,8 +23,19 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [invalidEmail, setInvalidEmail] = useState(false);
 
+  useEffect(() => {
+    async function checkLogin() {
+      const user = await auth().getUser();
+
+      if (user) {
+        router.replace("/dashboard");
+      }
+    }
+
+    checkLogin();
+  }, []);
+
   const login = async () => {
-    // router.push("/dashboard");
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
     setInvalidEmail(false);
@@ -32,12 +45,23 @@ export default function App() {
     }
 
     try {
-      const data = await axiosApi.post("/users/login", {
+      const { data: login } = await axiosApi.post("/users/login", {
         email,
         password,
       });
 
-      console.log(data.data);
+      const user: User = {
+        id: login.data.user.id,
+        name: login.data.user.name,
+        email: login.data.user.email,
+        access_token: login.data.access_token,
+        nickname: login.data.user.nickname,
+      };
+
+      await auth().setUser(user);
+      await auth().setToken(login.data.access_token);
+
+      router.replace("/dashboard");
     } catch (error) {
       let title = "Erro ao fazer login";
       let message = "Usuário ou senha inválidos";
