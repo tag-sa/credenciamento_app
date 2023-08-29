@@ -10,6 +10,8 @@ interface AuthProps {
 export const auth = (): AuthProps => {
   const getUser = async (): Promise<User> => {
     const user = await AsyncStorage.getItem("user");
+    // await AsyncStorage.removeItem("user");
+    // await AsyncStorage.removeItem("token");
 
     return user ? JSON.parse(user) : null;
   };

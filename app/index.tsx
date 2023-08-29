@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosApi } from "./services/axios";
 import { showMessage } from "react-native-flash-message";
-import { COLORS } from "../constants";
+import { COLORS, PADDINGS } from "../constants";
 import CustomInputWithTextAndIcon from "./components/Input/CustomInputWithTextAndIcon";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -89,9 +89,22 @@ export default function App() {
         </View>
 
         <View style={styles.body}>
-          <Text style={styles.newAccount}>
+          <Text
+            style={{
+              ...styles.newAccount,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              alignContent: "center",
+            }}
+          >
             Não possuo uma conta,{" "}
-            <Text style={styles.createNow}>criar agora.</Text>
+            <Text
+              onPress={() => router.push("/account-create")}
+              style={styles.createNow}
+            >
+              criar agora.
+            </Text>
           </Text>
           <CustomInputWithTextAndIcon
             autoCapitalize="none"
@@ -179,7 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopLeftRadius: 100,
     paddingTop: 150,
-    paddingHorizontal: 25,
+    paddingHorizontal: PADDINGS.paddingHorizontal,
   },
   newAccount: {
     color: COLORS.grayColor,
@@ -190,7 +203,6 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: 120,
-    // height: 50,
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 10,
@@ -203,7 +215,6 @@ const styles = StyleSheet.create({
   inputText: {
     color: COLORS.grayColor,
     marginTop: 10,
-    // paddingTop: 5,
     fontWeight: "bold",
   },
   forgotPassword: {
