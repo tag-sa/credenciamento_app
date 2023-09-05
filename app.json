@@ -1,35 +1,27 @@
 {
   "expo": {
-    "name": "credenciamento",
-    "slug": "credenciamento",
-    "scheme": "credenciamento",
+    "name": "credenciamento_app",
+    "slug": "credenciamento_app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "userInterfaceStyle": "light",
+    // "splash": {
+    //   "image": "./assets/splash.png",
+    //   "resizeMode": "contain",
+    //   "backgroundColor": "#ffffff"
+    // },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": false,
-      "config": {
-        "usesNonExemptEncryption": false
-      },
-      "bundleIdentifier": "com.tagsa.credenciamento"
-    },
-    "experiments": {
-      "tsconfigPaths": true
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png"
+        "foregroundImage": "./assets/images/logo.png",
+        "backgroundColor": "#ffffff"
       }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-router"
-    ]
+    }
   }
 }
