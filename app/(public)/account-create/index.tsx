@@ -194,6 +194,8 @@ export default function App() {
 
                   const user: User = {
                     id: login.data.user.id,
+                    document: login.data.user.document,
+                    type: login.data.user.type,
                     name: login.data.user.name,
                     email: login.data.user.email,
                     access_token: login.data.access_token,

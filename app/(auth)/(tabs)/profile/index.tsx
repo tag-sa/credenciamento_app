@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { auth } from "../../services/auth";
+import { auth } from "../../../services/auth";
 
-export default function Dashboard() {
+export default function Profile() {
   const { top } = useSafeAreaInsets();
   const [user, setUser] = useState<User>();
 
@@ -18,8 +18,8 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <View style={{ paddingTop: top, backgroundColor: "red", flex: 1 }}>
-      <Text>Dashboardaaa {user?.name}</Text>
+    <View style={{ paddingTop: top, flex: 1 }}>
+      <Text>Profile</Text>
     </View>
   );
 }
