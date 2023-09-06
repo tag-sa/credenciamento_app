@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, Touchable, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { auth } from "../../../services/auth";
 import { UserType } from "../../../model/user.model";
 import { AuthLayout } from "../layout";

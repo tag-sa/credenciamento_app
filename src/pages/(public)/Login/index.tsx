@@ -10,10 +10,12 @@ import {
 import { axiosApi } from "../../../services/axios";
 import { UserType } from "../../../model/user.model";
 import { auth } from "../../../services/auth";
-import { COLORS, PADDINGS } from "../../../constants";
 import { showMessage } from "react-native-flash-message";
 import CustomInputWithTextAndIcon from "../../../components/Input/CustomInputWithTextAndIcon";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { COLORS } from "../../../constants/Colors";
+import { PADDINGS } from "../../../constants/Paddings";
+import { useGlobalStore } from "../../../store";
 
 export const LoginScreen = ({ navigation }) => {
   const { top } = useSafeAreaInsets();
@@ -61,7 +63,7 @@ export const LoginScreen = ({ navigation }) => {
       await auth().setUser(user);
       await auth().setToken(login.data.access_token);
 
-      navigation.replace("/home");
+      navigation.replace("Dashboard");
     } catch (error) {
       let title = "Erro ao fazer login";
       let message = "Usuário ou senha inválidos";

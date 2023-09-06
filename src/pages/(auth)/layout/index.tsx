@@ -6,6 +6,7 @@ interface AuthLayoutProps {
 }
 export const AuthLayout = ({ children }: AuthLayoutProps) => {
   const { top } = useSafeAreaInsets();
+
   return (
     <View style={{ paddingTop: top }}>
       <Text>HEADER</Text>

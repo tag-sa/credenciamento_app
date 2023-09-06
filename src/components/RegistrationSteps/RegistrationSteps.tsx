@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { COLORS } from "../../constants";
+import { COLORS } from "../../constants/Colors";
 
 interface StepsProps {
   totalSteps: number;

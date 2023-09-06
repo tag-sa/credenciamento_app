@@ -14,7 +14,8 @@ import { showMessage } from "react-native-flash-message";
 import moment from "moment";
 import { auth } from "../../../services/auth";
 import { UserType } from "../../../model/user.model";
-import { COLORS, PADDINGS } from "../../../constants";
+import { COLORS } from "../../../constants/Colors";
+import { PADDINGS } from "../../../constants/Paddings";
 
 export const AccountCreateScreen = ({ navigation }) => {
   const { top } = useSafeAreaInsets();

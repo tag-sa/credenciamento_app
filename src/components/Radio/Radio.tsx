@@ -1,7 +1,7 @@
 import { TouchableOpacity, View, Text } from "react-native";
 import { StyleSheet } from "react-native";
 import { useState } from "react";
-import { COLORS } from "../../constants";
+import { COLORS } from "../../constants/Colors";
 
 interface RadioItemProps {
   label: string;

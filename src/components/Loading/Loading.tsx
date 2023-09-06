@@ -1,28 +1,25 @@
 import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import { useGlobalStore } from "../../store";
-import { COLORS } from "../../constants";
+import { COLORS } from "../../constants/Colors";
 
 interface LoadingProps {
-  children: React.ReactNode;
+  // children: React.ReactNode;
 }
 
-export default function Loading({ children }: LoadingProps) {
+export default function Loading() {
   const isLoading = useGlobalStore((store) => store.isLoading);
 
   return (
-    <View style={styles.container}>
-      {isLoading && (
-        <View style={styles.loading}>
-          <Text style={{ color: COLORS.primaryColor }}>Carregando</Text>
-          <ActivityIndicator
-            size="large"
-            color={COLORS.primaryColor}
-            style={{ marginTop: 10 }}
-          />
-        </View>
-      )}
-      {children}
-    </View>
+    isLoading && (
+      <View style={styles.loading}>
+        <Text style={{ color: COLORS.primaryColor }}>Carregando</Text>
+        <ActivityIndicator
+          size="large"
+          color={COLORS.primaryColor}
+          style={{ marginTop: 10 }}
+        />
+      </View>
+    )
   );
 }
 

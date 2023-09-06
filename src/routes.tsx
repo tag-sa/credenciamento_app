@@ -4,29 +4,48 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LoginScreen } from "./pages/(public)/Login";
 import { DashboardScreen } from "./pages/(auth)/dashboard";
 import { AccountCreateScreen } from "./pages/(public)/AccountCreate";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Advertiser from "./pages/(auth)/advertiser";
 
+const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
-// const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
-export const Routes = () => {
-  // const ProductListWithDrawer = () => {
-  //   return (
-  //     <Drawer.Navigator initialRouteName="ProductList">
-  //       <Drawer.Screen name="ProductList" component={DashboardScreen} />
-  //     </Drawer.Navigator>
-  //   );
-  // };
+export function MyTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="DashboardTab" component={DashboardScreen} />
+      <Tab.Screen name="Advertiser" component={Advertiser} />
+    </Tab.Navigator>
+  );
+}
 
+function MyStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="Login"
+    >
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen name="AccountCreate" component={AccountCreateScreen} />
+      <Stack.Screen name="Dashboard" component={MyTabs} />
+    </Stack.Navigator>
+  );
+}
+
+export const Router = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-
-        <Stack.Screen name="AccountCreate" component={AccountCreateScreen} />
-        <Stack.Screen name="Dashboard" component={DashboardScreen} />
-
-        {/* <Stack.Screen name="ProductList" component={ProductListWithDrawer} /> */}
-      </Stack.Navigator>
+      <Drawer.Navigator screenOptions={{ headerShown: false }}>
+        <Drawer.Screen name="DashboardDrawer" component={MyStack} />
+        <Drawer.Screen name="AdvertiserDrawer" component={Advertiser} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };

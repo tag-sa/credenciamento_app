@@ -9,7 +9,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 
 import { MaskedTextInput } from "react-native-mask-text";
-import { COLORS } from "../../constants";
+import { COLORS } from "../../constants/Colors";
 
 interface InputProps {
   label: string;

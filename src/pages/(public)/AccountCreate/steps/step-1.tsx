@@ -1,7 +1,7 @@
 import isEmail from "validator/lib/isEmail";
 import CustomInputWithTextAndIcon from "../../../../components/Input/CustomInputWithTextAndIcon";
 import { useState } from "react";
-import { COLORS } from "../../../../constants";
+import { COLORS } from "../../../../constants/Colors";
 
 interface Step1Props {
   type: string;

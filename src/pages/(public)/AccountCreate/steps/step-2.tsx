@@ -4,7 +4,8 @@ import { useState } from "react";
 
 import moment from "moment";
 import { cpf, cnpj } from "cpf-cnpj-validator";
-import { COLORS, PADDINGS } from "../../../../constants";
+import { PADDINGS } from "../../../../constants/Paddings";
+import { COLORS } from "../../../../constants/Colors";
 
 interface Step2Props {
   type: string;

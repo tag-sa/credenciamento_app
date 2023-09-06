@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
-import { COLORS } from "../../constants";
+import { COLORS } from "../../constants/Colors";
 
 interface ButtonProps {
   buttonEnabled: boolean;

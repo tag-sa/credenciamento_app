@@ -8,8 +8,3 @@ export const COLORS = {
   dangerColor: "#E01515",
   orangeColor: "#FFAA0F",
 };
-
-export const PADDINGS = {
-  paddingHorizontal: 25,
-  paddingVertical: 10,
-};
