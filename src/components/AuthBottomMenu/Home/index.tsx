@@ -14,10 +14,14 @@ export default function HomeItem({ focused }: MenuItemProps) {
       }}
     >
       {focused && (
-        <Image source={require("assets/images/icons/icon-home-active.png")} />
+        <Image
+          source={require("../../../../assets/images/icons/icon-home-active.png")}
+        />
       )}
       {!focused && (
-        <Image source={require("assets/images/icons/icon-home.png")} />
+        <Image
+          source={require("../../../../assets/images/icons/icon-home.png")}
+        />
       )}
 
       <Text

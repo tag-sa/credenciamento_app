@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { auth } from "../../../services/auth";
 import { UserType } from "../../../model/user.model";
 
-export default function Profile() {
+export const ProfileScreen = ({ navigation }) => {
   const [user, setUser] = useState<UserType>();
 
   useEffect(() => {
@@ -21,4 +21,4 @@ export default function Profile() {
       <Text>Profile</Text>
     </View>
   );
-}
+};

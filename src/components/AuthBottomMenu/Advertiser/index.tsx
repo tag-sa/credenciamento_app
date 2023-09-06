@@ -15,12 +15,12 @@ export default function AdvertiserItem({ focused }: MenuItemProps) {
     >
       {focused && (
         <Image
-          source={require("assets/images/icons/icon-advertiser-bullhorn-active.png")}
+          source={require("../../../../assets/images/icons/icon-advertiser-bullhorn-active.png")}
         />
       )}
       {!focused && (
         <Image
-          source={require("assets/images/icons/icon-advertiser-bullhorn.png")}
+          source={require("../../../../assets/images/icons/icon-advertiser-bullhorn.png")}
         />
       )}
 

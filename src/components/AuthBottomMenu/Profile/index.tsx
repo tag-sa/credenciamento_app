@@ -15,11 +15,13 @@ export default function ProfileItem({ focused }: MenuItemProps) {
     >
       {focused && (
         <Image
-          source={require("assets/images/icons/icon-profile-active.png")}
+          source={require("../../../../assets/images/icons/icon-profile-active.png")}
         />
       )}
       {!focused && (
-        <Image source={require("assets/images/icons/icon-profile.png")} />
+        <Image
+          source={require("../../../../assets/images/icons/icon-profile.png")}
+        />
       )}
 
       <Text
