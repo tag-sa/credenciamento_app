@@ -56,8 +56,11 @@ export const LoginScreen = ({ navigation }) => {
         email: login.data.user.email,
         access_token: login.data.access_token,
         nickname: login.data.user.nickname,
-        document: "",
-        type: "pf",
+        document:
+          login.data.user.type == "pj"
+            ? login.data.user.cnpj
+            : login.data.user.cpf,
+        type: login.data.user.type,
       };
 
       await auth().setUser(user);

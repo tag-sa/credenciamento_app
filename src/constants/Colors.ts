@@ -4,7 +4,9 @@ export const COLORS = {
   lightGrayColor: "#D9D9D9",
   blueColor: "#085188",
   secBlueColor: "#7FB6E8",
+  mediumBlueColor: "#9FC8EE",
   lightBlueColor: "#EDF4FF",
   dangerColor: "#E01515",
   orangeColor: "#FFAA0F",
+  whiteColor: "#FFFFFF",
 };

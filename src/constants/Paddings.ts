@@ -1,4 +1,4 @@
 export const PADDINGS = {
-  paddingHorizontal: 25,
+  paddingHorizontal: 15,
   paddingVertical: 10,
 };

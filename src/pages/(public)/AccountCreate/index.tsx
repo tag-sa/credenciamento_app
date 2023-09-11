@@ -198,12 +198,15 @@ export const AccountCreateScreen = ({ navigation }) => {
 
                   const user: UserType = {
                     id: login.data.user.id,
-                    document: login.data.user.document,
-                    type: login.data.user.type,
                     name: login.data.user.name,
                     email: login.data.user.email,
                     access_token: login.data.access_token,
                     nickname: login.data.user.nickname,
+                    document:
+                      login.data.user.type == "pj"
+                        ? login.data.user.cnpj
+                        : login.data.user.cpf,
+                    type: login.data.user.type,
                   };
 
                   await auth().setUser(user);

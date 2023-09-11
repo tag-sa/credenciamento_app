@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { ScrollView } from "react-native";
 import { auth } from "../../../services/auth";
 import { UserType } from "../../../model/user.model";
+import { AdvertiserDashboardComponent } from "../../../components/Dashboard/Advertiser";
+import { WorkerDashboardComponent } from "../../../components/Dashboard/Worker";
 
 export const DashboardScreen = ({ navigation }) => {
   const [user, setUser] = useState<UserType>();
@@ -17,8 +19,15 @@ export const DashboardScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={{ backgroundColor: "red" }}>
-      <Text>Home {JSON.stringify(user, null, 2)}</Text>
-    </View>
+    <ScrollView
+      automaticallyAdjustKeyboardInsets={true}
+      contentContainerStyle={{ flexGrow: 1, backgroundColor: "white" }}
+    >
+      {user?.type == "pj" ? (
+        <AdvertiserDashboardComponent />
+      ) : (
+        <WorkerDashboardComponent />
+      )}
+    </ScrollView>
   );
 };
