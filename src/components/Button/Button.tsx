@@ -36,7 +36,7 @@ export default function Button(props: ButtonProps) {
 
 const styles = StyleSheet.create({
   signInButton: {
-    color: "white",
+    color: COLORS.whiteColor,
     fontSize: 18,
     fontWeight: "bold",
     letterSpacing: 1.2,

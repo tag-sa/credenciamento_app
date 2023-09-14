@@ -23,6 +23,8 @@ interface InputProps {
   iconColor?: string;
   iconSize?: number;
   obscureText?: boolean;
+  multiline?: boolean;
+  numberOfLines?: number;
   keyboardType?: KeyboardTypeOptions;
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
   error?: boolean;
@@ -99,7 +101,10 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
                 ...styles.inputText,
                 color: props.textColor || COLORS.grayColor,
                 fontWeight: props.textWeight || "normal",
+                height: props.multiline ? props.numberOfLines : null,
               }}
+              multiline={props.multiline}
+              numberOfLines={props.multiline ? props.numberOfLines : null}
               onChangeText={(text) => {
                 props.onChangeText(text, text);
               }}

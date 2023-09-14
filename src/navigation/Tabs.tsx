@@ -1,17 +1,20 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { DashboardScreen } from "../pages/(auth)/dashboard";
-import { AdvertiserScreen } from "../pages/(auth)/advertiser";
-import { TouchableOpacity, View, Image } from "react-native";
-import { ProfileScreen } from "../pages/(auth)/profile";
+import { DashboardScreen } from "../pages/(auth)/Dashboard";
+import { AdvertiserScreen } from "../pages/(auth)/Advertiser";
+import { ProfileScreen } from "../pages/(auth)/Profile";
 import { COLORS } from "../constants/Colors";
-import HomeItem from "../components/AuthBottomMenu/Home";
-import AdvertiserItem from "../components/AuthBottomMenu/Advertiser";
-import ProfileItem from "../components/AuthBottomMenu/Profile";
 import { useEffect, useState } from "react";
 import { auth } from "../services/auth";
 import { UserType } from "../model/user.model";
+import { JobsScreen } from "../pages/(auth)/Jobs";
+import { AdvertiverAddScreen } from "../pages/(auth)/Advertiser-add";
+import { AdvertiserDashboardScreen } from "../pages/(auth)/AdvertiserDashboard";
+import { HeaderComponent } from "../components/Header";
+import { IMAGES } from "../constants/Images";
+import HomeItem from "../components/AuthBottomMenu/Home";
+import AdvertiserItem from "../components/AuthBottomMenu/Advertiser";
+import ProfileItem from "../components/AuthBottomMenu/Profile";
 import JobsItem from "../components/AuthBottomMenu/Jobs";
-import { JobsScreen } from "../pages/(auth)/jobs";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,12 +33,18 @@ export function MyTabs({ route }) {
     load();
   }, []);
 
-  console.log(screenName, user?.type);
   return (
     <Tab.Navigator
       initialRouteName={screenName}
-      screenOptions={({ navigation }) => ({
+      screenOptions={() => ({
         headerTitle: "",
+        headerStyle: {
+          shadowRadius: 0,
+          shadowOffset: {
+            width: 0,
+            height: 0,
+          },
+        },
         tabBarStyle: {
           paddingTop: 10,
           borderTopStartRadius: 30,
@@ -48,30 +57,7 @@ export function MyTabs({ route }) {
           shadowOpacity: 0.7,
         },
 
-        headerLeft: ({}) => {
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.toggleDrawer();
-              }}
-            >
-              <View style={{ marginLeft: 16 }}>
-                <Image
-                  source={require("../../assets/images/icons/icon-menu.png")}
-                />
-              </View>
-            </TouchableOpacity>
-          );
-        },
-        headerRight: () => {
-          return (
-            <View style={{ marginRight: 16 }}>
-              <Image
-                source={require("../../assets/images/icons/icon-profile-top.png")}
-              />
-            </View>
-          );
-        },
+        header: () => <HeaderComponent />,
       })}
     >
       <Tab.Screen
@@ -82,7 +68,7 @@ export function MyTabs({ route }) {
         }}
       />
 
-      {user?.type == "pj" && (
+      {user?.type === "pj" && (
         <Tab.Screen
           name="Advertiser"
           component={AdvertiserScreen}
@@ -92,7 +78,7 @@ export function MyTabs({ route }) {
         />
       )}
 
-      {user?.type == "pf" && (
+      {user?.type === "pf" && (
         <Tab.Screen
           name="Jobs"
           component={JobsScreen}
@@ -107,6 +93,28 @@ export function MyTabs({ route }) {
         options={{
           tabBarLabel: ({ focused }) => <ProfileItem focused={focused} />,
         }}
+      />
+
+      <Tab.Screen
+        name="AdvertiverAddScreen"
+        options={{
+          tabBarButton: () => null,
+        }}
+        component={AdvertiverAddScreen}
+      />
+
+      <Tab.Screen
+        name="AdvertiserDashboardScreen"
+        options={{
+          header: () => (
+            <HeaderComponent
+              backgroundColor={COLORS.primaryColor}
+              leftIcon={IMAGES.ICONS.HAMBURGER_WHITE.uri}
+            />
+          ),
+          tabBarButton: () => null,
+        }}
+        component={AdvertiserDashboardScreen}
       />
     </Tab.Navigator>
   );

@@ -9,4 +9,6 @@ export const COLORS = {
   dangerColor: "#E01515",
   orangeColor: "#FFAA0F",
   whiteColor: "#FFFFFF",
+  blackColor: "#000000",
+  redColor: "#E01515",
 };

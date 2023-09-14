@@ -249,13 +249,13 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.whiteColor,
     borderTopLeftRadius: 100,
     paddingTop: 50,
-    paddingHorizontal: PADDINGS.paddingHorizontal,
+    paddingHorizontal: PADDINGS.horizontal,
   },
   signInButton: {
-    color: "white",
+    color: COLORS.whiteColor,
     fontSize: 18,
     fontWeight: "bold",
     letterSpacing: 1.2,

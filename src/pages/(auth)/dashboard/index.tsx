@@ -4,6 +4,7 @@ import { auth } from "../../../services/auth";
 import { UserType } from "../../../model/user.model";
 import { AdvertiserDashboardComponent } from "../../../components/Dashboard/Advertiser";
 import { WorkerDashboardComponent } from "../../../components/Dashboard/Worker";
+import { COLORS } from "../../../constants/Colors";
 
 export const DashboardScreen = ({ navigation }) => {
   const [user, setUser] = useState<UserType>();
@@ -21,12 +22,15 @@ export const DashboardScreen = ({ navigation }) => {
   return (
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}
-      contentContainerStyle={{ flexGrow: 1, backgroundColor: "white" }}
+      contentContainerStyle={{
+        flexGrow: 1,
+        backgroundColor: COLORS.whiteColor,
+      }}
     >
       {user?.type == "pj" ? (
-        <AdvertiserDashboardComponent />
+        <AdvertiserDashboardComponent navigation={navigation} />
       ) : (
-        <WorkerDashboardComponent />
+        <WorkerDashboardComponent navigation={navigation} />
       )}
     </ScrollView>
   );

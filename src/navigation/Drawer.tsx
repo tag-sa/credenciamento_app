@@ -3,6 +3,7 @@ import { MyTabs } from "./Tabs";
 import { useState, useEffect } from "react";
 import { UserType } from "../model/user.model";
 import { auth } from "../services/auth";
+import { AdvertiverAddScreen } from "../pages/(auth)/Advertiser-add";
 
 const Drawer = createDrawerNavigator();
 
@@ -52,6 +53,12 @@ export const MyDrawer = () => {
         component={MyTabs}
         initialParams={{ screenName: "Profile" }}
       />
+      {/* 
+      <Drawer.Screen
+        name="AdvertiverAddScreen"
+        options={{ drawerItemStyle: { display: "none" } }}
+        component={AdvertiverAddScreen}
+      /> */}
     </Drawer.Navigator>
   );
 };

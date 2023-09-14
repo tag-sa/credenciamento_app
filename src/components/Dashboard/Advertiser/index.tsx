@@ -4,8 +4,31 @@ import { HowToStartSteps } from "../../HowToStartSteps/HowToStartSteps";
 import Button from "../../Button/Button";
 import { COLORS } from "../../../constants/Colors";
 import { PADDINGS } from "../../../constants/Paddings";
+import { useEffect, useState } from "react";
+import { axiosApi } from "../../../services/axios";
+import { useGlobalStore } from "../../../store";
+import { AdvertiserStarterSteps } from "../../AdvertiserStarterSteps";
+import { AdvertiserListItem } from "../../AdvertiserListItem";
+import { useNavigation } from "@react-navigation/native";
 
 export const AdvertiserDashboardComponent = () => {
+  const navigation = useNavigation<any>();
+  const [advertisers, setAdvertisers] = useState([]);
+
+  useEffect(() => {
+    const load = async () => {
+      useGlobalStore.setState({ isLoading: true });
+
+      const { data } = await axiosApi.get("/advertisers");
+
+      useGlobalStore.setState({ isLoading: false });
+
+      setAdvertisers(data.data);
+    };
+
+    load();
+  }, []);
+
   return (
     <>
       <View style={style.body}>
@@ -13,38 +36,43 @@ export const AdvertiserDashboardComponent = () => {
         <View style={{ marginVertical: 20 }}>
           <AdvertiserStartBanner />
         </View>
-        <Text style={style.howTo}>Como começar?</Text>
+        <Text style={style.howTo}>
+          {!advertisers.length ? "Como começar?" : "Meus anunciantes"}
+        </Text>
       </View>
-      <View
-        style={{ backgroundColor: "white", paddingTop: 20, paddingBottom: 30 }}
-      >
-        <HowToStartSteps
-          step={1}
-          marginLeft={15}
-          text="Cadastre sua empresa como uma anunciante, você poderá convidar outros funcionários para o gerenciamento das convocações."
-        />
-        <HowToStartSteps
-          step={2}
-          marginTop={20}
-          marginRight={-15}
-          isReverse={true}
-          text="Crie seu evento na plataforma. Você poderá vincular vários eventos ao anunciante."
-        />
-        <HowToStartSteps
-          step={3}
-          marginTop={20}
-          marginLeft={15}
-          text="Adicione equipes aos eventos, você poderá configurar dias e horários de trabalho, número de vagas, supervisão..."
-        />
-        <HowToStartSteps
-          step={4}
-          marginTop={20}
-          isReverse={true}
-          marginRight={-15}
-          text="Tenha acesso a uma dashboard completa para acompanhamento das convocações."
-        />
-        <Button buttonEnabled={true} onPress={() => {}} label={"Começar"} />
-      </View>
+      {!advertisers.length && (
+        <AdvertiserStarterSteps navigation={navigation} />
+      )}
+
+      {advertisers.length > 0 && (
+        <>
+          <View style={style.advertisersList}>
+            {advertisers?.map((advertiser) => (
+              <AdvertiserListItem
+                key={advertiser.id}
+                name={advertiser.name}
+                url={advertiser.url}
+                onClick={() => {
+                  navigation.navigate("AdvertiserDashboardScreen", {
+                    advertiserId: advertiser.id,
+                  });
+                }}
+                onDelete={() => {
+                  console.log(advertiser.id);
+                }}
+              />
+            ))}
+          </View>
+
+          <View style={{ marginBottom: 30 }}>
+            <Button
+              buttonEnabled={true}
+              onPress={() => navigation.navigate("AdvertiverAddScreen")}
+              label={"Novo anunciante"}
+            />
+          </View>
+        </>
+      )}
     </>
   );
 };
@@ -52,7 +80,7 @@ export const AdvertiserDashboardComponent = () => {
 const style = StyleSheet.create({
   body: {
     backgroundColor: COLORS.whiteColor,
-    paddingHorizontal: PADDINGS.paddingHorizontal,
+    paddingHorizontal: PADDINGS.horizontal,
   },
   hello: {
     fontSize: 20,
@@ -64,5 +92,9 @@ const style = StyleSheet.create({
     color: COLORS.primaryColor,
     marginTop: 10,
     fontWeight: "bold",
+  },
+  advertisersList: {
+    marginTop: 20,
+    paddingHorizontal: PADDINGS.horizontal,
   },
 });

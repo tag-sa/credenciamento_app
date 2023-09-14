@@ -1,7 +1,4 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-
-import { HowToStartSteps } from "../../HowToStartSteps/HowToStartSteps";
-import Button from "../../Button/Button";
 import { COLORS } from "../../../constants/Colors";
 import { PADDINGS } from "../../../constants/Paddings";
 import { WorkerDashboardBannersComponent } from "../../WorkerDashboardBanners";
@@ -9,7 +6,7 @@ import { IMAGES } from "../../../constants/Images";
 import { useState } from "react";
 import { JobsNotFound } from "../../JobsNotFound";
 
-export const WorkerDashboardComponent = () => {
+export const WorkerDashboardComponent = ({ navigation }) => {
   const [jobs, setJobs] = useState([]);
 
   return (
@@ -43,7 +40,7 @@ export const WorkerDashboardComponent = () => {
 const style = StyleSheet.create({
   body: {
     backgroundColor: COLORS.whiteColor,
-    paddingHorizontal: PADDINGS.paddingHorizontal,
+    paddingHorizontal: PADDINGS.horizontal,
   },
   hello: {
     fontSize: 20,

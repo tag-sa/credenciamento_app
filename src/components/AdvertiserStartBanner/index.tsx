@@ -1,11 +1,5 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  ImageBackground,
-  Image,
-  StyleProp,
-} from "react-native";
+import { Text, View, StyleSheet, ImageBackground, Image } from "react-native";
+import { COLORS } from "../../constants/Colors";
 
 export const AdvertiserStartBanner = () => {
   const backgroundImage = require("../../../assets/images/background-advertiser-start.png");
@@ -49,7 +43,7 @@ const styles = StyleSheet.create({
   },
   text: {
     width: "50%",
-    color: "white",
+    color: COLORS.whiteColor,
     fontSize: 8.7,
     fontWeight: "bold",
     textAlign: "left",

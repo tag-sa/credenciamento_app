@@ -94,10 +94,10 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.whiteColor,
     borderTopLeftRadius: 100,
     paddingTop: 50,
-    paddingHorizontal: PADDINGS.paddingHorizontal,
+    paddingHorizontal: PADDINGS.horizontal,
   },
   newAccount: {
     color: COLORS.grayColor,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   signInButton: {
-    color: "white",
+    color: COLORS.whiteColor,
     fontSize: 18,
     fontWeight: "bold",
     letterSpacing: 1.2,
