@@ -11,13 +11,16 @@ import { AdvertiserEventItem } from "../../../components/AdvertiserEventItem";
 import { useNavigation } from "@react-navigation/native";
 import { AdverstiserAbout } from "../../../components/AdvertiserDashboard/About";
 import { AdverstiserPastEvents } from "../../../components/AdvertiserDashboard/PastEvents";
+import { AdverstiserPlaces } from "../../../components/AdvertiserDashboard/Places";
 
 export const AdvertiserDashboardScreen = ({ route }) => {
   const navigation = useNavigation();
   const { advertiserId } = route.params;
-  const [activeTab, setActiveTab] = useState<"about" | "pastEvents" | "places">(
-    "about"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "about" | "pastEvents" | "places" | "people"
+  >("about");
+
+  const [places, setPlaces] = useState([]);
 
   const [advertiser, setAdvertiser] = useState<{
     id: number;
@@ -31,10 +34,16 @@ export const AdvertiserDashboardScreen = ({ route }) => {
   useEffect(() => {
     const loadAdvertiser = async () => {
       useGlobalStore.setState({ isLoading: true });
-      const { data } = await axiosApi.get(`/advertisers/${advertiserId}`);
+
+      const [adv, pls] = await Promise.all([
+        axiosApi.get(`/advertisers/${advertiserId}`),
+        axiosApi.get(`/advertisers/places/${advertiserId}`),
+      ]);
+
       useGlobalStore.setState({ isLoading: false });
 
-      setAdvertiser(data.data);
+      setAdvertiser(adv.data.data);
+      setPlaces(pls.data.data);
     };
 
     loadAdvertiser();
@@ -118,9 +127,7 @@ export const AdvertiserDashboardScreen = ({ route }) => {
             <TouchableOpacity onPress={() => setActiveTab("places")}>
               <View
                 style={
-                  activeTab === "places"
-                    ? { ...styles.tabItemActive, marginRight: 50 }
-                    : { ...styles.tabItem, marginRight: 50 }
+                  activeTab === "places" ? styles.tabItemActive : styles.tabItem
                 }
               >
                 <Text
@@ -134,12 +141,32 @@ export const AdvertiserDashboardScreen = ({ route }) => {
                 </Text>
               </View>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => setActiveTab("people")}>
+              <View
+                style={
+                  activeTab === "people"
+                    ? { ...styles.tabItemActive, marginRight: 50 }
+                    : { ...styles.tabItem, marginRight: 50 }
+                }
+              >
+                <Text
+                  style={
+                    activeTab === "people"
+                      ? styles.tabItemTextActive
+                      : styles.tabItemText
+                  }
+                >
+                  PESSOAS
+                </Text>
+              </View>
+            </TouchableOpacity>
           </ScrollView>
         </View>
         {activeTab === "about" && <AdverstiserAbout advertiser={advertiser} />}
         {activeTab === "pastEvents" && (
           <AdverstiserPastEvents advertiser={advertiser} />
         )}
+        {activeTab === "places" && <AdverstiserPlaces places={places} />}
       </View>
     </ScrollView>
   );

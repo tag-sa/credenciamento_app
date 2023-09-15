@@ -1,3 +1,5 @@
+import CloseIcon from "../../assets/images/icons/icon-close.svg";
+
 export const IMAGES = {
   WORKER: {
     DASHBOARD_BANNER_1: {
@@ -49,6 +51,12 @@ export const IMAGES = {
     },
     CLOCK: {
       uri: require("../../assets/images/icons/icon-clock.png"),
+    },
+    LOCATION_WHITE: {
+      uri: require("../../assets/images/icons/icon-location-white.png"),
+    },
+    CLOSE: {
+      uri: CloseIcon,
     },
   },
 };
