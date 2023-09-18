@@ -18,7 +18,7 @@ export const WorkerDashboardComponent = ({ navigation }) => {
             <WorkerDashboardBannersComponent
               text="Aqui link para um blog com dicas de carreira, cursos gratuitos, cursos com valor simbólico, dicas de currículo e eventos patrocinados..."
               backgroundColor={COLORS.orangeColor}
-              iconImage={IMAGES.WORKER.DASHBOARD_BANNER_1.uri}
+              IconImage={IMAGES.WORKER.DashboardBanner1}
               marginRight={13}
             />
             <WorkerDashboardBannersComponent
@@ -26,7 +26,7 @@ export const WorkerDashboardComponent = ({ navigation }) => {
               backgroundColor={COLORS.primaryColor}
               color="white"
               reverse={true}
-              iconImage={IMAGES.WORKER.DASHBOARD_BANNER_2.uri}
+              IconImage={IMAGES.WORKER.DashboardBanner2}
             />
           </ScrollView>
         </View>

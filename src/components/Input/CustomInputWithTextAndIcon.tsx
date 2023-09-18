@@ -33,6 +33,7 @@ interface InputProps {
   mask?: string;
   erroMessage?: string;
   addrRef?: any;
+  flexGrow?: number;
 }
 
 export default function CustomInputWithTextAndIcon(props: InputProps) {
@@ -44,6 +45,7 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
       <View
         style={{
           ...styles.input,
+          ...(props.flexGrow && { flexGrow: props.flexGrow }),
           marginTop: props.marginTop,
           marginBottom: props.marginBottom,
           borderColor: props.error ? COLORS.dangerColor : COLORS.grayColor,
@@ -133,6 +135,7 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
 
 const styles = StyleSheet.create({
   input: {
+    // flexGrow: 1,
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 10,

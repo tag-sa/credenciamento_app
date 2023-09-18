@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { COLORS } from "../../constants/Colors";
 import { IMAGES } from "../../constants/Images";
 import * as Progress from "react-native-progress";
@@ -74,13 +74,13 @@ export const AdvertiserEventItem = ({
           )}
           <View style={{ flexDirection: "row", marginTop: 10 }}>
             <View style={{ flexDirection: "row" }}>
-              <Image source={IMAGES.ICONS.CALENDAR.uri} />
+              <IMAGES.ICONS.Calendar />
               <Text style={styles.details}>
                 {moment(event.date_start).format("DD/MM/YYYY")}
               </Text>
             </View>
             <View style={{ flexDirection: "row", marginLeft: 10 }}>
-              <Image source={IMAGES.ICONS.CLOCK.uri} />
+              <IMAGES.ICONS.Clock />
               <Text style={styles.details}>
                 {moment(event.date_start).format("HH:mm")}
               </Text>
@@ -97,8 +97,8 @@ export const AdvertiserEventItem = ({
         </View>
         {!isPastEvent && (
           <View style={styles.iconContainer}>
-            <Image source={IMAGES.ICONS.DUPLICATE.uri} />
-            <Image source={IMAGES.ICONS.TRASH.uri} />
+            <IMAGES.ICONS.Duplicate />
+            <IMAGES.ICONS.Trash />
           </View>
         )}
       </View>
@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 8,
     alignSelf: "flex-start",
+    alignItems: "center",
     justifyContent: "flex-end",
     gap: 15,
   },

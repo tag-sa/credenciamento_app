@@ -1,15 +1,19 @@
-import { Image, View, Text, StyleSheet, Touchable } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../../../constants/Colors";
 import { PADDINGS } from "../../../constants/Paddings";
-import { axiosApi } from "../../../services/axios";
 import { useState } from "react";
 import { IMAGES } from "../../../constants/Images";
 import Button from "../../Button/Button";
 import { useNavigation } from "@react-navigation/native";
 import { DialogModal } from "../../DialogModal";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useGlobalStore } from "../../../store";
+import { axiosApi } from "../../../services/axios";
+import { showMessage } from "react-native-flash-message";
 
 interface AdvertiserPlacesProps {
+  advertiserId: number;
+  reload: () => void;
   places: {
     id: string;
     advertiser_id: number;
@@ -27,9 +31,33 @@ interface AdvertiserPlacesProps {
   }[];
 }
 
-export const AdverstiserPlaces = ({ places }: AdvertiserPlacesProps) => {
+export const AdverstiserPlaces = ({
+  advertiserId,
+  places,
+  reload,
+}: AdvertiserPlacesProps) => {
   const navigation = useNavigation<any>();
   const [modalVisible, setModalVisible] = useState(false);
+  const [placeId, setPlaceId] = useState("");
+
+  const removePlace = async () => {
+    useGlobalStore.setState({ isLoading: true });
+
+    try {
+      await axiosApi.delete(`/advertisers/${advertiserId}/places/${placeId}`);
+      reload();
+      useGlobalStore.setState({ isLoading: false });
+    } catch (e) {
+      useGlobalStore.setState({ isLoading: false });
+      showMessage({
+        backgroundColor: COLORS.dangerColor,
+        message: "Erro ao remover local",
+        description: "Não foi possível remover o local, tente novamente.",
+        type: "danger",
+        icon: "danger",
+      });
+    }
+  };
 
   return (
     <>
@@ -37,16 +65,23 @@ export const AdverstiserPlaces = ({ places }: AdvertiserPlacesProps) => {
         <DialogModal
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          title={""}
-          message={""}
-          confirmText={""}
-          cancelText={""}
-          closeIcon={0}
+          title={"Remover local?"}
+          message={
+            "Ao remover local todos os eventos relacionados á este local também serão excluídos."
+          }
+          confirmAction={removePlace}
         />
+
         {places?.map((place, index) => (
-          <View style={styles.card} key={index}>
+          <View
+            style={{
+              ...styles.card,
+              marginBottom: index !== places.length - 1 ? 15 : 0,
+            }}
+            key={index}
+          >
             <View style={styles.iconContainer}>
-              <Image source={IMAGES.ICONS.LOCATION_WHITE.uri} />
+              <IMAGES.ICONS.LocationWhite />
             </View>
             <View style={styles.contentContainer}>
               <Text style={styles.name}>{place.name}</Text>
@@ -59,9 +94,14 @@ export const AdverstiserPlaces = ({ places }: AdvertiserPlacesProps) => {
                 <Text style={styles.state}>{place.state}</Text>
               </View>
             </View>
-            <View style={styles.trashContainer}>
-              <TouchableOpacity onPress={() => setModalVisible(true)}>
-                <Image source={IMAGES.ICONS.TRASH.uri} />
+            <View style={styles.TrashContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  setPlaceId(place.id);
+                  setModalVisible(true);
+                }}
+              >
+                <IMAGES.ICONS.Trash />
               </TouchableOpacity>
             </View>
           </View>
@@ -69,8 +109,12 @@ export const AdverstiserPlaces = ({ places }: AdvertiserPlacesProps) => {
         <View style={{ marginVertical: 30 }}>
           <Button
             buttonEnabled={true}
-            onPress={() => navigation.navigate("AdvertiverAddScreen")}
-            label={"Novo anunciante"}
+            onPress={() =>
+              navigation.navigate("AdvertiverPlaceAddScreen", {
+                advertiserId,
+              })
+            }
+            label={"Novo local"}
           />
         </View>
       </View>
@@ -89,6 +133,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     flexDirection: "row",
+    marginBottom: 30,
   },
   iconContainer: {
     borderTopLeftRadius: 10,
@@ -103,7 +148,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
   },
-  trashContainer: {
+  TrashContainer: {
     alignSelf: "center",
     justifyContent: "center",
     width: 40,

@@ -1,5 +1,6 @@
-import { View, Text, Image } from "react-native";
+import { View, Text } from "react-native";
 import { menuItemStyle } from "../styles";
+import { IMAGES } from "../../../constants/Images";
 
 interface MenuItemProps {
   focused: boolean;
@@ -13,16 +14,8 @@ export default function AdvertiserItem({ focused }: MenuItemProps) {
         justifyContent: "center",
       }}
     >
-      {focused && (
-        <Image
-          source={require("../../../../assets/images/icons/icon-advertiser-bullhorn-active.png")}
-        />
-      )}
-      {!focused && (
-        <Image
-          source={require("../../../../assets/images/icons/icon-advertiser-bullhorn.png")}
-        />
-      )}
+      {focused && <IMAGES.MENU.BullhornActive />}
+      {!focused && <IMAGES.MENU.Bullhorn />}
 
       <Text
         style={[menuItemStyle.label, focused ? menuItemStyle.activeLabel : {}]}

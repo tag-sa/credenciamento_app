@@ -1,28 +1,35 @@
 import { useNavigation } from "@react-navigation/native";
-import {
-  Image,
-  ImageSourcePropType,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { TouchableOpacity } from "react-native";
 import { IMAGES } from "../../constants/Images";
+import { SvgProps } from "react-native-svg";
+import { FC } from "react";
 
 interface BackButtonProps {
-  icon?: ImageSourcePropType;
+  Icon?: FC<SvgProps>;
+  route?: string;
+  routeParams?: any;
 }
 
 export const BackButton = ({
-  icon = IMAGES.ICONS.BACK_BUTTON.uri,
+  Icon = IMAGES.ICONS.BackButton,
+  route,
+  routeParams,
 }: BackButtonProps) => {
   const navigation = useNavigation<any>();
+
+  console.log(route, routeParams);
 
   return (
     <TouchableOpacity
       onPress={() => {
-        if (navigation.canGoBack()) navigation.goBack();
+        if (route) {
+          navigation.navigate(route, routeParams);
+        } else {
+          if (navigation.canGoBack()) navigation.goBack();
+        }
       }}
     >
-      <Image source={icon} />
+      <Icon />
     </TouchableOpacity>
   );
 };

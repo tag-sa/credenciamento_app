@@ -29,7 +29,7 @@ export const AdvertiserListItem = ({
       </TouchableOpacity>
       <TouchableOpacity onPress={onDelete}>
         <View style={styles.iconContainer}>
-          <Image source={IMAGES.ICONS.TRASH.uri} />
+          <IMAGES.ICONS.Trash />
         </View>
       </TouchableOpacity>
     </View>

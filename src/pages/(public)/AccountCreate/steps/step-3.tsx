@@ -27,7 +27,7 @@ export default function Step3({ retProps }: Step3Props) {
   const [state, setState] = useState("");
   const addressNumberInputRef = useRef(null);
 
-  const documentMask = "99999-999";
+  const cepMask = "99999-999";
 
   const fetchAddress = async (val: string) => {
     useGlobalStore.setState({ isLoading: true });
@@ -66,7 +66,7 @@ export default function Step3({ retProps }: Step3Props) {
         autoCapitalize="none"
         marginTop={40}
         label="CEP"
-        mask={documentMask}
+        mask={cepMask}
         onChangeText={(_, value) => {
           if (value.length === 8) {
             fetchAddress(value);

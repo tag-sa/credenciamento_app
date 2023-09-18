@@ -5,7 +5,7 @@ import { COLORS } from "../../constants/Colors";
 export const JobsNotFound = () => {
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={IMAGES.WORKER.JOBS_NOT_FOUND.uri} />
+      <IMAGES.WORKER.JobsNotFound />
       <View style={{ marginTop: 30 }}>
         <Text style={styles.text}>Não há vagas no momento...</Text>
         <Text style={styles.text}>Volte em breve</Text>

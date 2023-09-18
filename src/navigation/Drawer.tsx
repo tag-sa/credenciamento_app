@@ -3,7 +3,7 @@ import { MyTabs } from "./Tabs";
 import { useState, useEffect } from "react";
 import { UserType } from "../model/user.model";
 import { auth } from "../services/auth";
-import { AdvertiverAddScreen } from "../pages/(auth)/Advertiser-add";
+import { AdvertiverAddScreen } from "../pages/(auth)/AdvertiserAdd";
 
 const Drawer = createDrawerNavigator();
 

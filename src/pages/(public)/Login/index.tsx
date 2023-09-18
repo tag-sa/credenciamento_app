@@ -15,7 +15,6 @@ import CustomInputWithTextAndIcon from "../../../components/Input/CustomInputWit
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { COLORS } from "../../../constants/Colors";
 import { PADDINGS } from "../../../constants/Paddings";
-import { useGlobalStore } from "../../../store";
 
 export const LoginScreen = ({ navigation }) => {
   const { top } = useSafeAreaInsets();

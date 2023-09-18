@@ -1,24 +1,21 @@
-import {
-  TouchableOpacity,
-  View,
-  Image,
-  ImageSourcePropType,
-} from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { IMAGES } from "../../constants/Images";
 import { COLORS } from "../../constants/Colors";
 import { PADDINGS } from "../../constants/Paddings";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { SvgProps } from "react-native-svg";
+import { FC } from "react";
 
 interface HeaderComponentProps {
-  leftIcon?: ImageSourcePropType;
-  rightIcon?: ImageSourcePropType;
+  LeftIcon?: FC<SvgProps>;
+  RightIcon?: FC<SvgProps>;
   backgroundColor?: string;
 }
 export const HeaderComponent = ({
   backgroundColor = COLORS.whiteColor,
-  leftIcon = IMAGES.ICONS.HAMBURGER.uri,
-  rightIcon = IMAGES.ICONS.TOP_PROFILE.uri,
+  LeftIcon = IMAGES.ICONS.Hamburguer,
+  RightIcon = IMAGES.ICONS.TopProfile,
 }: HeaderComponentProps) => {
   const { top } = useSafeAreaInsets();
   const navigation = useNavigation<any>();
@@ -38,10 +35,10 @@ export const HeaderComponent = ({
           navigation.toggleDrawer();
         }}
       >
-        <Image source={leftIcon} />
+        <LeftIcon />
       </TouchableOpacity>
 
-      <Image source={rightIcon} />
+      <RightIcon />
     </View>
   );
 };

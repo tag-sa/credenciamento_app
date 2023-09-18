@@ -7,14 +7,11 @@ import { useEffect, useState } from "react";
 import { axiosApi } from "../../../services/axios";
 import { useGlobalStore } from "../../../store";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { AdvertiserEventItem } from "../../../components/AdvertiserEventItem";
-import { useNavigation } from "@react-navigation/native";
 import { AdverstiserAbout } from "../../../components/AdvertiserDashboard/About";
 import { AdverstiserPastEvents } from "../../../components/AdvertiserDashboard/PastEvents";
 import { AdverstiserPlaces } from "../../../components/AdvertiserDashboard/Places";
 
-export const AdvertiserDashboardScreen = ({ route }) => {
-  const navigation = useNavigation();
+export const AdvertiserDashboardScreen = ({ route, navigation }) => {
   const { advertiserId } = route.params;
   const [activeTab, setActiveTab] = useState<
     "about" | "pastEvents" | "places" | "people"
@@ -31,21 +28,25 @@ export const AdvertiserDashboardScreen = ({ route }) => {
     pastEvents: [];
   }>();
 
+  const loadAdvertiser = async () => {
+    useGlobalStore.setState({ isLoading: true });
+
+    const [adv, pls] = await Promise.all([
+      axiosApi.get(`/advertisers/${advertiserId}`),
+      axiosApi.get(`/advertisers/${advertiserId}/places/`),
+    ]);
+
+    useGlobalStore.setState({ isLoading: false });
+
+    setAdvertiser(adv.data.data);
+    setPlaces(pls.data.data);
+  };
+
+  navigation.addListener("focus", () => {
+    loadAdvertiser();
+  });
+
   useEffect(() => {
-    const loadAdvertiser = async () => {
-      useGlobalStore.setState({ isLoading: true });
-
-      const [adv, pls] = await Promise.all([
-        axiosApi.get(`/advertisers/${advertiserId}`),
-        axiosApi.get(`/advertisers/places/${advertiserId}`),
-      ]);
-
-      useGlobalStore.setState({ isLoading: false });
-
-      setAdvertiser(adv.data.data);
-      setPlaces(pls.data.data);
-    };
-
     loadAdvertiser();
   }, []);
 
@@ -60,19 +61,16 @@ export const AdvertiserDashboardScreen = ({ route }) => {
               flexDirection: "row",
             }}
           >
-            <BackButton icon={IMAGES.ICONS.BACK_BUTTON_WHITE.uri} />
-            <Image source={IMAGES.ICONS.FILTER_WHITE.uri} />
+            <BackButton Icon={IMAGES.ICONS.BackButtonWhite} />
+            <IMAGES.ICONS.FilterWhite />
           </View>
           <View style={styles.advertiserContainer}>
             <View style={styles.advertiserImageContainer}>
-              <Image
-                source={IMAGES.ICONS.BULLHORN_WHITE.uri}
-                style={styles.advertiserImage}
-              />
+              <IMAGES.ICONS.BullhornWhite style={styles.advertiserImage} />
             </View>
             <View style={styles.actions}>
-              <Image source={IMAGES.ICONS.LIKE.uri} />
-              <Image source={IMAGES.ICONS.SHARE.uri} />
+              <IMAGES.ICONS.Like />
+              <IMAGES.ICONS.Share />
             </View>
             <View style={styles.advertiserDetails}>
               <Text style={styles.name}>{advertiser?.name}</Text>
@@ -166,7 +164,13 @@ export const AdvertiserDashboardScreen = ({ route }) => {
         {activeTab === "pastEvents" && (
           <AdverstiserPastEvents advertiser={advertiser} />
         )}
-        {activeTab === "places" && <AdverstiserPlaces places={places} />}
+        {activeTab === "places" && (
+          <AdverstiserPlaces
+            places={places}
+            advertiserId={advertiserId}
+            reload={loadAdvertiser}
+          />
+        )}
       </View>
     </ScrollView>
   );

@@ -1,62 +1,65 @@
-import CloseIcon from "../../assets/images/icons/icon-close.svg";
+import Close from "../../assets/images/icons/icon-close.svg";
+import Bullhorn from "../../assets/images/icons/icon-advertiser-bullhorn.svg";
+import BullhornActive from "../../assets/images/icons/icon-advertiser-bullhorn-active.svg";
+import BullhornWhite from "../../assets/images/icons/icon-advertiser-bullhorn-white.svg";
+import Trash from "../../assets/images/icons/icon-trash.svg";
+import Duplicate from "../../assets/images/icons/icon-duplicate.svg";
+import Hamburguer from "../../assets/images/icons/icon-menu.svg";
+import HamburguerWhite from "../../assets/images/icons/icon-menu-white.svg";
+import BackButton from "../../assets/images/icons/icon-back-button.svg";
+import BackButtonWhite from "../../assets/images/icons/icon-back-button-white.svg";
+import FilterWhite from "../../assets/images/icons/icon-filter-white.svg";
+import Share from "../../assets/images/icons/icon-share.svg";
+import Like from "../../assets/images/icons/icon-like.svg";
+import Clock from "../../assets/images/icons/icon-clock.svg";
+import Calendar from "../../assets/images/icons/icon-calendar.svg";
+import LocationWhite from "../../assets/images/icons/icon-location-white.svg";
+import Home from "../../assets/images/icons/icon-home.svg";
+import HomeActive from "../../assets/images/icons/icon-home-active.svg";
+import Jobs from "../../assets/images/icons/icon-jobs.svg";
+import JobsActive from "../../assets/images/icons/icon-jobs-active.svg";
+import TopProfile from "../../assets/images/icons/icon-profile-top.svg";
+import Profile from "../../assets/images/icons/icon-profile.svg";
+import ProfileActive from "../../assets/images/icons/icon-profile-active.svg";
+import ManSeatDesk from "../../assets/images/icons/man-seat-desk.svg";
+import DashboardBanner1 from "../../assets/images/icons/icon-worker-banner-1.svg";
+import DashboardBanner2 from "../../assets/images/icons/icon-worker-banner-2.svg";
+import JobsNotFound from "../../assets/images/icons/jobs-not-found.svg";
 
 export const IMAGES = {
+  ADVERTISER: {
+    ManSeatDesk,
+  },
   WORKER: {
-    DASHBOARD_BANNER_1: {
-      uri: require("../../assets/images/icons/icon-worker-banner-1.png"),
-    },
-    DASHBOARD_BANNER_2: {
-      uri: require("../../assets/images/icons/icon-worker-banner-2.png"),
-    },
-    JOBS_NOT_FOUND: {
-      uri: require("../../assets/images/jobs-not-found.png"),
-    },
+    DashboardBanner1,
+    DashboardBanner2,
+    JobsNotFound,
+  },
+  MENU: {
+    Bullhorn,
+    BullhornActive,
+    Home,
+    HomeActive,
+    Jobs,
+    JobsActive,
+    Profile,
+    ProfileActive,
   },
   ICONS: {
-    BULLHORN_WHITE: {
-      uri: require("../../assets/images/icons/icon-advertiser-bullhorn-white.png"),
-    },
-    TRASH: {
-      uri: require("../../assets/images/icons/icon-trash.png"),
-    },
-    DUPLICATE: {
-      uri: require("../../assets/images/icons/icon-duplicate.png"),
-    },
-    HAMBURGER: {
-      uri: require("../../assets/images/icons/icon-menu.png"),
-    },
-    HAMBURGER_WHITE: {
-      uri: require("../../assets/images/icons/icon-menu-white.png"),
-    },
-    TOP_PROFILE: {
-      uri: require("../../assets/images/icons/icon-profile-white-top.png"),
-    },
-    BACK_BUTTON: {
-      uri: require("../../assets/images/icons/icon-back-button.png"),
-    },
-    BACK_BUTTON_WHITE: {
-      uri: require("../../assets/images/icons/icon-back-button-white.png"),
-    },
-    FILTER_WHITE: {
-      uri: require("../../assets/images/icons/icon-filter-white.png"),
-    },
-    SHARE: {
-      uri: require("../../assets/images/icons/icon-share.png"),
-    },
-    LIKE: {
-      uri: require("../../assets/images/icons/icon-like.png"),
-    },
-    CALENDAR: {
-      uri: require("../../assets/images/icons/icon-calendar.png"),
-    },
-    CLOCK: {
-      uri: require("../../assets/images/icons/icon-clock.png"),
-    },
-    LOCATION_WHITE: {
-      uri: require("../../assets/images/icons/icon-location-white.png"),
-    },
-    CLOSE: {
-      uri: CloseIcon,
-    },
+    BullhornWhite,
+    Close,
+    Trash,
+    Hamburguer,
+    HamburguerWhite,
+    Duplicate,
+    BackButton,
+    BackButtonWhite,
+    FilterWhite,
+    Share,
+    Like,
+    Calendar,
+    Clock,
+    LocationWhite,
+    TopProfile,
   },
 };

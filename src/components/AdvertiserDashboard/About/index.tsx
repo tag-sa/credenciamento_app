@@ -2,8 +2,11 @@ import { View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../../../constants/Colors";
 import { PADDINGS } from "../../../constants/Paddings";
 import { AdvertiserEventItem } from "../../AdvertiserEventItem";
+import Button from "../../Button/Button";
+import { useNavigation } from "@react-navigation/native";
 
 export const AdverstiserAbout = ({ advertiser }) => {
+  const navigation = useNavigation<any>();
   return (
     <View style={styles.tabItemContent}>
       <Text style={{ ...styles.title, textAlign: "left" }}>
@@ -31,6 +34,17 @@ export const AdverstiserAbout = ({ advertiser }) => {
             }}
           />
         ))}
+      </View>
+      <View style={{ marginBottom: 30 }}>
+        <Button
+          buttonEnabled={true}
+          onPress={() =>
+            navigation.navigate("AdvertiverEventAddScreen", {
+              advertiserId: advertiser?.id,
+            })
+          }
+          label={"Novo evento"}
+        />
       </View>
     </View>
   );

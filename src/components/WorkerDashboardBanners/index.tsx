@@ -3,7 +3,7 @@ import { COLORS } from "../../constants/Colors";
 
 interface WorkerDashboardBannersProps {
   backgroundColor: string;
-  iconImage: any;
+  IconImage: any;
   marginLeft?: number;
   marginRight?: number;
   text: string;
@@ -13,7 +13,7 @@ interface WorkerDashboardBannersProps {
 
 export const WorkerDashboardBannersComponent = ({
   backgroundColor,
-  iconImage,
+  IconImage,
   marginLeft,
   marginRight,
   text,
@@ -31,8 +31,7 @@ export const WorkerDashboardBannersComponent = ({
       }}
     >
       <Text style={{ color, ...style.text }}>{text}</Text>
-      <Image
-        source={iconImage}
+      <IconImage
         style={{
           marginRight: reverse ? 10 : 0,
         }}
