@@ -1,28 +1,31 @@
+import moment from "moment";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { BackButton } from "../../../components/BackButton";
+import Button from "../../../components/Button/Button";
+import { DialogModalBottomSheet } from "../../../components/DialogModalBottom";
+import CustomInputWithTextAndIcon from "../../../components/Input/CustomInputWithTextAndIcon";
+import CustomSelectInput from "../../../components/SelectInput";
 import { COLORS } from "../../../constants/Colors";
 import { PADDINGS } from "../../../constants/Paddings";
-import { BackButton } from "../../../components/BackButton";
-import CustomInputWithTextAndIcon from "../../../components/Input/CustomInputWithTextAndIcon";
-import { useEffect, useState } from "react";
-import Button from "../../../components/Button/Button";
-import moment from "moment";
-import { DialogModalBottomSheet } from "../../../components/DialogModalBottom";
-import CustomSelectInput from "../../../components/SelectInput";
 import { axiosApi } from "../../../services/axios";
 import { useGlobalStore } from "../../../store";
-import { useIsFocused } from "@react-navigation/native";
 
-export const AdvertiverEventAddScreen = ({ navigation, route }) => {
-  const { advertiserId } = route.params;
+export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
+  const { event } = route.params;
 
   const [name, setName] = useState("");
   const [eventDateStart, setEventDateStart] = useState("");
   const [eventDateEnd, setEventDateEnd] = useState("");
   const [eventTimeStart, setEventTimeStart] = useState("");
   const [eventTimeEnd, setEventTimeEnd] = useState("");
-  const [buttonEnabled, setButtonEnabled] = useState(false);
-  const [places, setPlaces] = useState<{ id: number; name: string }[]>([]);
-  const [eventPlace, setEventPlace] = useState<{ id: number; name: string }>();
+  const [jobs, setJobs] = useState("");
+
+  const [functions, setFunctions] = useState<{ id: number; name: string }[]>([]);
+  const [eventfunction, seteventFunction] = useState<{
+    id: number;
+    name: string;
+  }>();
 
   const [errors, setErrors] = useState([]);
 
@@ -46,69 +49,46 @@ export const AdvertiverEventAddScreen = ({ navigation, route }) => {
 
   const dateMask = "99/99/9999";
   const timeMask = "99:99";
-
-  const loadPlaces = async () => {
-    const { data } = await axiosApi.get(`/advertisers/${advertiserId}/places`);
-
-    if (data.data.length) {
-      setPlaces(
-        data.data.reduce((acc, place) => {
-          acc.push({ id: place.id, name: place.name });
-          return acc;
-        }, [])
-      );
-    }
-  };
+  const jobsMask = "9999";
 
   useEffect(() => {
-    if (
-      name &&
-      eventDateStart &&
-      eventDateEnd &&
-      eventTimeStart &&
-      eventTimeEnd &&
-      eventPlace
-    ) {
-      setButtonEnabled(true);
-    } else {
-      setButtonEnabled(false);
-    }
+    setEventDateStart(moment.utc(event.date_start).format("DD/MM/YYYY"));
+    setEventTimeStart(moment.utc(event.date_start).format("HH:mm"));
 
-    if (!places.length) {
-      loadPlaces();
-    }
-  }, [
-    name,
-    eventPlace,
-    eventDateStart,
-    eventDateEnd,
-    eventTimeStart,
-    eventTimeEnd,
-  ]);
+    setEventDateEnd(moment.utc(event.date_end).format("DD/MM/YYYY"));
+    setEventTimeEnd(moment.utc(event.date_end).format("HH:mm"));
+
+    const loadFunctions = async () => {
+      useGlobalStore.setState({ isLoading: true });
+
+      const { data } = await axiosApi.get(`/functions`);
+      setFunctions(data.data);
+
+      useGlobalStore.setState({ isLoading: false });
+    };
+
+    loadFunctions();
+  }, []);
 
   const save = async () => {
     const toSave = {
       name,
-      date_start: moment(
-        `${eventDateStart} ${eventTimeStart}`,
-        "DD/MM/YYYY HH:mm"
-      ).format("YYYY-MM-DD HH:mm"),
-      date_end: moment(
-        `${eventDateEnd} ${eventTimeEnd}`,
-        "DD/MM/YYYY HH:mm"
-      ).format("YYYY-MM-DD HH:mm"),
-      place_id: eventPlace.id,
-      advertiser_id: advertiserId,
+      date_start: moment(`${eventDateStart} ${eventTimeStart}`, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD HH:mm"),
+      date_end: moment(`${eventDateEnd} ${eventTimeEnd}`, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD HH:mm"),
+      functions_id: eventfunction?.id,
       status: "a",
+      quantity: parseInt(jobs),
     };
 
     try {
-      const { data } = await axiosApi.post(`/events`, toSave);
-      navigation.navigate("AdvertiserEventDashboardScreen", {
-        eventId: data.data.id,
-        newEvent: true,
+      await axiosApi.post(`/events/${event.id}/teams`, toSave);
+      navigation.navigate("AdvertiserEventTeamAddCreatedShareScreen", {
+        eventId: event.id,
       });
-    } catch (e) {}
+    } catch (e) {
+      // TODO: handle error
+      console.log(e.response.data);
+    }
   };
 
   return (
@@ -116,20 +96,14 @@ export const AdvertiverEventAddScreen = ({ navigation, route }) => {
       <ScrollView>
         <View style={style.container}>
           <View style={{ marginTop: 10 }}>
-            <BackButton
-              route="AdvertiserDashboardScreen"
-              routeParams={{ advertiserId }}
-            />
+            {/* navigation.navigate("AdvertiserEventDashboardScreen", {
+                eventId: event.id,
+              }); */}
+            <BackButton route="AdvertiserEventDashboardScreen" routeParams={{ eventId: event.id }} />
           </View>
 
-          <Text style={style.title}>Novo evento</Text>
-          <CustomInputWithTextAndIcon
-            marginTop={40}
-            label="Nome"
-            onChangeText={setName}
-            placeholder="Nome do evento"
-            value={name}
-          />
+          <Text style={style.title}>Nova equipe</Text>
+          <CustomInputWithTextAndIcon marginTop={40} label="Nome" onChangeText={setName} placeholder="Nome da equipe" value={name} />
 
           <CustomInputWithTextAndIcon
             autoCapitalize="none"
@@ -139,12 +113,10 @@ export const AdvertiverEventAddScreen = ({ navigation, route }) => {
             mask={dateMask}
             onChangeText={(_, value) => {
               if (!moment(value, "DD/MM/YYYY").isValid()) {
-                if (!errors.includes("dateStart"))
-                  setErrors([...errors, "dateStart"]);
+                if (!errors.includes("dateStart")) setErrors([...errors, "dateStart"]);
               } else {
                 if (moment(value, "DD/MM/YYYY").isBefore(moment())) {
-                  if (!errors.includes("dateStart"))
-                    setErrors([...errors, "dateStart"]);
+                  if (!errors.includes("dateStart")) setErrors([...errors, "dateStart"]);
                 } else {
                   setErrors(errors.filter((error) => error !== "dateStart"));
                 }
@@ -169,8 +141,7 @@ export const AdvertiverEventAddScreen = ({ navigation, route }) => {
             mask={timeMask}
             onChangeText={(_, value) => {
               if (!moment(value, "HH:mm").isValid()) {
-                if (!errors.includes("timeStart"))
-                  setErrors([...errors, "timeStart"]);
+                if (!errors.includes("timeStart")) setErrors([...errors, "timeStart"]);
               } else {
                 setErrors(errors.filter((error) => error !== "timeStart"));
               }
@@ -188,16 +159,10 @@ export const AdvertiverEventAddScreen = ({ navigation, route }) => {
             mask={dateMask}
             onChangeText={(_, value) => {
               if (!moment(value, "DD/MM/YYYY").isValid()) {
-                if (!errors.includes("dateEnd"))
-                  setErrors([...errors, "dateEnd"]);
+                if (!errors.includes("dateEnd")) setErrors([...errors, "dateEnd"]);
               } else {
-                if (
-                  moment(value, "DD/MM/YYYY").isBefore(
-                    moment(eventDateStart, "DD/MM/YYYY")
-                  )
-                ) {
-                  if (!errors.includes("dateEnd"))
-                    setErrors([...errors, "dateEnd"]);
+                if (moment(value, "DD/MM/YYYY").isBefore(moment(eventDateStart, "DD/MM/YYYY"))) {
+                  if (!errors.includes("dateEnd")) setErrors([...errors, "dateEnd"]);
                 } else {
                   setErrors(errors.filter((error) => error !== "dateEnd"));
                 }
@@ -222,8 +187,7 @@ export const AdvertiverEventAddScreen = ({ navigation, route }) => {
             mask={timeMask}
             onChangeText={(_, value) => {
               if (!moment(value, "HH:mm").isValid()) {
-                if (!errors.includes("timeEnd"))
-                  setErrors([...errors, "timeEnd"]);
+                if (!errors.includes("timeEnd")) setErrors([...errors, "timeEnd"]);
               } else {
                 setErrors(errors.filter((error) => error !== "timeEnd"));
               }
@@ -234,30 +198,57 @@ export const AdvertiverEventAddScreen = ({ navigation, route }) => {
           />
 
           <CustomSelectInput
-            placeholder="Selecione um local"
-            label={"Local"}
+            placeholder="Selecione uma função"
+            label={"Função"}
             error={errors.includes("place")}
-            erroMessage="Selecione um local"
             marginTop={20}
-            value={eventPlace?.name}
+            value={eventfunction?.name}
             onInputPress={handleOpenModal}
+          />
+
+          <CustomInputWithTextAndIcon
+            autoCapitalize="none"
+            marginTop={20}
+            label="Número de vagas"
+            placeholder="10"
+            mask={jobsMask}
+            keyboardType={"numeric"}
+            onChangeText={(_, value) => {
+              if (value === "" || parseInt(value) <= 0) {
+                if (!errors.includes("jobs")) setErrors([...errors, "jobs"]);
+              } else {
+                setErrors(errors.filter((error) => error !== "jobs"));
+              }
+
+              setJobs(value);
+            }}
+            value={jobs}
           />
 
           <View style={{ marginVertical: 30 }}>
             <Button
               label="Salvar"
-              buttonEnabled={buttonEnabled}
+              buttonEnabled={
+                name !== "" &&
+                eventDateStart !== "" &&
+                eventTimeStart !== "" &&
+                eventDateEnd !== "" &&
+                eventTimeEnd !== "" &&
+                eventfunction !== undefined &&
+                jobs !== "" &&
+                errors.length === 0
+              }
               onPress={save}
             />
           </View>
         </View>
       </ScrollView>
       <DialogModalBottomSheet
-        data={places}
+        data={functions}
         openModal={isModalOpen}
         onModalPresented={handleModalPresented}
         onModalDismissed={handleModalDismissed}
-        onSelectItem={setEventPlace}
+        onSelectItem={seteventFunction}
       />
     </>
   );

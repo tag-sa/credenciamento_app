@@ -4,28 +4,32 @@ import * as Progress from "react-native-progress";
 import { COLORS } from "../../constants/Colors";
 import { IMAGES } from "../../constants/Images";
 
-type AdvertiserEventItemProps = {
-  event?: any & { name: number };
-  isPastEvent?: boolean;
+type AdvertiserEventTeamProps = {
+  team: {
+    name: string;
+    quantity: number;
+    date_start: string;
+    date_end: string;
+    teamsUsers: {
+      confirmed: "a" | "c" | "d";
+    }[];
+  };
   onClick?: () => void;
   onDelete?: () => void;
   onDuplicate?: () => void;
 };
 
-export const AdvertiserEventItem = ({ event, onClick, onDelete, onDuplicate, isPastEvent = false }: AdvertiserEventItemProps) => {
-  const { name } = event;
+export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDuplicate }: AdvertiserEventTeamProps) => {
   let totalTeamsUsers = 0;
   let totalTeamsUsersConfirmed = 0;
   let fillColor = COLORS.redColor;
 
-  event.teams.map((team) => {
-    totalTeamsUsers += team.teamsUsers.length;
+  totalTeamsUsers += team.teamsUsers.length;
 
-    team.teamsUsers.map((teamsUser) => {
-      if (teamsUser.confirmed == "c") {
-        totalTeamsUsersConfirmed++;
-      }
-    });
+  team.teamsUsers.map((teamsUser) => {
+    if (teamsUser.confirmed == "c") {
+      totalTeamsUsersConfirmed++;
+    }
   });
 
   if (totalTeamsUsersConfirmed > 30 && totalTeamsUsersConfirmed < 70) {
@@ -37,7 +41,7 @@ export const AdvertiserEventItem = ({ event, onClick, onDelete, onDuplicate, isP
   return (
     <View style={styles.container}>
       <Pressable style={styles.imageContainer} onPress={onClick}>
-        <Text>Image</Text>
+        <IMAGES.ICONS.IconTeamsUsers />
       </Pressable>
 
       <View
@@ -48,43 +52,34 @@ export const AdvertiserEventItem = ({ event, onClick, onDelete, onDuplicate, isP
         }}
       >
         <Pressable style={styles.textContainer} onPress={onClick}>
-          <Text style={styles.name}>{name}</Text>
-          {!isPastEvent && (
-            <>
-              <Text style={styles.vacancy}>
-                {totalTeamsUsersConfirmed > 0 ? ((totalTeamsUsersConfirmed / totalTeamsUsers) * 100).toFixed(0) : 0}% ({totalTeamsUsersConfirmed}/{totalTeamsUsers})
-              </Text>
+          <Text style={styles.name}>{team?.name}</Text>
 
-              <View style={{ marginTop: 10 }}>
-                <Progress.Bar progress={0.3} unfilledColor={COLORS.grayColor} borderWidth={0} color={fillColor} />
-              </View>
-            </>
-          )}
+          <Text style={styles.vacancy}>
+            {totalTeamsUsersConfirmed > 0 ? ((totalTeamsUsersConfirmed / totalTeamsUsers) * 100).toFixed(0) : 0}% ({totalTeamsUsersConfirmed}/{totalTeamsUsers})
+          </Text>
+
+          <View style={{ marginTop: 10 }}>
+            <Progress.Bar progress={0.3} unfilledColor={COLORS.grayColor} borderWidth={0} color={fillColor} />
+          </View>
+
           <View style={{ flexDirection: "row", marginTop: 10 }}>
             <View style={{ flexDirection: "row" }}>
               <IMAGES.ICONS.Calendar />
-              <Text style={styles.details}>{moment(event.date_start).format("DD/MM/YYYY")}</Text>
+              <Text style={styles.details}>{moment(team.date_start).format("DD/MM/YYYY")}</Text>
             </View>
             <View style={{ flexDirection: "row", marginLeft: 10 }}>
               <IMAGES.ICONS.Clock />
-              <Text style={styles.details}>{moment(event.date_start).format("HH:mm")}</Text>
-              <Text
-                style={{
-                  ...styles.details,
-                  marginLeft: 2,
-                }}
-              >
-                ás {moment(event.date_end).format("HH:mm")}
+              <Text style={styles.details}>
+                {moment(team.date_start).format("HH:mm")} ás {moment(team.date_end).format("HH:mm")}
               </Text>
             </View>
           </View>
         </Pressable>
-        {!isPastEvent && (
-          <View style={styles.iconContainer}>
-            <IMAGES.ICONS.Duplicate onPress={onDuplicate} />
-            <IMAGES.ICONS.Trash onPress={onDelete} />
-          </View>
-        )}
+
+        <View style={styles.iconContainer}>
+          <IMAGES.ICONS.Duplicate onPress={onDuplicate} />
+          <IMAGES.ICONS.Trash onPress={onDelete} />
+        </View>
       </View>
     </View>
   );
@@ -122,10 +117,10 @@ const styles = StyleSheet.create({
   imageContainer: {
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    backgroundColor: COLORS.lightGrayColor,
+    backgroundColor: COLORS.primaryColor,
     justifyContent: "center",
     alignItems: "center",
-    width: 70,
+    width: 42,
   },
   iconContainer: {
     flexGrow: 1,

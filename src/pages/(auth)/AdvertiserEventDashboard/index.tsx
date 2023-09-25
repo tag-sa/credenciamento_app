@@ -1,0 +1,349 @@
+import { useIsFocused } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { showMessage } from "react-native-flash-message";
+import { AdverstiserEventAboutTab } from "../../../components/AdvertiserEventDashboard/About";
+import { AdvertiserEventCostsTab } from "../../../components/AdvertiserEventDashboard/Costs";
+import { AdverstiserEventsTeamsTab } from "../../../components/AdvertiserEventDashboard/Teams";
+import { BackButton } from "../../../components/BackButton";
+import { TabItem } from "../../../components/TabItem";
+import { COLORS } from "../../../constants/Colors";
+import { IMAGES } from "../../../constants/Images";
+import { PADDINGS } from "../../../constants/Paddings";
+import { axiosApi } from "../../../services/axios";
+import { useGlobalStore } from "../../../store";
+
+export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
+  const { eventId, newEvent } = route.params;
+  const [activeTab, setActiveTab] = useState<"about" | "teams" | "costs">("teams");
+
+  const [event, setEvent] = useState<{
+    name: string;
+    dateStart: string;
+    dateEnd: string;
+  }>();
+
+  const [advertiser, setAdvertiser] = useState<{
+    id: number;
+    name: string;
+    about: string;
+  }>();
+
+  const [totalTeamsUsersNotConfirmedInPercent, setTotalTeamsUsersNotConfirmedInPercent] = useState("0");
+  const [total, setTotal] = useState<number>(0);
+  const [teams, setTeams] = useState([]);
+  const [totalTeamsUsers, setTotalTeamsUsers] = useState<number>(0);
+  const [totalTeamsUsersConfirmed, setTotalTeamsUsersConfirmed] = useState(0);
+  const [totalCompletedInPercent, setTotalCompletedInPercent] = useState("0");
+  const [totalRefusedInPercent, setTotalRefusedInPercent] = useState("0");
+
+  const isFocused = useIsFocused();
+
+  const loadData = async () => {
+    let totalTeamsUsers = 0;
+    let totalTeamsUsersConfirmed = 0;
+    let totalTeamsUsersNotConfirmed = 0;
+    let totalTeamsUsersRefused = 0;
+
+    useGlobalStore.setState({ isLoading: true });
+
+    setEvent(undefined);
+    setAdvertiser(undefined);
+    setTeams([]);
+    setTotal(0);
+    setTotalTeamsUsers(0);
+    setTotalTeamsUsersConfirmed(0);
+    setTotalCompletedInPercent("0");
+    setTotalTeamsUsersNotConfirmedInPercent("0");
+
+    const { data } = await axiosApi.get(`/events/${eventId}`);
+
+    setEvent(data.data);
+    setAdvertiser(data.data.advertiser);
+    setTeams(data.data.teams);
+
+    if (data.data.teams.length > 0) {
+      data.data.teams.map((team) => {
+        totalTeamsUsers += team.teamsUsers.length;
+
+        team.teamsUsers.map((teamsUser) => {
+          if (teamsUser.confirmed == "c") {
+            totalTeamsUsersConfirmed++;
+          } else if (teamsUser.confirmed == "d") {
+            totalTeamsUsersRefused++;
+          } else {
+            totalTeamsUsersNotConfirmed++;
+          }
+        });
+      });
+
+      setTotalTeamsUsers(totalTeamsUsers);
+      setTotalTeamsUsersConfirmed(totalTeamsUsersConfirmed);
+
+      setTotalRefusedInPercent(((totalTeamsUsersRefused / totalTeamsUsers) * 100).toFixed(0));
+      setTotalCompletedInPercent(((totalTeamsUsersConfirmed / totalTeamsUsers) * 100).toFixed(0));
+      setTotalTeamsUsersNotConfirmedInPercent(((totalTeamsUsersNotConfirmed / totalTeamsUsers) * 100).toFixed(0));
+    }
+
+    useGlobalStore.setState({ isLoading: false });
+  };
+
+  useEffect(() => {
+    if (newEvent && newEvent === true) {
+      showMessage({
+        backgroundColor: COLORS.greenColor,
+        message: "Evento criado com sucesso!",
+        titleStyle: {
+          color: COLORS.whiteColor,
+          fontWeight: "bold",
+        },
+        style: {
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        type: "success",
+        icon: "none",
+      });
+    }
+
+    loadData();
+  }, [isFocused]);
+
+  return (
+    <ScrollView style={{ flex: 1, backgroundColor: COLORS.whiteColor }}>
+      <View style={{ flex: 1, backgroundColor: COLORS.whiteColor }}>
+        <View style={styles.container}>
+          <View
+            style={{
+              marginTop: 20,
+            }}
+          >
+            <BackButton Icon={IMAGES.ICONS.BackButtonWhite} />
+            <View style={{ paddingTop: 25 }}>
+              <Text style={styles.eventName}>{event?.name}</Text>
+              <Text style={styles.advertiserName}>{advertiser?.name}</Text>
+            </View>
+          </View>
+          <View style={styles.advertiserContainer}>
+            <View style={styles.advertiserImageContainer}>
+              <IMAGES.ICONS.BullhornWhite style={styles.advertiserImage} />
+            </View>
+            <View style={styles.actions}>
+              <IMAGES.ICONS.Like />
+              <IMAGES.ICONS.Share />
+            </View>
+            <View
+              style={{
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={styles.advertiserContainerTitle}>Convocações</Text>
+              <View style={styles.advertiserContainerSummary}>
+                <View>
+                  <Text style={styles.summaryNotConfirmed}>{totalTeamsUsersNotConfirmedInPercent}%</Text>
+                  <Text style={styles.summaryLabel}>sem resposta</Text>
+                </View>
+                <View>
+                  <Text style={styles.summaryRefused}>{totalRefusedInPercent}%</Text>
+                  <Text style={styles.summaryLabel}>não vão</Text>
+                </View>
+                <View>
+                  <Text style={styles.summaryConfirmed}>{totalCompletedInPercent}%</Text>
+                  <Text style={styles.summaryLabel}>confirmados</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View style={styles.generalSummaryContainer}>
+            <View>
+              <Text style={styles.generalSummaryBigNumber}>{teams?.length}</Text>
+              <Text style={styles.generalSummaryLabel}>Equipe(s)</Text>
+            </View>
+
+            <View>
+              <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                <Text style={styles.generalSummaryBigNumber}>{totalTeamsUsersConfirmed}</Text>
+                <Text
+                  style={{
+                    ...styles.generalSummaryBigNumber,
+                    fontSize: 15,
+                    alignSelf: "flex-end",
+                  }}
+                >
+                  /{totalTeamsUsers}
+                </Text>
+              </View>
+              <Text style={styles.generalSummaryLabel}>Vaga(s) Preenchida(s)</Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.tabs}>
+          <ScrollView
+            contentContainerStyle={{
+              backgroundColor: COLORS.primaryColor,
+            }}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          >
+            <TabItem
+              label="SOBRE"
+              item="about"
+              activeTab={activeTab}
+              setActiveTab={(tab: "about" | "teams" | "costs") => {
+                setActiveTab(tab);
+              }}
+            />
+            <TabItem
+              label="EQUIPES"
+              item="teams"
+              activeTab={activeTab}
+              setActiveTab={(tab: "about" | "teams" | "costs") => {
+                setActiveTab(tab);
+              }}
+            />
+            <TabItem
+              label="CUSTOS DO EVENTO"
+              item="costs"
+              activeTab={activeTab}
+              setActiveTab={(tab: "about" | "teams" | "costs") => {
+                setActiveTab(tab);
+              }}
+            />
+          </ScrollView>
+        </View>
+
+        {activeTab === "about" && (
+          // TODO
+          <AdverstiserEventAboutTab advertiser={undefined} />
+        )}
+        {activeTab === "teams" && <AdverstiserEventsTeamsTab teams={teams} event={event} />}
+        {activeTab === "costs" && <AdvertiserEventCostsTab />}
+      </View>
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    // height: 450,
+    backgroundColor: COLORS.primaryColor,
+    paddingHorizontal: PADDINGS.horizontal,
+  },
+  actions: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    gap: 15,
+  },
+  advertiserContainer: {
+    padding: 10,
+    paddingBottom: 15,
+    marginTop: 80,
+    width: "90%",
+    backgroundColor: COLORS.whiteColor,
+    alignSelf: "center",
+    position: "relative",
+    borderRadius: 5,
+    shadowColor: COLORS.blackColor,
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.2,
+  },
+  generalSummaryContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 25,
+    marginTop: 15,
+    width: "90%",
+    borderColor: COLORS.whiteColor,
+    borderWidth: 1,
+    alignSelf: "center",
+    borderRadius: 5,
+    marginBottom: 35,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  generalSummaryBigNumber: {
+    color: COLORS.whiteColor,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 22,
+  },
+  generalSummaryLabel: {
+    color: COLORS.mediumBlueColor,
+    fontWeight: "bold",
+    fontSize: 10,
+  },
+  advertiserContainerTitle: {
+    textAlign: "center",
+    fontSize: 15,
+    color: COLORS.primaryColor,
+    fontWeight: "bold",
+    marginTop: 50,
+  },
+  advertiserContainerSummary: {
+    height: 50,
+    paddingHorizontal: 10,
+    marginTop: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+  },
+  summaryLabel: {
+    color: COLORS.mediumBlueColor,
+    fontSize: 13,
+    fontWeight: "bold",
+  },
+  summaryRefused: {
+    color: COLORS.redColor,
+    fontWeight: "bold",
+    fontSize: 22,
+  },
+  summaryConfirmed: {
+    color: COLORS.mediumBlueColor,
+    fontWeight: "bold",
+    fontSize: 22,
+  },
+  summaryNotConfirmed: {
+    fontWeight: "bold",
+    fontSize: 22,
+    color: COLORS.grayColor,
+  },
+  advertiserImageContainer: {
+    width: 130,
+    height: 130,
+    borderRadius: 50000,
+    position: "absolute",
+    top: -70,
+    backgroundColor: "#7709D8",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 10,
+    borderColor: COLORS.primaryColor,
+  },
+  advertiserImage: {
+    maxHeight: 30,
+  },
+  eventName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: COLORS.whiteColor,
+  },
+  advertiserName: {
+    marginTop: 2,
+    fontSize: 12,
+    color: COLORS.whiteColor,
+  },
+  tabs: {
+    backgroundColor: COLORS.primaryColor,
+    height: 32,
+    flexDirection: "row",
+  },
+  tabItemContent: {
+    paddingHorizontal: PADDINGS.horizontal,
+    flex: 1,
+    backgroundColor: COLORS.whiteColor,
+    paddingTop: 40,
+  },
+});

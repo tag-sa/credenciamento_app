@@ -2,17 +2,21 @@ import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { COLORS } from "../../constants/Colors";
 
 interface ButtonProps {
-  buttonEnabled: boolean;
+  buttonEnabled?: boolean;
   onPress: () => void;
   label: string;
 }
 
-export default function Button(props: ButtonProps) {
+export default function Button({
+  label,
+  onPress,
+  buttonEnabled = true,
+}: ButtonProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       style={{
-        backgroundColor: props.buttonEnabled
+        backgroundColor: buttonEnabled
           ? COLORS.blueColor
           : COLORS.lightBlueColor,
         borderRadius: 10,
@@ -24,12 +28,12 @@ export default function Button(props: ButtonProps) {
         alignSelf: "center",
       }}
       onPress={() => {
-        if (props.buttonEnabled) {
-          props.onPress();
+        if (buttonEnabled) {
+          onPress();
         }
       }}
     >
-      <Text style={styles.signInButton}>{props.label}</Text>
+      <Text style={styles.signInButton}>{label}</Text>
     </TouchableOpacity>
   );
 }

@@ -1,29 +1,31 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { DashboardScreen } from "../pages/(auth)/Dashboard";
-import { AdvertiserScreen } from "../pages/(auth)/Advertiser";
-import { ProfileScreen } from "../pages/(auth)/Profile";
-import { COLORS } from "../constants/Colors";
 import { useEffect, useState } from "react";
-import { auth } from "../services/auth";
+import { COLORS } from "../constants/Colors";
 import { UserType } from "../model/user.model";
+import { AdvertiserScreen } from "../pages/(auth)/Advertiser";
+import { DashboardScreen } from "../pages/(auth)/Dashboard";
 import { JobsScreen } from "../pages/(auth)/Jobs";
+import { ProfileScreen } from "../pages/(auth)/Profile";
+import { auth } from "../services/auth";
 
-import { AdvertiserDashboardScreen } from "../pages/(auth)/AdvertiserDashboard";
+import AdvertiserItem from "../components/AuthBottomMenu/Advertiser";
+import HomeItem from "../components/AuthBottomMenu/Home";
+import JobsItem from "../components/AuthBottomMenu/Jobs";
+import ProfileItem from "../components/AuthBottomMenu/Profile";
 import { HeaderComponent } from "../components/Header";
 import { IMAGES } from "../constants/Images";
-import HomeItem from "../components/AuthBottomMenu/Home";
-import AdvertiserItem from "../components/AuthBottomMenu/Advertiser";
-import ProfileItem from "../components/AuthBottomMenu/Profile";
-import JobsItem from "../components/AuthBottomMenu/Jobs";
 import { AdvertiverAddScreen } from "../pages/(auth)/AdvertiserAdd";
-import { AdvertiverPlaceAddScreen } from "../pages/(auth)/AdvertiserPlaceAdd";
+import { AdvertiserDashboardScreen } from "../pages/(auth)/AdvertiserDashboard";
 import { AdvertiverEventAddScreen } from "../pages/(auth)/AdvertiserEventAdd";
+import { AdvertiserEventDashboardScreen } from "../pages/(auth)/AdvertiserEventDashboard";
+import { AdvertiverEventTeamAddScreen } from "../pages/(auth)/AdvertiserEventTeamAdd";
+import { AdvertiserEventTeamAddCreatedShareScreen } from "../pages/(auth)/AdvertiserEventTeamAddCreatedShare";
+import { AdvertiverPlaceAddScreen } from "../pages/(auth)/AdvertiserPlaceAdd";
 
 const Tab = createBottomTabNavigator();
 
 export function MyTabs({ route }) {
   const { screenName } = route.params;
-
   const [user, setUser] = useState<UserType>();
 
   useEffect(() => {
@@ -109,12 +111,7 @@ export function MyTabs({ route }) {
       <Tab.Screen
         name="AdvertiserDashboardScreen"
         options={{
-          header: () => (
-            <HeaderComponent
-              backgroundColor={COLORS.primaryColor}
-              LeftIcon={IMAGES.ICONS.HamburguerWhite}
-            />
-          ),
+          header: () => <HeaderComponent backgroundColor={COLORS.primaryColor} LeftIcon={IMAGES.ICONS.HamburguerWhite} />,
           tabBarButton: () => null,
         }}
         component={AdvertiserDashboardScreen}
@@ -126,12 +123,21 @@ export function MyTabs({ route }) {
         }}
         component={AdvertiverPlaceAddScreen}
       />
+      <Tab.Screen name="AdvertiverEventAddScreen" component={AdvertiverEventAddScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="AdvertiverEventTeamAddScreen" component={AdvertiverEventTeamAddScreen} options={{ tabBarButton: () => null }} />
       <Tab.Screen
-        name="AdvertiverEventAddScreen"
+        name="AdvertiserEventTeamAddCreatedShareScreen"
+        component={AdvertiserEventTeamAddCreatedShareScreen}
+        options={{ tabBarButton: () => null, header: () => <HeaderComponent backgroundColor={COLORS.primaryColor} LeftIcon={IMAGES.ICONS.HamburguerWhite} /> }}
+      />
+
+      <Tab.Screen
+        name="AdvertiserEventDashboardScreen"
+        component={AdvertiserEventDashboardScreen}
         options={{
+          header: () => <HeaderComponent backgroundColor={COLORS.primaryColor} LeftIcon={IMAGES.ICONS.HamburguerWhite} />,
           tabBarButton: () => null,
         }}
-        component={AdvertiverEventAddScreen}
       />
     </Tab.Navigator>
   );

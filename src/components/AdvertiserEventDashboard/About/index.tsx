@@ -1,11 +1,11 @@
-import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, View } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../../../constants/Colors";
 import { PADDINGS } from "../../../constants/Paddings";
 import { AdvertiserEventItem } from "../../AdvertiserEventItem";
 import Button from "../../Button/Button";
+import { useNavigation } from "@react-navigation/native";
 
-export const AdverstiserAbout = ({ advertiser }) => {
+export const AdverstiserEventAboutTab = ({ advertiser }) => {
   const navigation = useNavigation<any>();
   return (
     <View style={styles.tabItemContent}>
@@ -20,7 +20,7 @@ export const AdverstiserAbout = ({ advertiser }) => {
       </Text>
 
       <View style={styles.advertisersList}>
-        {advertiser?.events?.map((event, index) => (
+        {advertiser?.pastEvents?.map((event, index) => (
           <AdvertiserEventItem
             key={index}
             event={event}

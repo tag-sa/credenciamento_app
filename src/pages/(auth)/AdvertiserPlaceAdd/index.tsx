@@ -72,20 +72,6 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
     useGlobalStore.setState({ isLoading: false });
   };
 
-  navigation.addListener("focus", () => {
-    nameInputRef.current.focus();
-
-    setButtonEnabled(false);
-    setErrors([]);
-    setName("");
-    setZip("");
-    setAddressNumber("");
-    setAddress("");
-    setNeighborhood("");
-    setCity("");
-    setState("");
-  });
-
   useEffect(() => {
     if (
       name &&

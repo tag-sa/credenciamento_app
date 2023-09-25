@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native";
-import { IMAGES } from "../../constants/Images";
-import { SvgProps } from "react-native-svg";
 import { FC } from "react";
+import { TouchableOpacity } from "react-native";
+import { SvgProps } from "react-native-svg";
+import { IMAGES } from "../../constants/Images";
 
 interface BackButtonProps {
   Icon?: FC<SvgProps>;
@@ -10,14 +10,8 @@ interface BackButtonProps {
   routeParams?: any;
 }
 
-export const BackButton = ({
-  Icon = IMAGES.ICONS.BackButton,
-  route,
-  routeParams,
-}: BackButtonProps) => {
+export const BackButton = ({ Icon = IMAGES.ICONS.BackButton, route, routeParams }: BackButtonProps) => {
   const navigation = useNavigation<any>();
-
-  console.log(route, routeParams);
 
   return (
     <TouchableOpacity

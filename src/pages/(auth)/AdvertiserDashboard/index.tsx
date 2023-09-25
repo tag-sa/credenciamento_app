@@ -1,24 +1,23 @@
-import { View, StyleSheet, Text, Image, ScrollView } from "react-native";
-import { COLORS } from "../../../constants/Colors";
-import { PADDINGS } from "../../../constants/Paddings";
-import { BackButton } from "../../../components/BackButton";
-import { IMAGES } from "../../../constants/Images";
+import { useIsFocused } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { axiosApi } from "../../../services/axios";
-import { useGlobalStore } from "../../../store";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AdverstiserAbout } from "../../../components/AdvertiserDashboard/About";
 import { AdverstiserPastEvents } from "../../../components/AdvertiserDashboard/PastEvents";
 import { AdverstiserPlaces } from "../../../components/AdvertiserDashboard/Places";
+import { BackButton } from "../../../components/BackButton";
+import { COLORS } from "../../../constants/Colors";
+import { IMAGES } from "../../../constants/Images";
+import { PADDINGS } from "../../../constants/Paddings";
+import { axiosApi } from "../../../services/axios";
+import { useGlobalStore } from "../../../store";
 
 export const AdvertiserDashboardScreen = ({ route, navigation }) => {
   const { advertiserId } = route.params;
-  const [activeTab, setActiveTab] = useState<
-    "about" | "pastEvents" | "places" | "people"
-  >("about");
+  const [activeTab, setActiveTab] = useState<"about" | "pastEvents" | "places" | "people">("about");
 
+  const isFocused = useIsFocused();
   const [places, setPlaces] = useState([]);
-
   const [advertiser, setAdvertiser] = useState<{
     id: number;
     name: string;
@@ -31,10 +30,7 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
   const loadAdvertiser = async () => {
     useGlobalStore.setState({ isLoading: true });
 
-    const [adv, pls] = await Promise.all([
-      axiosApi.get(`/advertisers/${advertiserId}`),
-      axiosApi.get(`/advertisers/${advertiserId}/places/`),
-    ]);
+    const [adv, pls] = await Promise.all([axiosApi.get(`/advertisers/${advertiserId}`), axiosApi.get(`/advertisers/${advertiserId}/places/`)]);
 
     useGlobalStore.setState({ isLoading: false });
 
@@ -42,13 +38,9 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
     setPlaces(pls.data.data);
   };
 
-  navigation.addListener("focus", () => {
-    loadAdvertiser();
-  });
-
   useEffect(() => {
     loadAdvertiser();
-  }, []);
+  }, [isFocused]);
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: COLORS.whiteColor }}>
@@ -87,90 +79,30 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
             showsHorizontalScrollIndicator={false}
           >
             <TouchableOpacity onPress={() => setActiveTab("about")}>
-              <View
-                style={
-                  activeTab === "about" ? styles.tabItemActive : styles.tabItem
-                }
-              >
-                <Text
-                  style={
-                    activeTab === "about"
-                      ? styles.tabItemTextActive
-                      : styles.tabItemText
-                  }
-                >
-                  SOBRE A EMPRESA
-                </Text>
+              <View style={activeTab === "about" ? styles.tabItemActive : styles.tabItem}>
+                <Text style={activeTab === "about" ? styles.tabItemTextActive : styles.tabItemText}>SOBRE A EMPRESA</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setActiveTab("pastEvents")}>
-              <View
-                style={
-                  activeTab === "pastEvents"
-                    ? styles.tabItemActive
-                    : styles.tabItem
-                }
-              >
-                <Text
-                  style={
-                    activeTab === "pastEvents"
-                      ? styles.tabItemTextActive
-                      : styles.tabItemText
-                  }
-                >
-                  EVENTOS PASSADOS
-                </Text>
+              <View style={activeTab === "pastEvents" ? styles.tabItemActive : styles.tabItem}>
+                <Text style={activeTab === "pastEvents" ? styles.tabItemTextActive : styles.tabItemText}>EVENTOS PASSADOS</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setActiveTab("places")}>
-              <View
-                style={
-                  activeTab === "places" ? styles.tabItemActive : styles.tabItem
-                }
-              >
-                <Text
-                  style={
-                    activeTab === "places"
-                      ? styles.tabItemTextActive
-                      : styles.tabItemText
-                  }
-                >
-                  MEUS LOCAIS
-                </Text>
+              <View style={activeTab === "places" ? styles.tabItemActive : styles.tabItem}>
+                <Text style={activeTab === "places" ? styles.tabItemTextActive : styles.tabItemText}>MEUS LOCAIS</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setActiveTab("people")}>
-              <View
-                style={
-                  activeTab === "people"
-                    ? { ...styles.tabItemActive, marginRight: 50 }
-                    : { ...styles.tabItem, marginRight: 50 }
-                }
-              >
-                <Text
-                  style={
-                    activeTab === "people"
-                      ? styles.tabItemTextActive
-                      : styles.tabItemText
-                  }
-                >
-                  PESSOAS
-                </Text>
+              <View style={activeTab === "people" ? { ...styles.tabItemActive, marginRight: 50 } : { ...styles.tabItem, marginRight: 50 }}>
+                <Text style={activeTab === "people" ? styles.tabItemTextActive : styles.tabItemText}>PESSOAS</Text>
               </View>
             </TouchableOpacity>
           </ScrollView>
         </View>
         {activeTab === "about" && <AdverstiserAbout advertiser={advertiser} />}
-        {activeTab === "pastEvents" && (
-          <AdverstiserPastEvents advertiser={advertiser} />
-        )}
-        {activeTab === "places" && (
-          <AdverstiserPlaces
-            places={places}
-            advertiserId={advertiserId}
-            reload={loadAdvertiser}
-          />
-        )}
+        {activeTab === "pastEvents" && <AdverstiserPastEvents advertiser={advertiser} />}
+        {activeTab === "places" && <AdverstiserPlaces places={places} advertiserId={advertiserId} reload={loadAdvertiser} />}
       </View>
     </ScrollView>
   );
