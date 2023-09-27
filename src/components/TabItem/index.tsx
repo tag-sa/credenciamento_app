@@ -1,29 +1,19 @@
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../../constants/Colors";
 
 interface TabItemProps {
   label: string;
   item: any;
   activeTab: any;
+  isLast?: boolean;
   setActiveTab: (tab: string) => void;
 }
 
-export const TabItem = ({
-  item,
-  label,
-  activeTab,
-  setActiveTab,
-}: TabItemProps) => {
+export const TabItem = ({ item, label, activeTab, setActiveTab, isLast = false }: TabItemProps) => {
   return (
     <TouchableOpacity onPress={() => setActiveTab(item)}>
-      <View style={activeTab === item ? styles.tabItemActive : styles.tabItem}>
-        <Text
-          style={
-            activeTab === item ? styles.tabItemTextActive : styles.tabItemText
-          }
-        >
-          {label}
-        </Text>
+      <View style={activeTab === item ? { ...styles.tabItemActive, marginRight: isLast ? 50 : 0 } : { ...styles.tabItem, marginRight: isLast ? 50 : 0 }}>
+        <Text style={activeTab === item ? styles.tabItemTextActive : styles.tabItemText}>{label}</Text>
       </View>
     </TouchableOpacity>
   );

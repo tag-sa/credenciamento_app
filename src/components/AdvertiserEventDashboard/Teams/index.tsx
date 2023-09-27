@@ -9,6 +9,7 @@ import Button from "../../Button/Button";
 interface AdverstiserEventsTeams {
   event: any;
   teams: {
+    id: number;
     name: string;
     quantity: number;
     date_start: string;
@@ -32,7 +33,7 @@ export const AdverstiserEventsTeamsTab = ({ teams, event }: AdverstiserEventsTea
             alignItems: "center",
           }}
         >
-          <IMAGES.ICONS.NotFound style={{}} />
+          <IMAGES.ICONS.NotFound />
           <View style={{ marginTop: 20, marginBottom: 10 }}>
             <Text style={{ ...styles.title }}>Não há equipes para este evento...</Text>
             <Text style={{ ...styles.title }}>Cadastre em nova equipe</Text>
@@ -43,7 +44,16 @@ export const AdverstiserEventsTeamsTab = ({ teams, event }: AdverstiserEventsTea
       {teams.length > 0 && (
         <>
           {teams?.map((team, index) => (
-            <AdvertiserEventTeam key={index} team={team} />
+            <AdvertiserEventTeam
+              key={index}
+              team={team}
+              onClick={() =>
+                navigation.navigate("AdvertiserEventTeamDashboardScreen", {
+                  teamId: team.id,
+                  eventId: event.id,
+                })
+              }
+            />
           ))}
         </>
       )}

@@ -21,6 +21,9 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
     name: string;
     dateStart: string;
     dateEnd: string;
+    total_by_answers: number;
+    total_executed: number;
+    total_preview: number;
   }>();
 
   const [advertiser, setAdvertiser] = useState<{
@@ -202,6 +205,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
               }}
             />
             <TabItem
+              isLast={true}
               label="CUSTOS DO EVENTO"
               item="costs"
               activeTab={activeTab}
@@ -217,7 +221,15 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
           <AdverstiserEventAboutTab advertiser={undefined} />
         )}
         {activeTab === "teams" && <AdverstiserEventsTeamsTab teams={teams} event={event} />}
-        {activeTab === "costs" && <AdvertiserEventCostsTab />}
+        {activeTab === "costs" && (
+          <AdvertiserEventCostsTab
+            totalTeamsUsers={totalTeamsUsers}
+            totalTeamsUsersConfirmed={totalTeamsUsersConfirmed}
+            teams={teams}
+            totalExecuted={event?.total_executed}
+            totalPreview={event?.total_preview}
+          />
+        )}
       </View>
     </ScrollView>
   );
@@ -225,7 +237,6 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // height: 450,
     backgroundColor: COLORS.primaryColor,
     paddingHorizontal: PADDINGS.horizontal,
   },

@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { COLORS } from "../../../constants/Colors";
-import { PADDINGS } from "../../../constants/Paddings";
-import { WorkerDashboardBannersComponent } from "../../WorkerDashboardBanners";
-import { IMAGES } from "../../../constants/Images";
 import { useState } from "react";
-import { JobsNotFound } from "../../JobsNotFound";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { COLORS } from "../../../constants/Colors";
+import { IMAGES } from "../../../constants/Images";
+import { PADDINGS } from "../../../constants/Paddings";
+
+import { NotFound } from "../../NotFound";
+import { WorkerDashboardBannersComponent } from "../../WorkerDashboardBanners";
 
 export const WorkerDashboardComponent = ({ navigation }) => {
   const [jobs, setJobs] = useState([]);
@@ -31,7 +32,7 @@ export const WorkerDashboardComponent = ({ navigation }) => {
           </ScrollView>
         </View>
         <Text style={style.howTo}>Como começar?</Text>
-        {!jobs.length ? <JobsNotFound /> : <View />}
+        {!jobs.length ? <NotFound /> : <View />}
       </View>
     </>
   );

@@ -1,30 +1,44 @@
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { COLORS } from "../../constants/Colors";
 
 interface ButtonProps {
   buttonEnabled?: boolean;
   onPress: () => void;
   label: string;
+  width?: number;
+  height?: number;
+  marginTop?: number;
+  borderRadius?: number;
+  textColor?: string;
+  fontSize?: number;
+  buttonEnabledColor?: string;
+  buttonDisabledColor?: string;
 }
 
 export default function Button({
   label,
   onPress,
   buttonEnabled = true,
+  height = 50,
+  marginTop = 20,
+  width = 250,
+  borderRadius = 10,
+  buttonDisabledColor = COLORS.lightBlueColor,
+  buttonEnabledColor = COLORS.blueColor,
+  fontSize = 18,
+  textColor = COLORS.whiteColor,
 }: ButtonProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       style={{
-        backgroundColor: buttonEnabled
-          ? COLORS.blueColor
-          : COLORS.lightBlueColor,
-        borderRadius: 10,
-        height: 50,
-        marginTop: 20,
+        backgroundColor: buttonEnabled ? buttonEnabledColor : buttonDisabledColor,
+        borderRadius,
+        height,
+        marginTop,
         justifyContent: "center",
         alignItems: "center",
-        width: 250,
+        width,
         alignSelf: "center",
       }}
       onPress={() => {
@@ -33,16 +47,16 @@ export default function Button({
         }
       }}
     >
-      <Text style={styles.signInButton}>{label}</Text>
+      <Text
+        style={{
+          color: textColor,
+          fontSize,
+          fontWeight: "bold",
+          letterSpacing: 1.2,
+        }}
+      >
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  signInButton: {
-    color: COLORS.whiteColor,
-    fontSize: 18,
-    fontWeight: "bold",
-    letterSpacing: 1.2,
-  },
-});

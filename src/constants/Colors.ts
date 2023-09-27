@@ -12,4 +12,6 @@ export const COLORS = {
   blackColor: "#000000",
   redColor: "#E01515",
   greenColor: "#00939C",
+  darkTiffanyColor: "#4CE2EB",
+  pinkColor: "#F9C6C7",
 };

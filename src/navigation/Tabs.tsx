@@ -20,6 +20,7 @@ import { AdvertiverEventAddScreen } from "../pages/(auth)/AdvertiserEventAdd";
 import { AdvertiserEventDashboardScreen } from "../pages/(auth)/AdvertiserEventDashboard";
 import { AdvertiverEventTeamAddScreen } from "../pages/(auth)/AdvertiserEventTeamAdd";
 import { AdvertiserEventTeamAddCreatedShareScreen } from "../pages/(auth)/AdvertiserEventTeamAddCreatedShare";
+import { AdvertiserEventTeamDashboardScreen } from "../pages/(auth)/AdvertiserEventTeamDashboard";
 import { AdvertiverPlaceAddScreen } from "../pages/(auth)/AdvertiserPlaceAdd";
 
 const Tab = createBottomTabNavigator();
@@ -134,6 +135,14 @@ export function MyTabs({ route }) {
       <Tab.Screen
         name="AdvertiserEventDashboardScreen"
         component={AdvertiserEventDashboardScreen}
+        options={{
+          header: () => <HeaderComponent backgroundColor={COLORS.primaryColor} LeftIcon={IMAGES.ICONS.HamburguerWhite} />,
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="AdvertiserEventTeamDashboardScreen"
+        component={AdvertiserEventTeamDashboardScreen}
         options={{
           header: () => <HeaderComponent backgroundColor={COLORS.primaryColor} LeftIcon={IMAGES.ICONS.HamburguerWhite} />,
           tabBarButton: () => null,

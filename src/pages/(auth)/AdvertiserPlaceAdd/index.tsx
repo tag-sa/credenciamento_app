@@ -1,10 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { BackButton } from "../../../components/BackButton";
+import Button from "../../../components/Button/Button";
+import CustomInputWithTextAndIcon from "../../../components/Input/CustomInputWithTextAndIcon";
 import { COLORS } from "../../../constants/Colors";
 import { PADDINGS } from "../../../constants/Paddings";
-import { BackButton } from "../../../components/BackButton";
-import CustomInputWithTextAndIcon from "../../../components/Input/CustomInputWithTextAndIcon";
-import { useEffect, useRef, useState } from "react";
-import Button from "../../../components/Button/Button";
 import { axiosApi } from "../../../services/axios";
 import { useGlobalStore } from "../../../store";
 
@@ -73,15 +73,7 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (
-      name &&
-      zip &&
-      addressNumber &&
-      address &&
-      neighborhood &&
-      city &&
-      state
-    ) {
+    if (name && zip && addressNumber && address && neighborhood && city && state) {
       setButtonEnabled(true);
     } else {
       setButtonEnabled(false);
@@ -89,30 +81,17 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
   }, [name, zip, addressNumber, address, neighborhood, city, state]);
 
   return (
-    <ScrollView
-      automaticallyAdjustKeyboardInsets={true}
-      contentContainerStyle={style.scrollView}
-    >
+    <ScrollView automaticallyAdjustKeyboardInsets={true} contentContainerStyle={style.scrollView}>
       <View style={style.container}>
         <View style={{ marginTop: 10 }}>
           {/* navigation.navigate("AdvertiserDashboardScreen", {
                     advertiserId: advertiser.id,
                   }); */}
-          <BackButton
-            route="AdvertiserDashboardScreen"
-            routeParams={{ advertiserId }}
-          />
+          <BackButton route="AdvertiserDashboardScreen" routeParams={{ advertiserId }} />
         </View>
 
         <Text style={style.title}>Novo local</Text>
-        <CustomInputWithTextAndIcon
-          marginTop={40}
-          label="Nome"
-          addrRef={nameInputRef}
-          onChangeText={setName}
-          placeholder="Nome do local"
-          value={name}
-        />
+        <CustomInputWithTextAndIcon marginTop={40} label="Nome" addrRef={nameInputRef} onChangeText={setName} placeholder="Nome do local" value={name} />
         <CustomInputWithTextAndIcon
           autoCapitalize="none"
           marginTop={20}
@@ -195,11 +174,7 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
         </View>
 
         <View style={{ marginVertical: 30 }}>
-          <Button
-            label="Salvar"
-            buttonEnabled={buttonEnabled}
-            onPress={saveAdvertiserPlace}
-          />
+          <Button label="Salvar" buttonEnabled={buttonEnabled} onPress={saveAdvertiserPlace} />
         </View>
       </View>
     </ScrollView>
