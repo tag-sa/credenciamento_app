@@ -1,116 +1,141 @@
-import { useIsFocused } from "@react-navigation/native";
-import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { showMessage } from "react-native-flash-message";
-import { AdverstiserEventAboutTab } from "../../../components/AdvertiserEventDashboard/About";
-import { AdvertiserEventCostsTab } from "../../../components/AdvertiserEventDashboard/Costs";
-import { AdverstiserEventsTeamsTab } from "../../../components/AdvertiserEventDashboard/Teams";
-import { BackButton } from "../../../components/BackButton";
-import { TabItem } from "../../../components/TabItem";
-import { COLORS } from "../../../constants/Colors";
-import { IMAGES } from "../../../constants/Images";
-import { PADDINGS } from "../../../constants/Paddings";
-import { axiosApi } from "../../../services/axios";
-import { useGlobalStore } from "../../../store";
+import { useIsFocused } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { PieChart } from 'react-native-chart-kit'
+import { showMessage } from 'react-native-flash-message'
+import { AdverstiserEventAboutTab } from '../../../components/AdvertiserEventDashboard/About'
+import { AdvertiserEventCostsTab } from '../../../components/AdvertiserEventDashboard/Costs'
+import { AdverstiserEventsTeamsTab } from '../../../components/AdvertiserEventDashboard/Teams'
+import { BackButton } from '../../../components/BackButton'
+import { TabItem } from '../../../components/TabItem'
+import { COLORS } from '../../../constants/Colors'
+import { IMAGES } from '../../../constants/Images'
+import { PADDINGS } from '../../../constants/Paddings'
+import { axiosApi } from '../../../services/axios'
+import { useGlobalStore } from '../../../store'
 
 export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
-  const { eventId, newEvent } = route.params;
-  const [activeTab, setActiveTab] = useState<"about" | "teams" | "costs">("teams");
+  const { eventId, newEvent } = route.params
+  const [activeTab, setActiveTab] = useState<'about' | 'teams' | 'costs'>('teams')
 
   const [event, setEvent] = useState<{
-    name: string;
-    dateStart: string;
-    dateEnd: string;
-    total_by_answers: number;
-    total_executed: number;
-    total_preview: number;
-  }>();
+    name: string
+    dateStart: string
+    dateEnd: string
+    total_by_answers: number
+    total_executed: number
+    total_preview: number
+  }>()
 
   const [advertiser, setAdvertiser] = useState<{
-    id: number;
-    name: string;
-    about: string;
-  }>();
+    id: number
+    name: string
+    about: string
+  }>()
 
-  const [totalTeamsUsersNotConfirmedInPercent, setTotalTeamsUsersNotConfirmedInPercent] = useState("0");
-  const [total, setTotal] = useState<number>(0);
-  const [teams, setTeams] = useState([]);
-  const [totalTeamsUsers, setTotalTeamsUsers] = useState<number>(0);
-  const [totalTeamsUsersConfirmed, setTotalTeamsUsersConfirmed] = useState(0);
-  const [totalCompletedInPercent, setTotalCompletedInPercent] = useState("0");
-  const [totalRefusedInPercent, setTotalRefusedInPercent] = useState("0");
+  const [totalTeamsUsersNotConfirmedInPercent, setTotalTeamsUsersNotConfirmedInPercent] = useState('0')
+  const [total, setTotal] = useState<number>(0)
+  const [teams, setTeams] = useState([])
+  const [totalTeamsUsers, setTotalTeamsUsers] = useState<number>(0)
+  const [totalTeamsUsersConfirmed, setTotalTeamsUsersConfirmed] = useState(0)
+  const [totalCompletedInPercent, setTotalCompletedInPercent] = useState('0')
+  const [totalRefusedInPercent, setTotalRefusedInPercent] = useState('0')
+  const [chartData, setChartData] = useState<any[]>([])
 
-  const isFocused = useIsFocused();
+  const isFocused = useIsFocused()
 
   const loadData = async () => {
-    let totalTeamsUsers = 0;
-    let totalTeamsUsersConfirmed = 0;
-    let totalTeamsUsersNotConfirmed = 0;
-    let totalTeamsUsersRefused = 0;
+    let totalTeamsUsers = 0
+    let totalTeamsUsersConfirmed = 0
+    let totalTeamsUsersNotConfirmed = 0
+    let totalTeamsUsersRefused = 0
 
-    useGlobalStore.setState({ isLoading: true });
+    useGlobalStore.setState({ isLoading: true })
 
-    setEvent(undefined);
-    setAdvertiser(undefined);
-    setTeams([]);
-    setTotal(0);
-    setTotalTeamsUsers(0);
-    setTotalTeamsUsersConfirmed(0);
-    setTotalCompletedInPercent("0");
-    setTotalTeamsUsersNotConfirmedInPercent("0");
+    setEvent(undefined)
+    setAdvertiser(undefined)
+    setTeams([])
+    setTotal(0)
+    setTotalTeamsUsers(0)
+    setTotalTeamsUsersConfirmed(0)
+    setTotalCompletedInPercent('0')
+    setTotalTeamsUsersNotConfirmedInPercent('0')
 
-    const { data } = await axiosApi.get(`/events/${eventId}`);
+    const { data } = await axiosApi.get(`/events/${eventId}`)
 
-    setEvent(data.data);
-    setAdvertiser(data.data.advertiser);
-    setTeams(data.data.teams);
+    setEvent(data.data)
+    setAdvertiser(data.data.advertiser)
+    setTeams(data.data.teams)
 
     if (data.data.teams.length > 0) {
       data.data.teams.map((team) => {
-        totalTeamsUsers += team.teamsUsers.length;
+        totalTeamsUsers += team.teamsUsers.length
 
         team.teamsUsers.map((teamsUser) => {
-          if (teamsUser.confirmed == "c") {
-            totalTeamsUsersConfirmed++;
-          } else if (teamsUser.confirmed == "d") {
-            totalTeamsUsersRefused++;
+          if (teamsUser.confirmed == 'c') {
+            totalTeamsUsersConfirmed++
+          } else if (teamsUser.confirmed == 'd') {
+            totalTeamsUsersRefused++
           } else {
-            totalTeamsUsersNotConfirmed++;
+            totalTeamsUsersNotConfirmed++
           }
-        });
-      });
+        })
+      })
 
-      setTotalTeamsUsers(totalTeamsUsers);
-      setTotalTeamsUsersConfirmed(totalTeamsUsersConfirmed);
+      setTotalTeamsUsers(totalTeamsUsers)
+      setTotalTeamsUsersConfirmed(totalTeamsUsersConfirmed)
 
-      setTotalRefusedInPercent(((totalTeamsUsersRefused / totalTeamsUsers) * 100).toFixed(0));
-      setTotalCompletedInPercent(((totalTeamsUsersConfirmed / totalTeamsUsers) * 100).toFixed(0));
-      setTotalTeamsUsersNotConfirmedInPercent(((totalTeamsUsersNotConfirmed / totalTeamsUsers) * 100).toFixed(0));
+      setTotalRefusedInPercent(((totalTeamsUsersRefused / totalTeamsUsers) * 100).toFixed(0))
+      setTotalCompletedInPercent(((totalTeamsUsersConfirmed / totalTeamsUsers) * 100).toFixed(0))
+      setTotalTeamsUsersNotConfirmedInPercent(((totalTeamsUsersNotConfirmed / totalTeamsUsers) * 100).toFixed(0))
+      setChartData([
+        {
+          name: 'Confirmados',
+          val: totalTeamsUsersConfirmed,
+          color: COLORS.mediumBlueColor,
+          legendFontColor: COLORS.mediumBlueColor,
+          legendFontSize: 12
+        },
+        {
+          name: 'Não confirmados',
+          val: totalTeamsUsersNotConfirmed,
+          color: COLORS.lightGrayColor,
+          legendFontColor: COLORS.grayColor,
+          legendFontSize: 12
+        },
+        {
+          name: 'Recusados',
+          val: totalTeamsUsersRefused,
+          color: COLORS.redColor,
+          legendFontColor: COLORS.redColor,
+          legendFontSize: 12
+        }
+      ])
     }
 
-    useGlobalStore.setState({ isLoading: false });
-  };
+    useGlobalStore.setState({ isLoading: false })
+  }
 
   useEffect(() => {
     if (newEvent && newEvent === true) {
       showMessage({
         backgroundColor: COLORS.greenColor,
-        message: "Evento criado com sucesso!",
+        message: 'Evento criado com sucesso!',
         titleStyle: {
           color: COLORS.whiteColor,
-          fontWeight: "bold",
+          fontWeight: 'bold'
         },
         style: {
-          justifyContent: "center",
-          alignItems: "center",
+          justifyContent: 'center',
+          alignItems: 'center'
         },
-        type: "success",
-        icon: "none",
-      });
+        type: 'success',
+        icon: 'none'
+      })
     }
 
-    loadData();
-  }, [isFocused]);
+    loadData()
+  }, [isFocused])
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: COLORS.whiteColor }}>
@@ -118,7 +143,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
         <View style={styles.container}>
           <View
             style={{
-              marginTop: 20,
+              marginTop: 20
             }}
           >
             <BackButton Icon={IMAGES.ICONS.BackButtonWhite} />
@@ -129,7 +154,20 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.advertiserContainer}>
             <View style={styles.advertiserImageContainer}>
-              <IMAGES.ICONS.BullhornWhite style={styles.advertiserImage} />
+              <PieChart
+                data={chartData}
+                width={135}
+                height={135}
+                chartConfig={{
+                  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`
+                }}
+                accessor={'val'}
+                backgroundColor={'transparent'}
+                paddingLeft={'0'}
+                center={[33, 0]}
+                absolute
+                hasLegend={false}
+              />
             </View>
             <View style={styles.actions}>
               <IMAGES.ICONS.Like />
@@ -137,7 +175,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
             </View>
             <View
               style={{
-                justifyContent: "space-between",
+                justifyContent: 'space-between'
               }}
             >
               <Text style={styles.advertiserContainerTitle}>Convocações</Text>
@@ -164,13 +202,13 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
             </View>
 
             <View>
-              <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <Text style={styles.generalSummaryBigNumber}>{totalTeamsUsersConfirmed}</Text>
                 <Text
                   style={{
                     ...styles.generalSummaryBigNumber,
                     fontSize: 15,
-                    alignSelf: "flex-end",
+                    alignSelf: 'flex-end'
                   }}
                 >
                   /{totalTeamsUsers}
@@ -183,7 +221,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
         <View style={styles.tabs}>
           <ScrollView
             contentContainerStyle={{
-              backgroundColor: COLORS.primaryColor,
+              backgroundColor: COLORS.primaryColor
             }}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -192,16 +230,16 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
               label="SOBRE"
               item="about"
               activeTab={activeTab}
-              setActiveTab={(tab: "about" | "teams" | "costs") => {
-                setActiveTab(tab);
+              setActiveTab={(tab: 'about' | 'teams' | 'costs') => {
+                setActiveTab(tab)
               }}
             />
             <TabItem
               label="EQUIPES"
               item="teams"
               activeTab={activeTab}
-              setActiveTab={(tab: "about" | "teams" | "costs") => {
-                setActiveTab(tab);
+              setActiveTab={(tab: 'about' | 'teams' | 'costs') => {
+                setActiveTab(tab)
               }}
             />
             <TabItem
@@ -209,19 +247,19 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
               label="CUSTOS DO EVENTO"
               item="costs"
               activeTab={activeTab}
-              setActiveTab={(tab: "about" | "teams" | "costs") => {
-                setActiveTab(tab);
+              setActiveTab={(tab: 'about' | 'teams' | 'costs') => {
+                setActiveTab(tab)
               }}
             />
           </ScrollView>
         </View>
 
-        {activeTab === "about" && (
+        {activeTab === 'about' && (
           // TODO
           <AdverstiserEventAboutTab advertiser={undefined} />
         )}
-        {activeTab === "teams" && <AdverstiserEventsTeamsTab teams={teams} event={event} />}
-        {activeTab === "costs" && (
+        {activeTab === 'teams' && <AdverstiserEventsTeamsTab teams={teams} event={event} />}
+        {activeTab === 'costs' && (
           <AdvertiserEventCostsTab
             totalTeamsUsers={totalTeamsUsers}
             totalTeamsUsersConfirmed={totalTeamsUsersConfirmed}
@@ -232,129 +270,129 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
         )}
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.primaryColor,
-    paddingHorizontal: PADDINGS.horizontal,
+    paddingHorizontal: PADDINGS.horizontal
   },
   actions: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    gap: 15,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 15
   },
   advertiserContainer: {
     padding: 10,
     paddingBottom: 15,
     marginTop: 80,
-    width: "90%",
+    width: '90%',
     backgroundColor: COLORS.whiteColor,
-    alignSelf: "center",
-    position: "relative",
+    alignSelf: 'center',
+    position: 'relative',
     borderRadius: 5,
     shadowColor: COLORS.blackColor,
     shadowOffset: {
       width: 0,
-      height: 10,
+      height: 10
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.2
   },
   generalSummaryContainer: {
     paddingHorizontal: 20,
     paddingVertical: 25,
     marginTop: 15,
-    width: "90%",
+    width: '90%',
     borderColor: COLORS.whiteColor,
     borderWidth: 1,
-    alignSelf: "center",
+    alignSelf: 'center',
     borderRadius: 5,
     marginBottom: 35,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around'
   },
   generalSummaryBigNumber: {
     color: COLORS.whiteColor,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 22,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 22
   },
   generalSummaryLabel: {
     color: COLORS.mediumBlueColor,
-    fontWeight: "bold",
-    fontSize: 10,
+    fontWeight: 'bold',
+    fontSize: 10
   },
   advertiserContainerTitle: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 15,
     color: COLORS.primaryColor,
-    fontWeight: "bold",
-    marginTop: 50,
+    fontWeight: 'bold',
+    marginTop: 50
   },
   advertiserContainerSummary: {
     height: 50,
     paddingHorizontal: 10,
     marginTop: 15,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end'
   },
   summaryLabel: {
     color: COLORS.mediumBlueColor,
     fontSize: 13,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   summaryRefused: {
     color: COLORS.redColor,
-    fontWeight: "bold",
-    fontSize: 22,
+    fontWeight: 'bold',
+    fontSize: 22
   },
   summaryConfirmed: {
     color: COLORS.mediumBlueColor,
-    fontWeight: "bold",
-    fontSize: 22,
+    fontWeight: 'bold',
+    fontSize: 22
   },
   summaryNotConfirmed: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 22,
-    color: COLORS.grayColor,
+    color: COLORS.grayColor
   },
   advertiserImageContainer: {
     width: 130,
     height: 130,
     borderRadius: 50000,
-    position: "absolute",
+    position: 'absolute',
     top: -70,
-    backgroundColor: "#7709D8",
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: COLORS.primaryColor,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 10,
-    borderColor: COLORS.primaryColor,
+    borderColor: COLORS.primaryColor
   },
   advertiserImage: {
-    maxHeight: 30,
+    maxHeight: 30
   },
   eventName: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: COLORS.whiteColor,
+    fontWeight: 'bold',
+    color: COLORS.whiteColor
   },
   advertiserName: {
     marginTop: 2,
     fontSize: 12,
-    color: COLORS.whiteColor,
+    color: COLORS.whiteColor
   },
   tabs: {
     backgroundColor: COLORS.primaryColor,
     height: 32,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   tabItemContent: {
     paddingHorizontal: PADDINGS.horizontal,
     flex: 1,
     backgroundColor: COLORS.whiteColor,
-    paddingTop: 40,
-  },
-});
+    paddingTop: 40
+  }
+})

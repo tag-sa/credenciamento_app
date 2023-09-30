@@ -1,24 +1,24 @@
-import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, View } from "react-native";
-import { NumericFormat } from "react-number-format";
-import { COLORS } from "../../../constants/Colors";
-import { PADDINGS } from "../../../constants/Paddings";
+import { useNavigation } from '@react-navigation/native'
+import { StyleSheet, Text, View } from 'react-native'
+import { NumericFormat } from 'react-number-format'
+import { COLORS } from '../../../constants/Colors'
+import { PADDINGS } from '../../../constants/Paddings'
 
 interface AdvertiserEventCostsProps {
-  totalExecuted: number;
-  totalPreview: number;
-  totalTeamsUsers: number;
-  totalTeamsUsersConfirmed: number;
+  totalExecuted: number
+  totalPreview: number
+  totalTeamsUsers: number
+  totalTeamsUsersConfirmed: number
   teams: {
-    name: string;
-    total_executed: number;
-    total_preview: number;
-    teamsUsers: any[];
-  }[];
+    name: string
+    total_executed: number
+    total_preview: number
+    teamsUsers: any[]
+  }[]
 }
 
 export const AdvertiserEventCostsTab = ({ teams, totalExecuted, totalPreview, totalTeamsUsers, totalTeamsUsersConfirmed }: AdvertiserEventCostsProps) => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<any>()
 
   return (
     <>
@@ -38,7 +38,7 @@ export const AdvertiserEventCostsTab = ({ teams, totalExecuted, totalPreview, to
           </View>
           {teams.map((team, index) => (
             <View style={styles.body} key={index}>
-              <View style={styles.col}>
+              <View style={{ ...styles.col, alignItems: 'flex-start', paddingLeft: 10 }}>
                 <View style={styles.colContent}>
                   <Text style={styles.teamName}>{team.name}</Text>
                   <Text style={styles.subTeamTitle}>Convocados</Text>
@@ -48,9 +48,9 @@ export const AdvertiserEventCostsTab = ({ teams, totalExecuted, totalPreview, to
                 <View style={styles.colContent}>
                   <NumericFormat
                     value={team.total_preview}
-                    displayType={"text"}
+                    displayType={'text'}
                     thousandSeparator={true}
-                    prefix={"R$ "}
+                    prefix={'R$ '}
                     renderText={(formattedValue) => <Text style={styles.teamValuePreview}>{formattedValue}</Text>}
                   />
                   <Text style={styles.subTeamPreview}>{team.teamsUsers.length}</Text>
@@ -60,12 +60,12 @@ export const AdvertiserEventCostsTab = ({ teams, totalExecuted, totalPreview, to
                 <View style={styles.colContent}>
                   <NumericFormat
                     value={team.total_executed}
-                    displayType={"text"}
+                    displayType={'text'}
                     thousandSeparator={true}
-                    prefix={"R$ "}
+                    prefix={'R$ '}
                     renderText={(formattedValue) => <Text style={styles.teamValueExecuted}>{formattedValue}</Text>}
                   />
-                  <Text style={styles.subTeamExecuted}>{team.teamsUsers.filter((tu: any) => tu.confirmed == "c").length}</Text>
+                  <Text style={styles.subTeamExecuted}>{team.teamsUsers.filter((tu: any) => tu.confirmed == 'c').length}</Text>
                 </View>
               </View>
             </View>
@@ -78,9 +78,9 @@ export const AdvertiserEventCostsTab = ({ teams, totalExecuted, totalPreview, to
               <View style={styles.colContent}>
                 <NumericFormat
                   value={totalPreview}
-                  displayType={"text"}
+                  displayType={'text'}
                   thousandSeparator={true}
-                  prefix={"R$ "}
+                  prefix={'R$ '}
                   renderText={(formattedValue) => <Text style={{ ...styles.teamValuePreview, fontSize: 18 }}>{formattedValue}</Text>}
                 />
                 <Text style={styles.subTeamPreview}>{totalTeamsUsers}</Text>
@@ -90,9 +90,9 @@ export const AdvertiserEventCostsTab = ({ teams, totalExecuted, totalPreview, to
               <View style={styles.colContent}>
                 <NumericFormat
                   value={totalExecuted}
-                  displayType={"text"}
+                  displayType={'text'}
                   thousandSeparator={true}
-                  prefix={"R$ "}
+                  prefix={'R$ '}
                   renderText={(formattedValue) => <Text style={{ ...styles.teamValueExecuted, fontSize: 18 }}>{formattedValue}</Text>}
                 />
                 <Text style={styles.subTeamExecuted}>{totalTeamsUsersConfirmed}</Text>
@@ -102,80 +102,80 @@ export const AdvertiserEventCostsTab = ({ teams, totalExecuted, totalPreview, to
         </View>
       </View>
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   content: {
     paddingHorizontal: PADDINGS.horizontal,
     marginTop: 20,
-    marginBottom: 50,
+    marginBottom: 50
   },
   title: {
     color: COLORS.primaryColor,
     fontSize: 15,
-    fontWeight: "bold",
-    marginTop: 10,
+    fontWeight: 'bold',
+    marginTop: 10
   },
   table: {
-    marginTop: 20,
+    marginTop: 20
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 5
   },
   headerText: {
     color: COLORS.mediumBlueColor,
-    fontWeight: "700",
+    fontWeight: '700'
   },
   teamName: {
     color: COLORS.primaryColor,
-    fontWeight: "bold",
-    fontSize: 12,
+    fontWeight: 'bold',
+    fontSize: 12
   },
   subTeamTitle: {
     color: COLORS.mediumBlueColor,
     fontSize: 10,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   teamValuePreview: {
     color: COLORS.primaryColor,
-    fontWeight: "bold",
-    fontSize: 14,
+    fontWeight: 'bold',
+    fontSize: 14
   },
   subTeamPreview: {
     color: COLORS.mediumBlueColor,
     fontSize: 10,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   teamValueExecuted: {
     color: COLORS.greenColor,
-    fontWeight: "bold",
-    fontSize: 14,
+    fontWeight: 'bold',
+    fontSize: 14
   },
   subTeamExecuted: {
     color: COLORS.darkTiffanyColor,
     fontSize: 10,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   body: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     borderWidth: 1,
     marginBottom: 15,
     paddingVertical: 15,
     borderRadius: 5,
-    borderColor: COLORS.lightGrayColor,
+    borderColor: COLORS.lightGrayColor
   },
   footer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 5
   },
   col: {
-    width: "33%",
-    alignItems: "center",
+    width: '33%',
+    alignItems: 'center'
   },
-  colContent: { flexDirection: "column", alignItems: "flex-start" },
-});
+  colContent: { flexDirection: 'column', alignItems: 'flex-start' }
+})

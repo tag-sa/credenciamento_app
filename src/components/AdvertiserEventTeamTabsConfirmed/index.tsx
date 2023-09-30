@@ -1,17 +1,18 @@
-import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import { PADDINGS } from "../../constants/Paddings";
-import { axiosApi } from "../../services/axios";
-import { AdvertiserEventTeamUser } from "../AdvertiserEventTeamUser";
-import { NotFound } from "../NotFound";
+import { useNavigation } from '@react-navigation/native'
+import React from 'react'
+import { FlatList, StyleSheet, View } from 'react-native'
+import { PADDINGS } from '../../constants/Paddings'
+import { axiosApi } from '../../services/axios'
+import { AdvertiserEventTeamUser } from '../AdvertiserEventTeamUser'
+import { NotFound } from '../NotFound'
 
 interface AdvertiserEventTeamTabsConfirmedProps {
-  users: any[];
-  teamConfirmationsStatus: "a" | "c" | "d" | null;
-  eventID: number;
-  teamId: number;
-  notFoundText: string;
-  callback: (reload: boolean) => void;
+  users: any[]
+  teamConfirmationsStatus: 'a' | 'c' | 'd' | null
+  eventID: number
+  teamId: number
+  notFoundText: string
+  callback: (reload: boolean) => void
 }
 
 export const AdvertiserEventTeamTabsConfirmed = ({ users, teamConfirmationsStatus, notFoundText, eventID, teamId, callback }: AdvertiserEventTeamTabsConfirmedProps) => {
@@ -20,42 +21,44 @@ export const AdvertiserEventTeamTabsConfirmed = ({ users, teamConfirmationsStatu
       <View style={{ marginBottom: 50, paddingHorizontal: PADDINGS.horizontal }}>
         <NotFound text_1={notFoundText} />
       </View>
-    );
+    )
   }
+
+  const navigation = useNavigation<any>()
 
   const execButtonAction = async (id: number) => {
     if (!teamConfirmationsStatus) {
       try {
         await axiosApi.post(`/events/${eventID}/teams/${teamId}/add`, {
-          user_id: id,
-        });
-        callback(true);
+          user_id: id
+        })
+        callback(true)
       } catch (error) {
         // TODO - tratar erros
-        console.log(error.response.data);
+        console.log(error.response.data)
       }
     }
 
-    if (teamConfirmationsStatus === "a") {
+    if (teamConfirmationsStatus === 'a') {
       try {
-        await axiosApi.put(`/events/${eventID}/teams/${teamId}/${id}/confirm`);
-        callback(true);
+        await axiosApi.put(`/events/${eventID}/teams/${teamId}/${id}/confirm`)
+        callback(true)
       } catch (error) {
         // TODO - tratar erros
-        console.log(error.response.data);
+        console.log(error.response.data)
       }
     }
 
-    if (teamConfirmationsStatus === "c") {
+    if (teamConfirmationsStatus === 'c') {
       try {
-        await axiosApi.delete(`/events/${eventID}/teams/${teamId}/${id}`);
-        callback(true);
+        await axiosApi.delete(`/events/${eventID}/teams/${teamId}/${id}`)
+        callback(true)
       } catch (error) {
         // TODO - tratar erros
-        console.log(error.response.data);
+        console.log(error.response.data)
       }
     }
-  };
+  }
 
   return (
     <FlatList
@@ -63,19 +66,35 @@ export const AdvertiserEventTeamTabsConfirmed = ({ users, teamConfirmationsStatu
       showsVerticalScrollIndicator={false}
       data={users}
       renderItem={({ item }) => {
-        const user = item.user ? item.user : item;
+        const user = item.user ? item.user : item
 
-        return <AdvertiserEventTeamUser user={user} teamConfirmationsStatus={teamConfirmationsStatus} onButtonClick={() => execButtonAction(item.id)} />;
+        return (
+          <AdvertiserEventTeamUser
+            user={user}
+            teamConfirmationsStatus={teamConfirmationsStatus}
+            onClick={() =>
+              navigation.navigate('WorkerProfiledScreen', {
+                userId: user.id,
+                fromJobButton: true,
+                currentInvitationStatus: teamConfirmationsStatus,
+                teamId,
+                eventId: eventID,
+                teamUserId: item.id
+              })
+            }
+            onButtonClick={() => execButtonAction(item.id)}
+          />
+        )
       }}
       keyExtractor={(item) => item.id}
     />
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   content: {
     paddingHorizontal: PADDINGS.horizontal,
     marginTop: 20,
-    marginBottom: 50,
-  },
-});
+    marginBottom: 50
+  }
+})
