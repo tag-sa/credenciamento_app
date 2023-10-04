@@ -1,9 +1,11 @@
-import { View, StyleSheet } from "react-native";
-import { COLORS } from "../../../constants/Colors";
-import { PADDINGS } from "../../../constants/Paddings";
-import { AdvertiserEventItem } from "../../AdvertiserEventItem";
+import { useNavigation } from '@react-navigation/native'
+import { StyleSheet, View } from 'react-native'
+import { COLORS } from '../../../constants/Colors'
+import { PADDINGS } from '../../../constants/Paddings'
+import { AdvertiserEventItem } from '../../AdvertiserEventItem'
 
 export const AdverstiserPastEvents = ({ advertiser }) => {
+  const navigation = useNavigation<any>()
   return (
     <View style={styles.tabItemContent}>
       <View style={styles.advertisersList}>
@@ -13,35 +15,36 @@ export const AdverstiserPastEvents = ({ advertiser }) => {
             key={index}
             event={event}
             onClick={() => {
-              // navigation.navigate("AdvertiserDashboardScreen", {
-              //   advertiserId: advertiser.id,
-              // });
+              navigation.navigate('AdvertiserEventDashboardScreen', {
+                eventId: event.id,
+                isPastEvent: true
+              })
             }}
             onDelete={() => {
-              console.log(advertiser.id);
+              console.log(advertiser.id)
             }}
           />
         ))}
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   tabItemContent: {
     paddingHorizontal: PADDINGS.horizontal,
     flex: 1,
     backgroundColor: COLORS.whiteColor,
-    paddingTop: 20,
+    paddingTop: 20
   },
   title: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: COLORS.primaryColor,
-    textAlign: "center",
+    textAlign: 'center'
   },
   advertisersList: {
     marginTop: 10,
-    marginBottom: 20,
-  },
-});
+    marginBottom: 20
+  }
+})

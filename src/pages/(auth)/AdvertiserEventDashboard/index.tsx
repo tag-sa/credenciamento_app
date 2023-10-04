@@ -15,7 +15,7 @@ import { axiosApi } from '../../../services/axios'
 import { useGlobalStore } from '../../../store'
 
 export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
-  const { eventId, newEvent } = route.params
+  const { eventId, newEvent, isPastEvent } = route.params
   const [activeTab, setActiveTab] = useState<'about' | 'teams' | 'costs'>('teams')
 
   const [event, setEvent] = useState<{
@@ -258,7 +258,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
           // TODO
           <AdverstiserEventAboutTab advertiser={undefined} />
         )}
-        {activeTab === 'teams' && <AdverstiserEventsTeamsTab teams={teams} event={event} />}
+        {activeTab === 'teams' && <AdverstiserEventsTeamsTab isPastEvent={isPastEvent} teams={teams} event={event} />}
         {activeTab === 'costs' && (
           <AdvertiserEventCostsTab
             totalTeamsUsers={totalTeamsUsers}

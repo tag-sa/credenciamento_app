@@ -15,7 +15,7 @@ import { axiosApi } from '../../../services/axios'
 import { useGlobalStore } from '../../../store'
 
 export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
-  const { teamId, eventId } = route.params
+  const { teamId, eventId, isPastEvent } = route.params
   const [activeTab, setActiveTab] = useState<'confirmed' | 'awaiting' | 'available'>('confirmed')
 
   const [team, setTeam] = useState<any>(null)
@@ -147,10 +147,7 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
               >
                 <BackButton Icon={IMAGES.ICONS.BackButtonWhite} />
                 <View style={{ paddingTop: 25 }}>
-                  <Text style={styles.eventName}>
-                    {team?.name}
-                    {team?.id}
-                  </Text>
+                  <Text style={styles.eventName}>{team?.name}</Text>
                   <View style={{ flexDirection: 'row', marginTop: 10 }}>
                     <View style={{ flexDirection: 'row' }}>
                       <IMAGES.ICONS.Calendar />
@@ -302,24 +299,28 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
                   }}
                 />
 
-                <TabItem
-                  label="AGUARDANDO"
-                  item="awaiting"
-                  activeTab={activeTab}
-                  setActiveTab={(tab: 'confirmed' | 'awaiting' | 'available') => {
-                    setActiveTab(tab)
-                  }}
-                />
+                {!isPastEvent && (
+                  <>
+                    <TabItem
+                      label="AGUARDANDO"
+                      item="awaiting"
+                      activeTab={activeTab}
+                      setActiveTab={(tab: 'confirmed' | 'awaiting' | 'available') => {
+                        setActiveTab(tab)
+                      }}
+                    />
 
-                <TabItem
-                  isLast={true}
-                  label="CONVOCAR"
-                  item="available"
-                  activeTab={activeTab}
-                  setActiveTab={(tab: 'confirmed' | 'awaiting' | 'available') => {
-                    setActiveTab(tab)
-                  }}
-                />
+                    <TabItem
+                      isLast={true}
+                      label="CONVOCAR"
+                      item="available"
+                      activeTab={activeTab}
+                      setActiveTab={(tab: 'confirmed' | 'awaiting' | 'available') => {
+                        setActiveTab(tab)
+                      }}
+                    />
+                  </>
+                )}
               </ScrollView>
             </View>
 
@@ -328,6 +329,7 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
                 users={teamsUsers.filter((tu) => tu.confirmed == 'c' && tu.user)}
                 teamConfirmationsStatus="c"
                 eventID={eventId}
+                isPastEvent={isPastEvent}
                 teamId={teamId}
                 notFoundText="Não há pessoas confirmadas até o momento"
                 callback={(reload) => {
@@ -337,6 +339,7 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
                 }}
               />
             )}
+
             {activeTab === 'awaiting' && (
               <AdvertiserEventTeamTabsConfirmed
                 users={teamsUsers.filter((tu) => tu.confirmed == 'a' && tu.user)}
@@ -351,6 +354,7 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
                 }}
               />
             )}
+
             {activeTab === 'available' && (
               <AdvertiserEventTeamTabsConfirmed
                 eventID={eventId}

@@ -1,41 +1,42 @@
-import moment from "moment";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import * as Progress from "react-native-progress";
-import { COLORS } from "../../constants/Colors";
-import { IMAGES } from "../../constants/Images";
+import moment from 'moment'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
+import * as Progress from 'react-native-progress'
+import { COLORS } from '../../constants/Colors'
+import { IMAGES } from '../../constants/Images'
 
 type AdvertiserEventTeamProps = {
   team: {
-    name: string;
-    quantity: number;
-    date_start: string;
-    date_end: string;
+    name: string
+    quantity: number
+    date_start: string
+    date_end: string
     teamsUsers: {
-      confirmed: "a" | "c" | "d";
-    }[];
-  };
-  onClick?: () => void;
-  onDelete?: () => void;
-  onDuplicate?: () => void;
-};
+      confirmed: 'a' | 'c' | 'd'
+    }[]
+  }
+  isPastEvent: boolean
+  onClick?: () => void
+  onDelete?: () => void
+  onDuplicate?: () => void
+}
 
-export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDuplicate }: AdvertiserEventTeamProps) => {
-  let totalTeamsUsers = 0;
-  let totalTeamsUsersConfirmed = 0;
-  let fillColor = COLORS.redColor;
+export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDuplicate, isPastEvent }: AdvertiserEventTeamProps) => {
+  let totalTeamsUsers = 0
+  let totalTeamsUsersConfirmed = 0
+  let fillColor = COLORS.redColor
 
-  totalTeamsUsers += team.teamsUsers.length;
+  totalTeamsUsers += team.teamsUsers.length
 
   team.teamsUsers.map((teamsUser) => {
-    if (teamsUser.confirmed == "c") {
-      totalTeamsUsersConfirmed++;
+    if (teamsUser.confirmed == 'c') {
+      totalTeamsUsersConfirmed++
     }
-  });
+  })
 
   if (totalTeamsUsersConfirmed > 30 && totalTeamsUsersConfirmed < 70) {
-    fillColor = COLORS.orangeColor;
+    fillColor = COLORS.orangeColor
   } else if (totalTeamsUsersConfirmed > 70) {
-    fillColor = COLORS.primaryColor;
+    fillColor = COLORS.primaryColor
   }
 
   return (
@@ -47,8 +48,8 @@ export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDup
       <View
         style={{
           flexGrow: 1,
-          flexDirection: "row",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          justifyContent: 'space-between'
         }}
       >
         <Pressable style={styles.textContainer} onPress={onClick}>
@@ -62,28 +63,32 @@ export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDup
             <Progress.Bar progress={0.3} unfilledColor={COLORS.grayColor} borderWidth={0} color={fillColor} />
           </View>
 
-          <View style={{ flexDirection: "row", marginTop: 10 }}>
-            <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: 'row', marginTop: 10 }}>
+            <View style={{ flexDirection: 'row' }}>
               <IMAGES.ICONS.Calendar />
-              <Text style={styles.details}>{moment(team.date_start).format("DD/MM/YYYY")}</Text>
+              <Text style={styles.details}>{moment(team.date_start).format('DD/MM/YYYY')}</Text>
             </View>
-            <View style={{ flexDirection: "row", marginLeft: 10 }}>
+            <View style={{ flexDirection: 'row', marginLeft: 10 }}>
               <IMAGES.ICONS.Clock />
               <Text style={styles.details}>
-                {moment(team.date_start).format("HH:mm")} ás {moment(team.date_end).format("HH:mm")}
+                {moment(team.date_start).format('HH:mm')} ás {moment(team.date_end).format('HH:mm')}
               </Text>
             </View>
           </View>
         </Pressable>
 
         <View style={styles.iconContainer}>
-          <IMAGES.ICONS.Duplicate onPress={onDuplicate} />
-          <IMAGES.ICONS.Trash onPress={onDelete} />
+          {!isPastEvent && (
+            <>
+              <IMAGES.ICONS.Duplicate onPress={onDuplicate} />
+              <IMAGES.ICONS.Trash onPress={onDelete} />
+            </>
+          )}
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -92,49 +97,49 @@ const styles = StyleSheet.create({
     height: 90,
     marginVertical: 8,
     borderWidth: 1,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   containerClick: {
     flexGrow: 1,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   textContainer: {
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: 10,
-    maxWidth: 230,
+    maxWidth: 230
   },
   name: {
     fontSize: 16,
     color: COLORS.primaryColor,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   vacancy: {
     fontSize: 14,
     marginTop: 4,
     color: COLORS.secBlueColor,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   imageContainer: {
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     backgroundColor: COLORS.primaryColor,
-    justifyContent: "center",
-    alignItems: "center",
-    width: 42,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 42
   },
   iconContainer: {
     flexGrow: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 8,
-    alignSelf: "flex-start",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    gap: 15,
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: 15
   },
   details: {
     fontSize: 10,
     color: COLORS.secBlueColor,
     marginLeft: 5,
-    fontWeight: "bold",
-  },
-});
+    fontWeight: 'bold'
+  }
+})

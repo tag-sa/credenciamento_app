@@ -1,7 +1,6 @@
 import { useIsFocused } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
-import Share from 'react-native-share'
+import { Alert, FlatList, ScrollView, Share, StyleSheet, Text, View } from 'react-native'
 import StarRating from 'react-native-star-rating-widget'
 import { Avatar } from '../../../components/Avatar'
 import { BackButton } from '../../../components/BackButton'
@@ -167,14 +166,23 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
 
                 <View style={styles.actions}>
                   <IMAGES.ICONS.Share
-                    onPress={() => {
-                      Share.open({ message: 'message to share' })
-                        .then((res) => {
-                          console.log(res, 1111)
+                    onPress={async () => {
+                      try {
+                        const result = await Share.share({
+                          message: 'React Native | A framework for building native apps using React'
                         })
-                        .catch((err) => {
-                          err && console.log(err, 2222)
-                        })
+                        if (result.action === Share.sharedAction) {
+                          if (result.activityType) {
+                            // shared with activity type of result.activityType
+                          } else {
+                            // shared
+                          }
+                        } else if (result.action === Share.dismissedAction) {
+                          // dismissed
+                        }
+                      } catch (error: any) {
+                        Alert.alert(error.message)
+                      }
                     }}
                   />
                 </View>

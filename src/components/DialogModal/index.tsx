@@ -1,46 +1,34 @@
-import {
-  Modal,
-  Text,
-  StyleSheet,
-  Pressable,
-  View,
-  ImageSourcePropType,
-} from "react-native";
-import { COLORS } from "../../constants/Colors";
-import { PADDINGS } from "../../constants/Paddings";
-import { IMAGES } from "../../constants/Images";
-import { SvgProps } from "react-native-svg";
-import { FC } from "react";
+import { FC } from 'react'
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native'
+import { SvgProps } from 'react-native-svg'
+import { COLORS } from '../../constants/Colors'
+import { IMAGES } from '../../constants/Images'
+import { PADDINGS } from '../../constants/Paddings'
 
 interface DialogModalProps {
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-  closeIcon?: FC<SvgProps>;
-  modalVisible: boolean;
-  setModalVisible: (visible: boolean) => void;
-  confirmAction: (_) => void;
+  title: string
+  message: string
+  confirmText?: string
+  cancelText?: string
+  closeIcon?: FC<SvgProps>
+  modalVisible: boolean
+  setModalVisible: (visible: boolean) => void
+  confirmAction: (_) => void
 }
 
 export const DialogModal = ({
   modalVisible,
   setModalVisible,
   title,
-  cancelText = "Não",
-  confirmText = "Sim",
+  cancelText = 'Não',
+  confirmText = 'Sim',
   message,
   confirmAction,
-  closeIcon = IMAGES.ICONS.Close,
+  closeIcon = IMAGES.ICONS.Close
 }: DialogModalProps) => {
-  const CloseIcon = closeIcon;
+  const CloseIcon = closeIcon
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}
-    >
+    <Modal animationType="fade" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
       <View style={styles.backdrop} />
       <View style={styles.modal}>
         <View style={styles.card}>
@@ -53,17 +41,14 @@ export const DialogModal = ({
           </View>
 
           <View style={styles.cardFooter}>
-            <Pressable
-              onPress={() => setModalVisible(false)}
-              style={styles.cancelButton}
-            >
+            <Pressable onPress={() => setModalVisible(false)} style={styles.cancelButton}>
               <Text style={styles.canceText}>{cancelText}</Text>
             </Pressable>
 
             <Pressable
               onPress={() => {
-                setModalVisible(false);
-                confirmAction(true);
+                setModalVisible(false)
+                confirmAction(true)
               }}
               style={styles.confirmButton}
             >
@@ -73,83 +58,83 @@ export const DialogModal = ({
         </View>
       </View>
     </Modal>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   backdrop: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
     backgroundColor: COLORS.blackColor,
-    opacity: 0.6,
+    opacity: 0.6
   },
   modal: {
     flex: 1,
     marginTop: 220,
-    alignItems: "center",
+    alignItems: 'center'
   },
   card: {
     backgroundColor: COLORS.whiteColor,
     borderRadius: 7,
     height: 200,
     width: 350,
-    paddingTop: PADDINGS.vertical,
+    paddingTop: PADDINGS.vertical
   },
   cardHeader: {
-    alignSelf: "flex-end",
-    paddingRight: PADDINGS.horizontal,
+    alignSelf: 'flex-end',
+    paddingRight: PADDINGS.horizontal
   },
   cardBody: {
     paddingHorizontal: PADDINGS.horizontal,
     flexGrow: 1,
-    justifyContent: "center",
+    justifyContent: 'center'
   },
   title: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 20,
-    fontWeight: "bold",
-    color: COLORS.primaryColor,
+    fontWeight: 'bold',
+    color: COLORS.primaryColor
   },
   message: {
-    textAlign: "center",
-    fontWeight: "700",
+    textAlign: 'center',
+    fontWeight: '700',
     fontSize: 13,
     color: COLORS.secBlueColor,
-    marginTop: 20,
+    marginTop: 20
   },
   cardFooter: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     borderTopWidth: 1,
     borderTopColor: COLORS.lightGrayColor,
-    marginTop: 20,
+    marginTop: 20
   },
   cancelButton: {
     borderRightWidth: 1,
     borderRightColor: COLORS.lightGrayColor,
     flexGrow: 1,
 
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 15,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 15
   },
   confirmButton: {
     flexGrow: 1,
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 15,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 15
   },
   canceText: {
     color: COLORS.primaryColor,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   confirmText: {
     color: COLORS.redColor,
-    fontWeight: "bold",
-  },
-});
+    fontWeight: 'bold'
+  }
+})
