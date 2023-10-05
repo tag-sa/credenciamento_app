@@ -1,3 +1,8 @@
+import Faq from '../../assets/images/icons/drawer-icon-faq.svg'
+import Horn from '../../assets/images/icons/drawer-icon-horn.svg'
+import NotificationsActive from '../../assets/images/icons/drawer-icon-notifications-active.svg'
+import Notifications from '../../assets/images/icons/drawer-icon-notifications.svg'
+import Settings from '../../assets/images/icons/drawer-icon-settings.svg'
 import BullhornActive from '../../assets/images/icons/icon-advertiser-bullhorn-active.svg'
 import BullhornWhite from '../../assets/images/icons/icon-advertiser-bullhorn-white.svg'
 import Bullhorn from '../../assets/images/icons/icon-advertiser-bullhorn.svg'
@@ -31,6 +36,7 @@ import DashboardBanner1 from '../../assets/images/icons/icon-worker-banner-1.svg
 import DashboardBanner2 from '../../assets/images/icons/icon-worker-banner-2.svg'
 import YellowStar from '../../assets/images/icons/icon-yellow-star.svg'
 import ManSeatDesk from '../../assets/images/icons/man-seat-desk.svg'
+
 export const IMAGES = {
   ADVERTISER: {
     ManSeatDesk
@@ -73,5 +79,12 @@ export const IMAGES = {
     GenderFemale,
     YellowStar,
     Download
+  },
+  DRAWER: {
+    Settings,
+    Notifications,
+    NotificationsActive,
+    Faq,
+    Horn
   }
 }
