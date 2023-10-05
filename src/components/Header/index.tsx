@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
 import { IMAGES } from "../../constants/Images";
 import { COLORS } from "../../constants/Colors";
 import { PADDINGS } from "../../constants/Paddings";
@@ -27,7 +27,7 @@ export const HeaderComponent = ({
         justifyContent: "space-between",
         backgroundColor: backgroundColor,
         paddingHorizontal: PADDINGS.horizontal,
-        paddingTop: top,
+        paddingTop: top + (Platform.OS == 'ios' ? 0 :  40),
       }}
     >
       <TouchableOpacity

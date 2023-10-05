@@ -31,6 +31,27 @@ import DashboardBanner1 from '../../assets/images/icons/icon-worker-banner-1.svg
 import DashboardBanner2 from '../../assets/images/icons/icon-worker-banner-2.svg'
 import YellowStar from '../../assets/images/icons/icon-yellow-star.svg'
 import ManSeatDesk from '../../assets/images/icons/man-seat-desk.svg'
+import IconBirthday from "../../assets/images/icons/icon-birthday.svg";
+import IconPubRestaurant from "../../assets/images/icons/icon-pub-restaurant.svg"; 
+import IconMarriagie from "../../assets/images/icons/icon-marriage.svg"; 
+import IconCorporation from "../../assets/images/icons/icon-corporation.svg"; 
+import IconBarbecue from "../../assets/images/icons/icon-barbecue.svg"; 
+import IconSport from "../../assets/images/icons/icon-sport.svg"; 
+import IconFairsConvention from "../../assets/images/icons/icon-fairs-convention.svg"; 
+import IconGraduation from "../../assets/images/icons/icon-graduation.svg"; 
+import IconReligion from "../../assets/images/icons/icon-religion.svg";
+import IconShow from "../../assets/images/icons/icon-show.svg";
+import IconFormo from "../../assets/images/icons/icon-formo.svg";
+import IconMoney from "../../assets/images/icons/icon-money.svg";
+import IconMoney2 from "../../assets/images/icons/icon-money2.svg";
+import IconMoney3 from "../../assets/images/icons/icon-money3.svg";
+import IconMoney4 from "../../assets/images/icons/icon-money4.svg";
+import IconMoney5 from "../../assets/images/icons/icon-money5.svg";
+import IconHours from "../../assets/images/icons/icon-hours.svg";
+import IconCap from "../../assets/images/icons/icon-cap.svg";
+
+
+
 export const IMAGES = {
   ADVERTISER: {
     ManSeatDesk
@@ -51,6 +72,24 @@ export const IMAGES = {
     ProfileActive
   },
   ICONS: {
+    IconCap,
+    IconMoney,
+    IconMoney2,
+    IconMoney3,
+    IconMoney4,
+    IconMoney5,
+    IconHours,
+    IconFormo,
+    IconShow,
+    IconReligion,
+    IconCorporation,
+    IconBarbecue,
+    IconGraduation,
+    IconPubRestaurant,
+    IconFairsConvention,
+    IconSport,
+    IconMarriagie,
+    IconBirthday,
     BullhornWhite,
     Close,
     Trash,

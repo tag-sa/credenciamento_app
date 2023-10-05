@@ -39,9 +39,8 @@ export const LoginScreen = ({ navigation }) => {
     try {
       const { data: login } = await axiosApi.post('/users/login', {
         email,
-        password
-      })
-
+        password,
+      });
       const user: UserType = {
         id: login.data.user.id,
         name: login.data.user.name,
@@ -52,18 +51,18 @@ export const LoginScreen = ({ navigation }) => {
         type: login.data.user.type
       }
 
-      await auth().setUser(user)
-      await auth().setToken(login.data.access_token)
-
-      navigation.replace('Dashboard')
+      await auth().setUser(user);
+      await auth().setToken(login.data.access_token);
+      navigation.replace("Dashboard");
     } catch (error) {
-      let title = 'Erro ao fazer login'
-      let message = 'Usuário ou senha inválidos'
+      console.log(error.response)
+      let title = "Erro ao fazer login";
+      let message = "Usuário ou senha inválidos";
 
       if (error.response.status !== 401) {
         message = 'Não foi possível fazer login, tente novamente mais tarde'
       }
-
+console.log(8888)
       showMessage({
         backgroundColor: COLORS.dangerColor,
         hideStatusBar: true,

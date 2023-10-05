@@ -6,6 +6,8 @@ import { PADDINGS } from "../../../constants/Paddings";
 
 import { NotFound } from "../../NotFound";
 import { WorkerDashboardBannersComponent } from "../../WorkerDashboardBanners";
+import EventCategoryList from "../../AdvertiserEventDashboard/Carroussel";
+import JobsList from "../../AdvertiserEventDashboard/JobsList";
 
 export const WorkerDashboardComponent = ({ navigation }) => {
   const [jobs, setJobs] = useState([]);
@@ -31,8 +33,11 @@ export const WorkerDashboardComponent = ({ navigation }) => {
             />
           </ScrollView>
         </View>
-        <Text style={style.howTo}>Como começar?</Text>
-        {!jobs.length ? <NotFound /> : <View />}
+        <EventCategoryList />
+        <Text style={style.howTo}>Vagas em destaque </Text>
+          {/* <Text style={style.howTo}>Como começar?</Text> */}
+        {!jobs.length ? <JobsList onClick={undefined}/>:<NotFound /> }
+        
       </View>
     </>
   );

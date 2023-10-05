@@ -178,6 +178,7 @@ export const AccountCreateScreen = ({ navigation }) => {
                     birthdate: moment(data.date, "DDMMYYYY").format(
                       "YYYY-MM-DD"
                     ),
+                    
                     address: {
                       address: data.address,
                       complement: data.addressNickname,
@@ -188,7 +189,7 @@ export const AccountCreateScreen = ({ navigation }) => {
                       state: data.state,
                     },
                   });
-
+                  
                   const execLogin = await axiosApi.post("/users/login", {
                     email: data.email,
                     password: data.password,
@@ -214,6 +215,8 @@ export const AccountCreateScreen = ({ navigation }) => {
 
                   navigation.replace("Dashboard");
                 } catch (error) {
+                  console.log(error, 1)
+                  console.log(error.response.data, 1)
                   //TODO: tratar erros
                   let title = "Erro ao fazer login";
                   let message = "Usuário ou senha inválidos";
