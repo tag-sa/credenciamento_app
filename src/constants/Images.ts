@@ -1,3 +1,8 @@
+import Faq from '../../assets/images/icons/drawer-icon-faq.svg'
+import Horn from '../../assets/images/icons/drawer-icon-horn.svg'
+import NotificationsActive from '../../assets/images/icons/drawer-icon-notifications-active.svg'
+import Notifications from '../../assets/images/icons/drawer-icon-notifications.svg'
+import Settings from '../../assets/images/icons/drawer-icon-settings.svg'
 import BullhornActive from '../../assets/images/icons/icon-advertiser-bullhorn-active.svg'
 import BullhornWhite from '../../assets/images/icons/icon-advertiser-bullhorn-white.svg'
 import Bullhorn from '../../assets/images/icons/icon-advertiser-bullhorn.svg'
@@ -112,5 +117,12 @@ export const IMAGES = {
     GenderFemale,
     YellowStar,
     Download
+  },
+  DRAWER: {
+    Settings,
+    Notifications,
+    NotificationsActive,
+    Faq,
+    Horn
   }
 }

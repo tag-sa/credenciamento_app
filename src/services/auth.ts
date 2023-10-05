@@ -6,15 +6,24 @@ interface AuthProps {
   setUser?(user: UserType): Promise<void>
   setToken?(token: string): Promise<void>
   getToken?(): Promise<string>
+  logout?(navigation: any): Promise<void>
 }
 
 export const auth = (): AuthProps => {
   const getUser = async (): Promise<UserType> => {
     const user = await AsyncStorage.getItem('user')
-    // await AsyncStorage.removeItem("user");
-    // await AsyncStorage.removeItem("token");
 
     return user ? JSON.parse(user) : null
+  }
+
+  const logout = async (navigation: any): Promise<void> => {
+    await AsyncStorage.removeItem('user')
+    await AsyncStorage.removeItem('token')
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }]
+    })
   }
 
   const setUser = async (user: UserType): Promise<void> => {
@@ -34,6 +43,7 @@ export const auth = (): AuthProps => {
     getUser,
     setUser,
     setToken,
-    getToken
+    getToken,
+    logout
   }
 }
