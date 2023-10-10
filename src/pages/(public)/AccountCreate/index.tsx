@@ -1,88 +1,77 @@
-import { useEffect, useState } from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useEffect, useState } from 'react'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { ScrollView, View, Image, StyleSheet } from "react-native";
+import { Image, ScrollView, StyleSheet, View } from 'react-native'
 
-import Radio from "../../../components/Radio/Radio";
-import RegistrationSteps from "../../../components/RegistrationSteps/RegistrationSteps";
-import Step1 from "./steps/step-1";
-import Step2 from "./steps/step-2";
-import Step3 from "./steps/step-3";
-import Button from "../../../components/Button/Button";
-import { axiosApi } from "../../../services/axios";
-import { showMessage } from "react-native-flash-message";
-import moment from "moment";
-import { auth } from "../../../services/auth";
-import { UserType } from "../../../model/user.model";
-import { COLORS } from "../../../constants/Colors";
-import { PADDINGS } from "../../../constants/Paddings";
+import moment from 'moment'
+import { showMessage } from 'react-native-flash-message'
+import Button from '../../../components/Button/Button'
+import Radio from '../../../components/Radio/Radio'
+import RegistrationSteps from '../../../components/RegistrationSteps/RegistrationSteps'
+import { COLORS } from '../../../constants/Colors'
+import { PADDINGS } from '../../../constants/Paddings'
+import { UserType } from '../../../model/user.model'
+import { auth } from '../../../services/auth'
+import { axiosApi } from '../../../services/axios'
+import Step1 from './steps/step-1'
+import Step2 from './steps/step-2'
+import Step3 from './steps/step-3'
 
 export const AccountCreateScreen = ({ navigation }) => {
-  const { top } = useSafeAreaInsets();
+  const { top } = useSafeAreaInsets()
 
   const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    document: "",
-    zip: "",
-    addressNickname: "",
-    addressNumber: "",
-    address: "",
-    neighborhood: "",
-    city: "",
-    state: "",
-    date: "",
-    errors: [],
-  });
+    name: '',
+    email: '',
+    password: '',
+    document: '',
+    zip: '',
+    addressNickname: '',
+    addressNumber: '',
+    address: '',
+    neighborhood: '',
+    city: '',
+    state: '',
+    date: '',
+    errors: []
+  })
 
-  const [type, setType] = useState("pf");
-  const [step, setStep] = useState(1);
-  const [buttonEnabled, setButtonEnabled] = useState(false);
-  const totalSteps = 3;
+  const [type, setType] = useState('pf')
+  const [step, setStep] = useState(1)
+  const [buttonEnabled, setButtonEnabled] = useState(false)
+  const totalSteps = 3
 
   useEffect(() => {
     if (step == 1) {
       if (!data.name || !data.email || !data.password || data.errors.length) {
-        setButtonEnabled(false);
+        setButtonEnabled(false)
       } else {
-        setButtonEnabled(true);
+        setButtonEnabled(true)
       }
     }
 
     if (step == 2) {
       if (!data.document || !data.date || data.errors.length) {
-        setButtonEnabled(false);
+        setButtonEnabled(false)
       } else {
-        setButtonEnabled(true);
+        setButtonEnabled(true)
       }
     }
 
     if (step == 3) {
-      if (
-        !data.zip ||
-        !data.addressNumber ||
-        !data.address ||
-        !data.neighborhood ||
-        !data.city ||
-        !data.state ||
-        data.errors.length
-      ) {
-        setButtonEnabled(false);
+      if (!data.zip || !data.addressNumber || !data.address || !data.neighborhood || !data.city || !data.state || data.errors.length) {
+        setButtonEnabled(false)
       } else {
-        setButtonEnabled(true);
+        setButtonEnabled(true)
       }
     }
-  }, [step, data]);
+  }, [step, data])
 
   return (
-    <ScrollView
-      automaticallyAdjustKeyboardInsets={true}
-      contentContainerStyle={{ flexGrow: 1 }}
-    >
+    <ScrollView automaticallyAdjustKeyboardInsets={true} contentContainerStyle={{ flexGrow: 1 }}>
       <View style={{ ...styles.container, paddingTop: top }}>
         <View style={styles.header}>
-          <Image source={require("../../../../assets/images/logo.png")} />
+          <Image source={require('../../../../assets/images/logo.png')} />
         </View>
 
         <View style={styles.body}>
@@ -91,8 +80,8 @@ export const AccountCreateScreen = ({ navigation }) => {
               setValue={setType}
               initialSelectedValue={type}
               items={[
-                { label: "Pessoa Física", value: "pf" },
-                { label: "Pessoa Jurídica", value: "pj" },
+                { label: 'Pessoa Física', value: 'pf' },
+                { label: 'Pessoa Jurídica', value: 'pj' }
               ]}
             />
           )}
@@ -105,42 +94,26 @@ export const AccountCreateScreen = ({ navigation }) => {
                   name,
                   email,
                   password,
-                  document: "",
-                  date: "",
-                  zip: "",
-                  addressNickname: "",
-                  addressNumber: "",
-                  address: "",
-                  neighborhood: "",
-                  city: "",
-                  state: "",
-                  errors,
-                });
+                  document: '',
+                  date: '',
+                  zip: '',
+                  addressNickname: '',
+                  addressNumber: '',
+                  address: '',
+                  neighborhood: '',
+                  city: '',
+                  state: '',
+                  errors
+                })
               }}
             />
           )}
 
-          {step === 2 && (
-            <Step2
-              type={type}
-              retProps={(document, date, errors) =>
-                setData({ ...data, document, date, errors })
-              }
-            />
-          )}
+          {step === 2 && <Step2 type={type} retProps={(document, date, errors) => setData({ ...data, document, date, errors })} />}
 
           {step === 3 && (
             <Step3
-              retProps={(
-                zip,
-                addressNickname,
-                addressNumber,
-                address,
-                neighborhood,
-                city,
-                state,
-                errors
-              ) =>
+              retProps={(zip, addressNickname, addressNumber, address, neighborhood, city, state, errors) =>
                 setData({
                   ...data,
                   zip,
@@ -150,13 +123,13 @@ export const AccountCreateScreen = ({ navigation }) => {
                   neighborhood,
                   city,
                   state,
-                  errors,
+                  errors
                 })
               }
             />
           )}
 
-          <View style={{ alignItems: "center", marginTop: 30 }}>
+          <View style={{ alignItems: 'center', marginTop: 30 }}>
             <RegistrationSteps currentStep={step} totalSteps={totalSteps} />
           </View>
           <Button
@@ -164,20 +137,18 @@ export const AccountCreateScreen = ({ navigation }) => {
             buttonEnabled={buttonEnabled}
             onPress={async () => {
               if (step < totalSteps && buttonEnabled) {
-                setStep(step + 1);
+                setStep(step + 1)
               }
 
               if (step == totalSteps && buttonEnabled) {
                 try {
-                  await axiosApi.post("/users", {
+                  await axiosApi.post('/users', {
                     name: data.name,
                     email: data.email,
                     password: data.password,
                     nickname: data.name,
                     document: data.document,
-                    birthdate: moment(data.date, "DDMMYYYY").format(
-                      "YYYY-MM-DD"
-                    ),
+                    birthdate: moment(data.date, 'DDMMYYYY').format('YYYY-MM-DD'),
                     address: {
                       address: data.address,
                       complement: data.addressNickname,
@@ -185,16 +156,16 @@ export const AccountCreateScreen = ({ navigation }) => {
                       zip: data.zip,
                       neighborhood: data.neighborhood,
                       city: data.city,
-                      state: data.state,
-                    },
-                  });
+                      state: data.state
+                    }
+                  })
 
-                  const execLogin = await axiosApi.post("/users/login", {
+                  const execLogin = await axiosApi.post('/users/login', {
                     email: data.email,
-                    password: data.password,
-                  });
+                    password: data.password
+                  })
 
-                  const login = execLogin.data;
+                  const login = execLogin.data
 
                   const user: UserType = {
                     id: login.data.user.id,
@@ -202,30 +173,27 @@ export const AccountCreateScreen = ({ navigation }) => {
                     email: login.data.user.email,
                     access_token: login.data.access_token,
                     nickname: login.data.user.nickname,
-                    document:
-                      login.data.user.type == "pj"
-                        ? login.data.user.cnpj
-                        : login.data.user.cpf,
-                    type: login.data.user.type,
-                  };
+                    document: login.data.user.type == 'pj' ? login.data.user.cnpj : login.data.user.cpf,
+                    type: login.data.user.type
+                  }
 
-                  await auth().setUser(user);
-                  await auth().setToken(login.data.access_token);
+                  await auth().setUser(user)
+                  await auth().setToken(login.data.access_token)
 
-                  navigation.replace("Dashboard");
+                  navigation.replace('Dashboard')
                 } catch (error) {
                   //TODO: tratar erros
-                  let title = "Erro ao fazer login";
-                  let message = "Usuário ou senha inválidos";
+                  let title = 'Erro ao fazer login'
+                  let message = 'Usuário ou senha inválidos'
 
                   showMessage({
-                    backgroundColor: COLORS.dangerColor,
+                    backgroundColor: COLORS.red,
                     message: title,
 
                     description: message,
-                    type: "danger",
-                    icon: "danger",
-                  });
+                    type: 'danger',
+                    icon: 'danger'
+                  })
                 }
               }
             }}
@@ -233,31 +201,31 @@ export const AccountCreateScreen = ({ navigation }) => {
         </View>
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.darkBlue
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 140,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 140
   },
   body: {
     flex: 1,
-    backgroundColor: COLORS.whiteColor,
+    backgroundColor: COLORS.white,
     borderTopLeftRadius: 100,
     paddingTop: 50,
-    paddingHorizontal: PADDINGS.horizontal,
+    paddingHorizontal: PADDINGS.horizontal
   },
   signInButton: {
-    color: COLORS.whiteColor,
+    color: COLORS.white,
     fontSize: 18,
-    fontWeight: "bold",
-    letterSpacing: 1.2,
-  },
-});
+    fontWeight: 'bold',
+    letterSpacing: 1.2
+  }
+})

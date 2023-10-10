@@ -11,7 +11,7 @@ export const AdvertiserEventTeamAddCreatedShareScreen = ({ route, navigation }) 
     <View
       style={{
         flex: 1,
-        backgroundColor: COLORS.primaryColor,
+        backgroundColor: COLORS.darkBlue,
         paddingHorizontal: PADDINGS.horizontal
       }}
     >
@@ -26,16 +26,16 @@ export const AdvertiserEventTeamAddCreatedShareScreen = ({ route, navigation }) 
       </View>
       <View style={{ flex: 1, alignItems: 'center', marginTop: 70 }}>
         <IMAGES.ICONS.IconCheckWhite />
-        <Text style={{ color: COLORS.whiteColor, fontSize: 23, fontWeight: 'bold' }}>Anúncio criado</Text>
-        <Text style={{ color: COLORS.mediumBlueColor, fontWeight: '600', marginTop: 6, marginBottom: 10, fontSize: 9 }}>Para gerenciar acesse o menu gestão do anunciante.</Text>
-        <Text style={{ color: COLORS.whiteColor, fontSize: 14, fontWeight: '600', lineHeight: 20, textAlign: 'justify', paddingHorizontal: 5, marginTop: 15 }}>
+        <Text style={{ color: COLORS.white, fontSize: 23, fontWeight: 'bold' }}>Anúncio criado</Text>
+        <Text style={{ color: COLORS.mediumBlue, fontWeight: '600', marginTop: 6, marginBottom: 10, fontSize: 9 }}>Para gerenciar acesse o menu gestão do anunciante.</Text>
+        <Text style={{ color: COLORS.white, fontSize: 14, fontWeight: '600', lineHeight: 20, textAlign: 'justify', paddingHorizontal: 5, marginTop: 15 }}>
           Você poderá compartilhar essa vaga em seus grupos de whatsapp gratuitamente ou realizar disparos para as pessoas no nosso banco de dados,{' '}
-          <Text style={{ color: COLORS.mediumBlueColor, fontWeight: '800' }}>verifique condições.</Text>
+          <Text style={{ color: COLORS.mediumBlue, fontWeight: '800' }}>verifique condições.</Text>
         </Text>
         <TouchableOpacity
           activeOpacity={0.7}
           style={{
-            backgroundColor: COLORS.lightBlueColor,
+            backgroundColor: COLORS.lightBlue,
             borderRadius: 6,
             height: 50,
             marginTop: 45,
@@ -69,7 +69,7 @@ export const AdvertiserEventTeamAddCreatedShareScreen = ({ route, navigation }) 
           <IMAGES.ICONS.Share width={20} height={20} />
           <Text
             style={{
-              color: COLORS.primaryColor,
+              color: COLORS.darkBlue,
               fontSize: 18,
               fontWeight: 'bold',
               letterSpacing: 1.2

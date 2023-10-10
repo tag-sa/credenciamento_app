@@ -6,19 +6,24 @@ interface CheckBoxProps {
   checked: boolean
   borderColor?: string
   size?: number
+  backgroundColor?: string
+  checkBorderColor?: string
   setChecked: (checked: boolean) => void
 }
 
-export const CheckBox = ({ checked, setChecked, borderColor, size }: CheckBoxProps) => {
+export const CheckBox = ({ checked, setChecked, borderColor, size, backgroundColor, checkBorderColor = borderColor }: CheckBoxProps) => {
   const checkSize = size || 24
-  const checkBorderColor = borderColor || 'black'
+  // const checkBorderColor = borderColor || 'black'
 
   return (
     <Pressable
-      style={[{ ...styles.checkboxBase, borderColor: checkBorderColor, width: checkSize, height: checkSize }, checked && { ...styles.checkboxChecked }]}
+      style={[
+        { ...styles.checkboxBase, borderColor: checkBorderColor, width: checkSize, height: checkSize, backgroundColor: backgroundColor || 'transparent' },
+        checked && { ...styles.checkboxChecked }
+      ]}
       onPress={() => setChecked(!checked)}
     >
-      {checked && <Ionicons name="checkmark" size={checkSize - 4} color={checkBorderColor} />}
+      {checked && <Ionicons name="checkmark" size={checkSize - 4} color={checkBorderColor} style={{ fontWeight: 'bold' }} />}
     </Pressable>
   )
 }

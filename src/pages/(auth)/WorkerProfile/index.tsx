@@ -25,7 +25,7 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
 
   const [showConfirmationButton, setShowConfirmationButton] = useState(false)
   const [confirmationButtonText, setConfirmationButtonText] = useState('Aceitar candidatura')
-  const [confirmationButtonColor, setConfirmationButtonColor] = useState(COLORS.greenColor)
+  const [confirmationButtonColor, setConfirmationButtonColor] = useState(COLORS.green)
 
   const [workerEvents, setWorkerEvents] = useState<any[]>([])
   const [user, setUser] = useState<{
@@ -86,11 +86,11 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
 
     if (!currentInvitationStatus) {
       setConfirmationButtonText('Convocar')
-      setConfirmationButtonColor(COLORS.primaryColor)
+      setConfirmationButtonColor(COLORS.darkBlue)
     } else {
       if (currentInvitationStatus == 'a') {
         setConfirmationButtonText('Aceitar candidatura')
-        setConfirmationButtonColor(COLORS.greenColor)
+        setConfirmationButtonColor(COLORS.green)
       } else {
         setShowConfirmationButton(false)
       }
@@ -140,14 +140,14 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
   return (
     <FlatList
       data={[]}
-      style={{ flex: 1, backgroundColor: COLORS.whiteColor }}
+      style={{ flex: 1, backgroundColor: COLORS.white }}
       ListEmptyComponent={null}
       keyExtractor={() => 'worker_profile'}
       showsVerticalScrollIndicator={false}
       renderItem={null}
       ListHeaderComponent={() => (
         <>
-          <View style={{ flex: 1, backgroundColor: COLORS.whiteColor }}>
+          <View style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={styles.container}>
               <View
                 style={{
@@ -193,7 +193,7 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
                   {showRating ? (
                     <View pointerEvents="none" style={{ alignItems: 'center' }}>
                       <Text style={styles.rating}>{rating}/5</Text>
-                      <StarRating color={COLORS.orangeColor} style={{ marginTop: 10, marginBottom: 5 }} rating={rating} onChange={() => {}} />
+                      <StarRating color={COLORS.orange} style={{ marginTop: 10, marginBottom: 5 }} rating={rating} onChange={() => {}} />
                     </View>
                   ) : (
                     <Text style={styles.unavailableScore}>Score indisponível</Text>
@@ -205,7 +205,7 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
             <View style={styles.tabs}>
               <ScrollView
                 contentContainerStyle={{
-                  backgroundColor: COLORS.primaryColor
+                  backgroundColor: COLORS.darkBlue
                 }}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
@@ -266,7 +266,7 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.darkBlue,
     paddingHorizontal: PADDINGS.horizontal,
     paddingBottom: 40
   },
@@ -280,11 +280,11 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     marginTop: 100,
     width: '90%',
-    backgroundColor: COLORS.whiteColor,
+    backgroundColor: COLORS.white,
     alignSelf: 'center',
     position: 'relative',
     borderRadius: 5,
-    shadowColor: COLORS.blackColor,
+    shadowColor: COLORS.black,
     shadowOffset: {
       width: 0,
       height: 10
@@ -304,10 +304,10 @@ const styles = StyleSheet.create({
   eventName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: COLORS.whiteColor
+    color: COLORS.white
   },
   tabs: {
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.darkBlue,
     height: 32,
     flexDirection: 'row'
   },
@@ -319,29 +319,29 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: COLORS.primaryColor
+    color: COLORS.darkBlue
   },
   functionsName: {
     fontSize: 12,
-    color: COLORS.mediumBlueColor,
+    color: COLORS.mediumBlue,
     fontWeight: '700',
     fontStyle: 'italic',
     marginVertical: 7
   },
   unavailableScore: {
     fontSize: 14,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: '700'
   },
   unavailableScoreMessage: {
     fontSize: 11,
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     fontWeight: '700',
     marginTop: 4,
     marginBottom: 7
   },
   rating: {
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: '900'
   }
 })

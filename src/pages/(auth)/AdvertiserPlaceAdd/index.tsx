@@ -1,34 +1,34 @@
-import { useEffect, useRef, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { BackButton } from "../../../components/BackButton";
-import Button from "../../../components/Button/Button";
-import CustomInputWithTextAndIcon from "../../../components/Input/CustomInputWithTextAndIcon";
-import { COLORS } from "../../../constants/Colors";
-import { PADDINGS } from "../../../constants/Paddings";
-import { axiosApi } from "../../../services/axios";
-import { useGlobalStore } from "../../../store";
+import { useEffect, useRef, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { BackButton } from '../../../components/BackButton'
+import Button from '../../../components/Button/Button'
+import CustomInputWithTextAndIcon from '../../../components/Input/CustomInputWithTextAndIcon'
+import { COLORS } from '../../../constants/Colors'
+import { PADDINGS } from '../../../constants/Paddings'
+import { axiosApi } from '../../../services/axios'
+import { useGlobalStore } from '../../../store'
 
 export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState('')
 
-  const { advertiserId } = route.params;
-  const [buttonEnabled, setButtonEnabled] = useState(false);
-  const [errors, setErrors] = useState([]);
-  const [zip, setZip] = useState("");
-  const [addressNumber, setAddressNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const addressNumberInputRef = useRef(null);
-  const nameInputRef = useRef(null);
+  const { advertiserId } = route.params
+  const [buttonEnabled, setButtonEnabled] = useState(false)
+  const [errors, setErrors] = useState([])
+  const [zip, setZip] = useState('')
+  const [addressNumber, setAddressNumber] = useState('')
+  const [address, setAddress] = useState('')
+  const [neighborhood, setNeighborhood] = useState('')
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
+  const addressNumberInputRef = useRef(null)
+  const nameInputRef = useRef(null)
 
-  const cepMask = "99999-999";
+  const cepMask = '99999-999'
 
   const saveAdvertiserPlace = async () => {
-    if (!buttonEnabled) return;
+    if (!buttonEnabled) return
 
-    useGlobalStore.setState({ isLoading: true });
+    useGlobalStore.setState({ isLoading: true })
 
     try {
       await axiosApi.post(`/advertisers/${advertiserId}/places`, {
@@ -38,47 +38,47 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
         address,
         neighborhood,
         city,
-        state,
-      });
+        state
+      })
 
-      navigation.navigate("AdvertiserDashboardScreen", {
-        advertiserId,
-      });
+      navigation.navigate('AdvertiserDashboardScreen', {
+        advertiserId
+      })
     } catch (e) {
-      console.log(e.response.data);
+      console.log(e.response.data)
     }
 
-    useGlobalStore.setState({ isLoading: false });
-  };
+    useGlobalStore.setState({ isLoading: false })
+  }
 
   const fetchAddress = async (val: string) => {
-    useGlobalStore.setState({ isLoading: true });
+    useGlobalStore.setState({ isLoading: true })
 
     try {
-      const search = await axiosApi.get(`/zip/${val}`);
+      const search = await axiosApi.get(`/zip/${val}`)
 
-      setAddress(search.data.data.address);
-      setNeighborhood(search.data.data.neighborhood);
-      setCity(search.data.data.city);
-      setState(search.data.data.state);
+      setAddress(search.data.data.address)
+      setNeighborhood(search.data.data.neighborhood)
+      setCity(search.data.data.city)
+      setState(search.data.data.state)
 
-      addressNumberInputRef.current.focus();
+      addressNumberInputRef.current.focus()
     } catch (e) {
       if (e.response.status === 404) {
-        setErrors([...errors, "zipNotFound"]);
+        setErrors([...errors, 'zipNotFound'])
       }
     }
 
-    useGlobalStore.setState({ isLoading: false });
-  };
+    useGlobalStore.setState({ isLoading: false })
+  }
 
   useEffect(() => {
     if (name && zip && addressNumber && address && neighborhood && city && state) {
-      setButtonEnabled(true);
+      setButtonEnabled(true)
     } else {
-      setButtonEnabled(false);
+      setButtonEnabled(false)
     }
-  }, [name, zip, addressNumber, address, neighborhood, city, state]);
+  }, [name, zip, addressNumber, address, neighborhood, city, state])
 
   return (
     <ScrollView automaticallyAdjustKeyboardInsets={true} contentContainerStyle={style.scrollView}>
@@ -99,11 +99,11 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
           mask={cepMask}
           onChangeText={(_, value) => {
             if (value.length === 8) {
-              fetchAddress(value);
-              setZip(value);
+              fetchAddress(value)
+              setZip(value)
             }
           }}
-          error={errors.includes("document")}
+          error={errors.includes('document')}
           erroMessage="CEP inválido"
           value={zip}
           placeholder="00000-000"
@@ -114,7 +114,7 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
           marginTop={20}
           label="Endereço"
           onChangeText={(_, value) => {
-            setAddress(value);
+            setAddress(value)
           }}
           value={address}
           placeholder="Endereço"
@@ -124,7 +124,7 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
           marginTop={20}
           label="Bairro"
           onChangeText={(_, value) => {
-            setNeighborhood(value);
+            setNeighborhood(value)
           }}
           value={neighborhood}
           placeholder="Seu bairro"
@@ -135,16 +135,16 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
           marginTop={20}
           label="Cidade"
           onChangeText={(_, value) => {
-            setCity(value);
+            setCity(value)
           }}
           value={city}
           placeholder="Sua cidade"
         />
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            gap: 15,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            gap: 15
           }}
         >
           <CustomInputWithTextAndIcon
@@ -153,7 +153,7 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
             flexGrow={1}
             label="Estado"
             onChangeText={(_, value) => {
-              setState(value);
+              setState(value)
             }}
             value={state}
             placeholder="Seu estado"
@@ -165,7 +165,7 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
             mask="9999999"
             flexGrow={1}
             onChangeText={(_, value) => {
-              setAddressNumber(value);
+              setAddressNumber(value)
             }}
             value={addressNumber}
             placeholder="Número"
@@ -178,29 +178,29 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
         </View>
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
 const style = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
-    backgroundColor: COLORS.whiteColor,
-    paddingVertical: PADDINGS.vertical,
+    backgroundColor: COLORS.white,
+    paddingVertical: PADDINGS.vertical
   },
   container: {
-    backgroundColor: COLORS.whiteColor,
-    paddingHorizontal: PADDINGS.horizontal,
+    backgroundColor: COLORS.white,
+    paddingHorizontal: PADDINGS.horizontal
   },
   title: {
     fontSize: 20,
-    color: COLORS.primaryColor,
-    fontWeight: "700",
-    marginTop: 20,
+    color: COLORS.darkBlue,
+    fontWeight: '700',
+    marginTop: 20
   },
   aboutMaxLength: {
     fontSize: 12,
-    color: COLORS.grayColor,
-    textAlign: "right",
-    marginTop: 5,
-  },
-});
+    color: COLORS.darkGray,
+    textAlign: 'right',
+    marginTop: 5
+  }
+})

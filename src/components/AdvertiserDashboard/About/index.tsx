@@ -1,23 +1,17 @@
-import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, View } from "react-native";
-import { COLORS } from "../../../constants/Colors";
-import { PADDINGS } from "../../../constants/Paddings";
-import { AdvertiserEventItem } from "../../AdvertiserEventItem";
-import Button from "../../Button/Button";
+import { useNavigation } from '@react-navigation/native'
+import { StyleSheet, Text, View } from 'react-native'
+import { COLORS } from '../../../constants/Colors'
+import { PADDINGS } from '../../../constants/Paddings'
+import { AdvertiserEventItem } from '../../AdvertiserEventItem'
+import Button from '../../Button/Button'
 
 export const AdverstiserAbout = ({ advertiser }) => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<any>()
   return (
     <View style={styles.tabItemContent}>
-      <Text style={{ ...styles.title, textAlign: "left" }}>
-        {advertiser?.name}
-      </Text>
-      <Text style={{ ...styles.about, textAlign: "left" }}>
-        {advertiser?.about}
-      </Text>
-      <Text style={{ ...styles.title, marginTop: 30, textAlign: "left" }}>
-        Eventos da empresa
-      </Text>
+      <Text style={{ ...styles.title, textAlign: 'left' }}>{advertiser?.name}</Text>
+      <Text style={{ ...styles.about, textAlign: 'left' }}>{advertiser?.about}</Text>
+      <Text style={{ ...styles.title, marginTop: 30, textAlign: 'left' }}>Eventos da empresa</Text>
 
       <View style={styles.advertisersList}>
         {advertiser?.events?.map((event, index) => (
@@ -25,12 +19,12 @@ export const AdverstiserAbout = ({ advertiser }) => {
             key={index}
             event={event}
             onClick={() => {
-              navigation.navigate("AdvertiserEventDashboardScreen", {
-                eventId: event.id,
-              });
+              navigation.navigate('AdvertiserEventDashboardScreen', {
+                eventId: event.id
+              })
             }}
             onDelete={() => {
-              console.log(event.id);
+              console.log(event.id)
             }}
           />
         ))}
@@ -39,43 +33,43 @@ export const AdverstiserAbout = ({ advertiser }) => {
         <Button
           buttonEnabled={true}
           onPress={() =>
-            navigation.navigate("AdvertiverEventAddScreen", {
-              advertiserId: advertiser?.id,
+            navigation.navigate('AdvertiverEventAddScreen', {
+              advertiserId: advertiser?.id
             })
           }
-          label={"Novo evento"}
+          label={'Novo evento'}
         />
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   name: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: COLORS.primaryColor,
-    textAlign: "center",
+    fontWeight: 'bold',
+    color: COLORS.darkBlue,
+    textAlign: 'center'
   },
   title: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: COLORS.primaryColor,
-    textAlign: "center",
+    fontWeight: 'bold',
+    color: COLORS.darkBlue,
+    textAlign: 'center'
   },
   about: {
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     lineHeight: 20,
-    marginTop: 15,
+    marginTop: 15
   },
   tabItemContent: {
     paddingHorizontal: PADDINGS.horizontal,
     flex: 1,
-    backgroundColor: COLORS.whiteColor,
-    paddingTop: 40,
+    backgroundColor: COLORS.white,
+    paddingTop: 40
   },
   advertisersList: {
     marginTop: 10,
-    marginBottom: 20,
-  },
-});
+    marginBottom: 20
+  }
+})

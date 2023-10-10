@@ -1,63 +1,59 @@
-import { View, Text, StyleSheet } from "react-native";
-import { COLORS } from "../../../constants/Colors";
-import { PADDINGS } from "../../../constants/Paddings";
-import { useState } from "react";
-import { IMAGES } from "../../../constants/Images";
-import Button from "../../Button/Button";
-import { useNavigation } from "@react-navigation/native";
-import { DialogModal } from "../../DialogModal";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { useGlobalStore } from "../../../store";
-import { axiosApi } from "../../../services/axios";
-import { showMessage } from "react-native-flash-message";
+import { useNavigation } from '@react-navigation/native'
+import { useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { showMessage } from 'react-native-flash-message'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { COLORS } from '../../../constants/Colors'
+import { IMAGES } from '../../../constants/Images'
+import { PADDINGS } from '../../../constants/Paddings'
+import { axiosApi } from '../../../services/axios'
+import { useGlobalStore } from '../../../store'
+import Button from '../../Button/Button'
+import { DialogModal } from '../../DialogModal'
 
 interface AdvertiserPlacesProps {
-  advertiserId: number;
-  reload: () => void;
+  advertiserId: number
+  reload: () => void
   places: {
-    id: string;
-    advertiser_id: number;
-    name: string;
-    description: string;
-    address: string;
-    city: string;
-    state: string;
-    country: string;
-    zip: string;
-    created: string;
-    modified: string;
-    neighborhood: string;
-    number: string;
-  }[];
+    id: string
+    advertiser_id: number
+    name: string
+    description: string
+    address: string
+    city: string
+    state: string
+    country: string
+    zip: string
+    created: string
+    modified: string
+    neighborhood: string
+    number: string
+  }[]
 }
 
-export const AdverstiserPlaces = ({
-  advertiserId,
-  places,
-  reload,
-}: AdvertiserPlacesProps) => {
-  const navigation = useNavigation<any>();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [placeId, setPlaceId] = useState("");
+export const AdverstiserPlaces = ({ advertiserId, places, reload }: AdvertiserPlacesProps) => {
+  const navigation = useNavigation<any>()
+  const [modalVisible, setModalVisible] = useState(false)
+  const [placeId, setPlaceId] = useState('')
 
   const removePlace = async () => {
-    useGlobalStore.setState({ isLoading: true });
+    useGlobalStore.setState({ isLoading: true })
 
     try {
-      await axiosApi.delete(`/advertisers/${advertiserId}/places/${placeId}`);
-      reload();
-      useGlobalStore.setState({ isLoading: false });
+      await axiosApi.delete(`/advertisers/${advertiserId}/places/${placeId}`)
+      reload()
+      useGlobalStore.setState({ isLoading: false })
     } catch (e) {
-      useGlobalStore.setState({ isLoading: false });
+      useGlobalStore.setState({ isLoading: false })
       showMessage({
-        backgroundColor: COLORS.dangerColor,
-        message: "Erro ao remover local",
-        description: "Não foi possível remover o local, tente novamente.",
-        type: "danger",
-        icon: "danger",
-      });
+        backgroundColor: COLORS.red,
+        message: 'Erro ao remover local',
+        description: 'Não foi possível remover o local, tente novamente.',
+        type: 'danger',
+        icon: 'danger'
+      })
     }
-  };
+  }
 
   return (
     <>
@@ -65,10 +61,8 @@ export const AdverstiserPlaces = ({
         <DialogModal
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          title={"Remover local?"}
-          message={
-            "Ao remover local todos os eventos relacionados á este local também serão excluídos."
-          }
+          title={'Remover local?'}
+          message={'Ao remover local todos os eventos relacionados á este local também serão excluídos.'}
           confirmAction={removePlace}
         />
 
@@ -76,7 +70,7 @@ export const AdverstiserPlaces = ({
           <View
             style={{
               ...styles.card,
-              marginBottom: index !== places.length - 1 ? 15 : 0,
+              marginBottom: index !== places.length - 1 ? 15 : 0
             }}
             key={index}
           >
@@ -88,8 +82,8 @@ export const AdverstiserPlaces = ({
               <Text style={styles.address}>
                 {place.address}, {place.number}
               </Text>
-              <View style={{ flexDirection: "row", gap: 5 }}>
-                <Text style={styles.state}>{place.neighborhood}</Text>
+              <View style={{ flexDirection: 'row', gap: 5 }}>
+                <Text style={styles.state}>{place.neighborhood}dasdas</Text>
                 <Text style={styles.city}>{place.city}</Text>
                 <Text style={styles.state}>{place.state}</Text>
               </View>
@@ -97,8 +91,8 @@ export const AdverstiserPlaces = ({
             <View style={styles.TrashContainer}>
               <TouchableOpacity
                 onPress={() => {
-                  setPlaceId(place.id);
-                  setModalVisible(true);
+                  setPlaceId(place.id)
+                  setModalVisible(true)
                 }}
               >
                 <IMAGES.ICONS.Trash />
@@ -110,70 +104,70 @@ export const AdverstiserPlaces = ({
           <Button
             buttonEnabled={true}
             onPress={() =>
-              navigation.navigate("AdvertiverPlaceAddScreen", {
-                advertiserId,
+              navigation.navigate('AdvertiverPlaceAddScreen', {
+                advertiserId
               })
             }
-            label={"Novo local"}
+            label={'Novo local'}
           />
         </View>
       </View>
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   content: {
     paddingHorizontal: PADDINGS.horizontal,
-    marginTop: 20,
+    marginTop: 20
   },
   card: {
     height: 90,
-    borderColor: COLORS.lightGrayColor,
+    borderColor: COLORS.lightGray,
     borderWidth: 1,
     borderRadius: 10,
-    flexDirection: "row",
-    marginBottom: 30,
+    flexDirection: 'row',
+    marginBottom: 30
   },
   iconContainer: {
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    backgroundColor: COLORS.primaryColor,
-    justifyContent: "center",
-    alignItems: "center",
-    width: 60,
+    backgroundColor: COLORS.darkBlue,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 60
   },
   contentContainer: {
     flexGrow: 1,
     marginTop: 10,
-    marginLeft: 10,
+    marginLeft: 10
   },
   TrashContainer: {
-    alignSelf: "center",
-    justifyContent: "center",
-    width: 40,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    width: 40
   },
   name: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 17,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue
   },
   address: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 10,
-    color: COLORS.primaryColor,
-    marginTop: 5,
+    color: COLORS.darkBlue,
+    marginTop: 5
   },
   city: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 10,
-    color: COLORS.secBlueColor,
-    marginTop: 5,
+    color: COLORS.lightBlue,
+    marginTop: 5
   },
   state: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 10,
-    color: COLORS.secBlueColor,
-    marginTop: 5,
-  },
-});
+    color: COLORS.lightBlue,
+    marginTop: 5
+  }
+})

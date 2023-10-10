@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     marginBottom: 50
   },
   title: {
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontSize: 15,
     fontWeight: 'bold',
     marginTop: 10
@@ -126,36 +126,36 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   headerText: {
-    color: COLORS.mediumBlueColor,
+    color: COLORS.mediumBlue,
     fontWeight: '700'
   },
   teamName: {
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold',
     fontSize: 12
   },
   subTeamTitle: {
-    color: COLORS.mediumBlueColor,
+    color: COLORS.mediumBlue,
     fontSize: 10,
     fontWeight: 'bold'
   },
   teamValuePreview: {
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold',
     fontSize: 14
   },
   subTeamPreview: {
-    color: COLORS.mediumBlueColor,
+    color: COLORS.mediumBlue,
     fontSize: 10,
     fontWeight: 'bold'
   },
   teamValueExecuted: {
-    color: COLORS.greenColor,
+    color: COLORS.green,
     fontWeight: 'bold',
     fontSize: 14
   },
   subTeamExecuted: {
-    color: COLORS.darkTiffanyColor,
+    color: COLORS.darkTiffany,
     fontSize: 10,
     fontWeight: 'bold'
   },
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingVertical: 15,
     borderRadius: 5,
-    borderColor: COLORS.lightGrayColor
+    borderColor: COLORS.lightGray
   },
   footer: {
     flexDirection: 'row',

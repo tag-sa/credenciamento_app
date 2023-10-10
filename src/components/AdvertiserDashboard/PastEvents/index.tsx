@@ -34,13 +34,13 @@ const styles = StyleSheet.create({
   tabItemContent: {
     paddingHorizontal: PADDINGS.horizontal,
     flex: 1,
-    backgroundColor: COLORS.whiteColor,
+    backgroundColor: COLORS.white,
     paddingTop: 20
   },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     textAlign: 'center'
   },
   advertisersList: {

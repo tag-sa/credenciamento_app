@@ -33,9 +33,9 @@ export const WorkerProfileTab = ({ jobs }: WorkerProfileTabProps) => {
         data={jobs}
         renderItem={({ item }) => {
           return (
-            <View style={{ borderWidth: 1, flexDirection: 'row', paddingVertical: 10, borderColor: COLORS.lightGrayColor, borderRadius: 10, marginBottom: 10 }}>
+            <View style={{ borderWidth: 1, flexDirection: 'row', paddingVertical: 10, borderColor: COLORS.lightGray, borderRadius: 10, marginBottom: 10 }}>
               <View style={{ width: 80, alignItems: 'center' }}>
-                <Avatar uri="https://via.placeholder.com/150/24f355" width={40} height={40} borderRadius={50000} borderWidth={1} borderColor={COLORS.lightGrayColor} />
+                <Avatar uri="https://via.placeholder.com/150/24f355" width={40} height={40} borderRadius={50000} borderWidth={1} borderColor={COLORS.lightGray} />
               </View>
               <View>
                 <Text style={styles.name}>{item.name}</Text>
@@ -69,25 +69,25 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold',
     marginBottom: 20
   },
   name: {
     fontSize: 16,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold'
   },
   job: {
     fontSize: 14,
     fontStyle: 'italic',
     marginTop: 2,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold'
   },
   details: {
     fontSize: 10,
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     marginLeft: 5,
     fontWeight: 'bold'
   }

@@ -1,14 +1,14 @@
-import { StyleSheet } from "react-native";
-import { COLORS } from "../../constants/Colors";
+import { StyleSheet } from 'react-native'
+import { COLORS } from '../../constants/Colors'
 
 export const menuItemStyle = StyleSheet.create({
   label: {
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     marginTop: 5,
-    fontWeight: "600",
+    fontWeight: '600'
   },
   activeLabel: {
-    color: COLORS.primaryColor,
-    fontWeight: "900",
-  },
-});
+    color: COLORS.darkBlue,
+    fontWeight: '900'
+  }
+})

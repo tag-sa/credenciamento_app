@@ -35,7 +35,7 @@ export const WorkedEventItem = ({ eventId, eventName, date_start, date_end }: Wo
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: COLORS.lightGrayColor,
+    borderColor: COLORS.lightGray,
     borderRadius: 10,
     height: 90,
     marginVertical: 8,
@@ -49,13 +49,13 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold'
   },
   vacancy: {
     fontSize: 12,
     marginTop: 4,
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     fontWeight: 'bold'
   },
   imageContainer: {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   details: {
     fontSize: 10,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     marginLeft: 5,
     fontWeight: 'bold',
     marginRight: 3

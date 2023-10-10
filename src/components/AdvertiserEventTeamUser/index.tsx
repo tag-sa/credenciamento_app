@@ -18,24 +18,24 @@ type AdvertiserEventTeamUserProps = {
 }
 
 export const AdvertiserEventTeamUser = ({ onClick, onButtonClick, user, teamConfirmationsStatus, isPastEvent }: AdvertiserEventTeamUserProps) => {
-  let buttonColor = COLORS.greenColor
+  let buttonColor = COLORS.green
   let label = 'Aceitar'
   let width = 70
 
   if (isPastEvent) {
     label = 'Ocorrência'
-    buttonColor = COLORS.redColor
+    buttonColor = COLORS.red
     width = 85
   } else {
     if (teamConfirmationsStatus === 'c') {
       label = 'Remover'
-      buttonColor = COLORS.redColor
+      buttonColor = COLORS.red
     } else if (teamConfirmationsStatus === 'd') {
       label = 'Recusado'
-      buttonColor = COLORS.redColor
+      buttonColor = COLORS.red
     } else if (!teamConfirmationsStatus) {
       label = 'Convocar'
-      buttonColor = COLORS.primaryColor
+      buttonColor = COLORS.darkBlue
     }
   }
 
@@ -73,7 +73,7 @@ export const AdvertiserEventTeamUser = ({ onClick, onButtonClick, user, teamConf
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: COLORS.lightGrayColor,
+    borderColor: COLORS.lightGray,
     borderRadius: 10,
     height: 90,
     marginVertical: 8,
@@ -87,13 +87,13 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold'
   },
   vacancy: {
     fontSize: 12,
     marginTop: 4,
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     fontWeight: 'bold'
   },
   imageContainer: {
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   details: {
     fontSize: 10,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     marginLeft: 5,
     fontWeight: 'bold',
     marginRight: 3

@@ -65,7 +65,7 @@ export const LoginScreen = ({ navigation }) => {
       }
 
       showMessage({
-        backgroundColor: COLORS.dangerColor,
+        backgroundColor: COLORS.red,
         hideStatusBar: true,
         message: title,
         description: message,
@@ -118,7 +118,7 @@ export const LoginScreen = ({ navigation }) => {
               placeholder="sua senha aqui"
               icons={['eye-outline', 'eye-off-outline']}
               iconSize={22}
-              iconColor={COLORS.blueColor}
+              iconColor={COLORS.darkBlue}
               obscureText={true}
             />
 
@@ -129,7 +129,7 @@ export const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
               activeOpacity={0.7}
               style={{
-                backgroundColor: !email || !password ? COLORS.grayColor : COLORS.blueColor,
+                backgroundColor: !email || !password ? COLORS.darkGray : COLORS.darkBlue,
                 borderRadius: 10,
                 height: 50,
                 marginTop: 40,
@@ -167,7 +167,7 @@ export const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.primaryColor
+    backgroundColor: COLORS.darkBlue
   },
   header: {
     flexDirection: 'row',
@@ -177,16 +177,16 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    backgroundColor: COLORS.whiteColor,
+    backgroundColor: COLORS.white,
     borderTopLeftRadius: 100,
     paddingTop: 150,
     paddingHorizontal: PADDINGS.horizontal
   },
   newAccount: {
-    color: COLORS.grayColor
+    color: COLORS.darkGray
   },
   createNow: {
-    color: COLORS.blueColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold'
   },
   input: {
@@ -194,31 +194,31 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    borderColor: COLORS.grayColor,
+    borderColor: COLORS.darkGray,
     borderRadius: 7
   },
   label: {
-    color: COLORS.blueColor
+    color: COLORS.darkBlue
   },
   inputText: {
-    color: COLORS.grayColor,
+    color: COLORS.darkGray,
     marginTop: 10,
     fontWeight: 'bold'
   },
   forgotPassword: {
-    color: COLORS.grayColor,
+    color: COLORS.darkGray,
     fontSize: 12,
     textAlign: 'right',
     marginTop: 10
   },
   signInButton: {
-    color: COLORS.whiteColor,
+    color: COLORS.white,
     fontSize: 18,
     fontWeight: 'bold',
     letterSpacing: 1.2
   },
   orSignInWith: {
-    color: COLORS.grayColor,
+    color: COLORS.darkGray,
     textAlign: 'center',
     marginTop: 50
   },
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   invalidEmail: {
     marginTop: 3,
     marginLeft: 2,
-    color: COLORS.dangerColor,
+    color: COLORS.red,
     fontSize: 10
   }
 })

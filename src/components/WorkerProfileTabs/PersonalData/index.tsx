@@ -89,12 +89,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 2,
-    color: COLORS.grayColor
+    color: COLORS.darkGray
   },
   value: {
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 15,
-    color: COLORS.primaryColor
+    color: COLORS.darkBlue
   }
 })

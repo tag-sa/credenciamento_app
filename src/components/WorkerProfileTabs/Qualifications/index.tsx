@@ -32,7 +32,7 @@ export const WorkerQualificationsTab = ({ courses }: WorkerQualificationsTabProp
                 flexDirection: 'row',
                 paddingVertical: 15,
                 paddingHorizontal: 15,
-                borderColor: COLORS.lightGrayColor,
+                borderColor: COLORS.lightGray,
                 borderRadius: 10,
                 marginBottom: 10,
                 justifyContent: 'space-between',
@@ -59,13 +59,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold',
     marginBottom: 20
   },
   name: {
     fontSize: 16,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold'
   }
 })

@@ -4,10 +4,12 @@ import Constants from 'expo-constants'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Avatar } from '../components/Avatar'
+import { HeaderComponent } from '../components/Header'
 import { COLORS } from '../constants/Colors'
 import { IMAGES } from '../constants/Images'
 import { PADDINGS } from '../constants/Paddings'
 import { UserType } from '../model/user.model'
+import { SettingsPage } from '../pages/(auth)/Settings'
 import { auth } from '../services/auth'
 import { MyTabs } from './Tabs'
 
@@ -34,7 +36,7 @@ export const MyDrawer = () => {
     return Application.nativeApplicationVersion
   }
 
-  const CustomDrawerContent = (props) => {
+  const CustomDrawerContent = (props: any) => {
     return (
       <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
         <View
@@ -48,50 +50,50 @@ export const MyDrawer = () => {
           <View style={{ marginTop: 15 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
               <Avatar uri="https://via.placeholder.com/150/24f355" height={35} width={35} borderWidth={0} />
-              <Text style={{ fontSize: 16, fontWeight: 'bold', color: COLORS.primaryColor }}>Olá {user?.name}</Text>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: COLORS.darkBlue }}>Olá {user?.name}</Text>
             </View>
             <View style={{ marginTop: 40, gap: 10 }}>
               <TouchableOpacity>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 10, paddingVertical: 15 }}>
                   <IMAGES.DRAWER.Horn />
-                  <Text style={{ color: COLORS.primaryColor, fontWeight: 'bold' }}>Gestão do Anunciante</Text>
+                  <Text style={{ color: COLORS.darkBlue, fontWeight: 'bold' }}>Gestão do Anunciante</Text>
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => props.navigation.navigate('Settings')}>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 10, paddingVertical: 15 }}>
                   <IMAGES.DRAWER.Settings />
-                  <Text style={{ color: COLORS.primaryColor, fontWeight: 'bold' }}>Configurações</Text>
+                  <Text style={{ color: COLORS.darkBlue, fontWeight: 'bold' }}>Configurações</Text>
                 </View>
               </TouchableOpacity>
 
               <TouchableOpacity>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 10, paddingVertical: 15 }}>
                   {!notifications.length ? <IMAGES.DRAWER.Notifications /> : <IMAGES.DRAWER.NotificationsActive />}
-                  <Text style={{ color: COLORS.primaryColor, fontWeight: 'bold' }}>Notificações</Text>
+                  <Text style={{ color: COLORS.darkBlue, fontWeight: 'bold' }}>Notificações</Text>
                 </View>
               </TouchableOpacity>
 
               <TouchableOpacity>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 10, paddingVertical: 15 }}>
                   <IMAGES.DRAWER.Faq />
-                  <Text style={{ color: COLORS.primaryColor, fontWeight: 'bold' }}>FAQ</Text>
+                  <Text style={{ color: COLORS.darkBlue, fontWeight: 'bold' }}>FAQ</Text>
                 </View>
               </TouchableOpacity>
             </View>
           </View>
           <View>
             <TouchableOpacity>
-              <Text style={{ color: COLORS.grayColor, fontWeight: 'bold', fontSize: 15, paddingVertical: 5 }}>Política de Privacidade</Text>
+              <Text style={{ color: COLORS.darkGray, fontWeight: 'bold', fontSize: 15, paddingVertical: 5 }}>Política de Privacidade</Text>
             </TouchableOpacity>
             {/* <TouchableOpacity>
-              <Text style={{ color: COLORS.grayColor, fontWeight: 'bold', fontSize: 15, paddingVertical: 5 }}>Termos e Condições de Uso</Text>
+              <Text style={{ color: COLORS.darkGray, fontWeight: 'bold', fontSize: 15, paddingVertical: 5 }}>Termos e Condições de Uso</Text>
             </TouchableOpacity>
             <TouchableOpacity>
-              <Text style={{ color: COLORS.grayColor, fontWeight: 'bold', fontSize: 15, marginTop: 20, paddingVertical: 5 }}>Vem ser Premium!</Text>
+              <Text style={{ color: COLORS.darkGray, fontWeight: 'bold', fontSize: 15, marginTop: 20, paddingVertical: 5 }}>Vem ser Premium!</Text>
             </TouchableOpacity> 
             <TouchableOpacity>
-              <Text style={{ color: COLORS.grayColor, fontWeight: 'bold', fontSize: 15, paddingVertical: 5 }}>Seguro Empresarial</Text>
+              <Text style={{ color: COLORS.darkGray, fontWeight: 'bold', fontSize: 15, paddingVertical: 5 }}>Seguro Empresarial</Text>
             </TouchableOpacity> */}
 
             <TouchableOpacity
@@ -99,9 +101,9 @@ export const MyDrawer = () => {
                 await auth().logout(props.navigation)
               }}
             >
-              <Text style={{ color: COLORS.primaryColor, fontWeight: 'bold', fontSize: 16, marginTop: 20 }}>Sair</Text>
+              <Text style={{ color: COLORS.darkBlue, fontWeight: 'bold', fontSize: 16, marginTop: 20 }}>Sair</Text>
             </TouchableOpacity>
-            <Text style={{ color: COLORS.grayColor, fontWeight: 'bold', fontSize: 13, marginTop: 1 }}>versão {getVersion()}</Text>
+            <Text style={{ color: COLORS.darkGray, fontWeight: 'bold', fontSize: 13, marginTop: 1 }}>versão {getVersion()}</Text>
           </View>
         </View>
       </DrawerContentScrollView>
@@ -113,7 +115,6 @@ export const MyDrawer = () => {
       screenOptions={{
         headerShown: false,
         drawerType: 'front',
-
         drawerStyle: {
           width: '85%',
           borderTopRightRadius: 120
@@ -122,6 +123,7 @@ export const MyDrawer = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="DashboardDrawer" options={{ title: 'Dashboard' }} component={MyTabs} initialParams={{ screenName: 'Dashboard' }} />
+      <Drawer.Screen name="Settings" options={{ title: 'Configurações', headerShown: true, swipeEdgeWidth: 0, header: () => <HeaderComponent /> }} component={SettingsPage} />
 
       {/* {user?.type == 'pj' && <Drawer.Screen name="AdvertiserDrawer" options={{ title: 'Anunciante' }} component={MyTabs} initialParams={{ screenName: 'Advertiser' }} />}
 

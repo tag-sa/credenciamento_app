@@ -1,95 +1,95 @@
-import moment from "moment";
-import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { BackButton } from "../../../components/BackButton";
-import Button from "../../../components/Button/Button";
-import { DialogModalBottomSheet } from "../../../components/DialogModalBottom";
-import CustomInputWithTextAndIcon from "../../../components/Input/CustomInputWithTextAndIcon";
-import CustomSelectInput from "../../../components/SelectInput";
-import { COLORS } from "../../../constants/Colors";
-import { PADDINGS } from "../../../constants/Paddings";
-import { axiosApi } from "../../../services/axios";
-import { useGlobalStore } from "../../../store";
+import moment from 'moment'
+import { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { BackButton } from '../../../components/BackButton'
+import Button from '../../../components/Button/Button'
+import { DialogModalBottomSheet } from '../../../components/DialogModalBottom'
+import CustomInputWithTextAndIcon from '../../../components/Input/CustomInputWithTextAndIcon'
+import CustomSelectInput from '../../../components/SelectInput'
+import { COLORS } from '../../../constants/Colors'
+import { PADDINGS } from '../../../constants/Paddings'
+import { axiosApi } from '../../../services/axios'
+import { useGlobalStore } from '../../../store'
 
 export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
-  const { event } = route.params;
+  const { event } = route.params
 
-  const [name, setName] = useState("");
-  const [eventDateStart, setEventDateStart] = useState("");
-  const [eventDateEnd, setEventDateEnd] = useState("");
-  const [eventTimeStart, setEventTimeStart] = useState("");
-  const [eventTimeEnd, setEventTimeEnd] = useState("");
-  const [jobs, setJobs] = useState("");
+  const [name, setName] = useState('')
+  const [eventDateStart, setEventDateStart] = useState('')
+  const [eventDateEnd, setEventDateEnd] = useState('')
+  const [eventTimeStart, setEventTimeStart] = useState('')
+  const [eventTimeEnd, setEventTimeEnd] = useState('')
+  const [jobs, setJobs] = useState('')
 
-  const [functions, setFunctions] = useState<{ id: number; name: string }[]>([]);
+  const [functions, setFunctions] = useState<{ id: number; name: string }[]>([])
   const [eventfunction, seteventFunction] = useState<{
-    id: number;
-    name: string;
-  }>();
+    id: number
+    name: string
+  }>()
 
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState([])
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleModalPresented = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
 
   const handleModalDismissed = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   const handleOpenModal = () => {
     if (isModalOpen) {
-      setIsModalOpen(false);
+      setIsModalOpen(false)
     } else {
-      setIsModalOpen(true);
+      setIsModalOpen(true)
     }
-  };
+  }
 
-  const dateMask = "99/99/9999";
-  const timeMask = "99:99";
-  const jobsMask = "9999";
+  const dateMask = '99/99/9999'
+  const timeMask = '99:99'
+  const jobsMask = '9999'
 
   useEffect(() => {
-    setEventDateStart(moment.utc(event.date_start).format("DD/MM/YYYY"));
-    setEventTimeStart(moment.utc(event.date_start).format("HH:mm"));
+    setEventDateStart(moment.utc(event.date_start).format('DD/MM/YYYY'))
+    setEventTimeStart(moment.utc(event.date_start).format('HH:mm'))
 
-    setEventDateEnd(moment.utc(event.date_end).format("DD/MM/YYYY"));
-    setEventTimeEnd(moment.utc(event.date_end).format("HH:mm"));
+    setEventDateEnd(moment.utc(event.date_end).format('DD/MM/YYYY'))
+    setEventTimeEnd(moment.utc(event.date_end).format('HH:mm'))
 
     const loadFunctions = async () => {
-      useGlobalStore.setState({ isLoading: true });
+      useGlobalStore.setState({ isLoading: true })
 
-      const { data } = await axiosApi.get(`/functions`);
-      setFunctions(data.data);
+      const { data } = await axiosApi.get(`/functions`)
+      setFunctions(data.data)
 
-      useGlobalStore.setState({ isLoading: false });
-    };
+      useGlobalStore.setState({ isLoading: false })
+    }
 
-    loadFunctions();
-  }, []);
+    loadFunctions()
+  }, [])
 
   const save = async () => {
     const toSave = {
       name,
-      date_start: moment(`${eventDateStart} ${eventTimeStart}`, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD HH:mm"),
-      date_end: moment(`${eventDateEnd} ${eventTimeEnd}`, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD HH:mm"),
+      date_start: moment(`${eventDateStart} ${eventTimeStart}`, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm'),
+      date_end: moment(`${eventDateEnd} ${eventTimeEnd}`, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm'),
       functions_id: eventfunction?.id,
-      status: "a",
-      quantity: parseInt(jobs),
-    };
+      status: 'a',
+      quantity: parseInt(jobs)
+    }
 
     try {
-      await axiosApi.post(`/events/${event.id}/teams`, toSave);
-      navigation.navigate("AdvertiserEventTeamAddCreatedShareScreen", {
-        eventId: event.id,
-      });
+      await axiosApi.post(`/events/${event.id}/teams`, toSave)
+      navigation.navigate('AdvertiserEventTeamAddCreatedShareScreen', {
+        eventId: event.id
+      })
     } catch (e) {
       // TODO: handle error
-      console.log(e.response.data);
+      console.log(e.response.data)
     }
-  };
+  }
 
   return (
     <>
@@ -109,22 +109,22 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
             autoCapitalize="none"
             marginTop={20}
             label="Data Inicial"
-            keyboardType={"numeric"}
+            keyboardType={'numeric'}
             mask={dateMask}
             onChangeText={(_, value) => {
-              if (!moment(value, "DD/MM/YYYY").isValid()) {
-                if (!errors.includes("dateStart")) setErrors([...errors, "dateStart"]);
+              if (!moment(value, 'DD/MM/YYYY').isValid()) {
+                if (!errors.includes('dateStart')) setErrors([...errors, 'dateStart'])
               } else {
-                if (moment(value, "DD/MM/YYYY").isBefore(moment())) {
-                  if (!errors.includes("dateStart")) setErrors([...errors, "dateStart"]);
+                if (moment(value, 'DD/MM/YYYY').isBefore(moment())) {
+                  if (!errors.includes('dateStart')) setErrors([...errors, 'dateStart'])
                 } else {
-                  setErrors(errors.filter((error) => error !== "dateStart"));
+                  setErrors(errors.filter((error) => error !== 'dateStart'))
                 }
               }
 
-              setEventDateStart(value);
+              setEventDateStart(value)
             }}
-            error={errors.includes("dateStart")}
+            error={errors.includes('dateStart')}
             erroMessage="Data inicial inválida"
             value={eventDateStart}
             placeholder="dd/mm/aaaa"
@@ -136,17 +136,17 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
             label="Horário Inicial"
             placeholder="00:00"
             erroMessage="Horário Inicial inválido"
-            error={errors.includes("timeStart")}
-            keyboardType={"numeric"}
+            error={errors.includes('timeStart')}
+            keyboardType={'numeric'}
             mask={timeMask}
             onChangeText={(_, value) => {
-              if (!moment(value, "HH:mm").isValid()) {
-                if (!errors.includes("timeStart")) setErrors([...errors, "timeStart"]);
+              if (!moment(value, 'HH:mm').isValid()) {
+                if (!errors.includes('timeStart')) setErrors([...errors, 'timeStart'])
               } else {
-                setErrors(errors.filter((error) => error !== "timeStart"));
+                setErrors(errors.filter((error) => error !== 'timeStart'))
               }
 
-              setEventTimeStart(value);
+              setEventTimeStart(value)
             }}
             value={eventTimeStart}
           />
@@ -155,22 +155,22 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
             autoCapitalize="none"
             marginTop={20}
             label="Data Final"
-            keyboardType={"numeric"}
+            keyboardType={'numeric'}
             mask={dateMask}
             onChangeText={(_, value) => {
-              if (!moment(value, "DD/MM/YYYY").isValid()) {
-                if (!errors.includes("dateEnd")) setErrors([...errors, "dateEnd"]);
+              if (!moment(value, 'DD/MM/YYYY').isValid()) {
+                if (!errors.includes('dateEnd')) setErrors([...errors, 'dateEnd'])
               } else {
-                if (moment(value, "DD/MM/YYYY").isBefore(moment(eventDateStart, "DD/MM/YYYY"))) {
-                  if (!errors.includes("dateEnd")) setErrors([...errors, "dateEnd"]);
+                if (moment(value, 'DD/MM/YYYY').isBefore(moment(eventDateStart, 'DD/MM/YYYY'))) {
+                  if (!errors.includes('dateEnd')) setErrors([...errors, 'dateEnd'])
                 } else {
-                  setErrors(errors.filter((error) => error !== "dateEnd"));
+                  setErrors(errors.filter((error) => error !== 'dateEnd'))
                 }
               }
 
-              setEventDateEnd(value);
+              setEventDateEnd(value)
             }}
-            error={errors.includes("dateEnd")}
+            error={errors.includes('dateEnd')}
             erroMessage="Data final inválida"
             value={eventDateEnd}
             placeholder="dd/mm/aaaa"
@@ -182,25 +182,25 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
             label="Horário Final"
             placeholder="00:00"
             erroMessage="Horário Final inválido"
-            error={errors.includes("time")}
-            keyboardType={"numeric"}
+            error={errors.includes('time')}
+            keyboardType={'numeric'}
             mask={timeMask}
             onChangeText={(_, value) => {
-              if (!moment(value, "HH:mm").isValid()) {
-                if (!errors.includes("timeEnd")) setErrors([...errors, "timeEnd"]);
+              if (!moment(value, 'HH:mm').isValid()) {
+                if (!errors.includes('timeEnd')) setErrors([...errors, 'timeEnd'])
               } else {
-                setErrors(errors.filter((error) => error !== "timeEnd"));
+                setErrors(errors.filter((error) => error !== 'timeEnd'))
               }
 
-              setEventTimeEnd(value);
+              setEventTimeEnd(value)
             }}
             value={eventTimeEnd}
           />
 
           <CustomSelectInput
             placeholder="Selecione uma função"
-            label={"Função"}
-            error={errors.includes("place")}
+            label={'Função'}
+            error={errors.includes('place')}
             marginTop={20}
             value={eventfunction?.name}
             onInputPress={handleOpenModal}
@@ -212,15 +212,15 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
             label="Número de vagas"
             placeholder="10"
             mask={jobsMask}
-            keyboardType={"numeric"}
+            keyboardType={'numeric'}
             onChangeText={(_, value) => {
-              if (value === "" || parseInt(value) <= 0) {
-                if (!errors.includes("jobs")) setErrors([...errors, "jobs"]);
+              if (value === '' || parseInt(value) <= 0) {
+                if (!errors.includes('jobs')) setErrors([...errors, 'jobs'])
               } else {
-                setErrors(errors.filter((error) => error !== "jobs"));
+                setErrors(errors.filter((error) => error !== 'jobs'))
               }
 
-              setJobs(value);
+              setJobs(value)
             }}
             value={jobs}
           />
@@ -229,13 +229,13 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
             <Button
               label="Salvar"
               buttonEnabled={
-                name !== "" &&
-                eventDateStart !== "" &&
-                eventTimeStart !== "" &&
-                eventDateEnd !== "" &&
-                eventTimeEnd !== "" &&
+                name !== '' &&
+                eventDateStart !== '' &&
+                eventTimeStart !== '' &&
+                eventDateEnd !== '' &&
+                eventTimeEnd !== '' &&
                 eventfunction !== undefined &&
-                jobs !== "" &&
+                jobs !== '' &&
                 errors.length === 0
               }
               onPress={save}
@@ -251,24 +251,24 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
         onSelectItem={seteventFunction}
       />
     </>
-  );
-};
+  )
+}
 
 const style = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
-    backgroundColor: COLORS.whiteColor,
-    paddingVertical: PADDINGS.vertical,
+    backgroundColor: COLORS.white,
+    paddingVertical: PADDINGS.vertical
   },
   container: {
     flex: 1,
-    backgroundColor: COLORS.whiteColor,
-    paddingHorizontal: PADDINGS.horizontal,
+    backgroundColor: COLORS.white,
+    paddingHorizontal: PADDINGS.horizontal
   },
   title: {
     fontSize: 20,
-    color: COLORS.primaryColor,
-    fontWeight: "700",
-    marginTop: 20,
-  },
-});
+    color: COLORS.darkBlue,
+    fontWeight: '700',
+    marginTop: 20
+  }
+})

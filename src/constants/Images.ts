@@ -30,6 +30,7 @@ import ProfileActive from '../../assets/images/icons/icon-profile-active.svg'
 import TopProfile from '../../assets/images/icons/icon-profile-top.svg'
 import Profile from '../../assets/images/icons/icon-profile.svg'
 import Share from '../../assets/images/icons/icon-share.svg'
+import SwitchButton from '../../assets/images/icons/icon-switch-button.svg'
 import IconTeamsUsers from '../../assets/images/icons/icon-team-users.svg'
 import Trash from '../../assets/images/icons/icon-trash.svg'
 import DashboardBanner1 from '../../assets/images/icons/icon-worker-banner-1.svg'
@@ -78,7 +79,8 @@ export const IMAGES = {
     GenderMale,
     GenderFemale,
     YellowStar,
-    Download
+    Download,
+    SwitchButton
   },
   DRAWER: {
     Settings,

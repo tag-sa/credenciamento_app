@@ -1,44 +1,38 @@
-import {
-  View,
-  Text,
-  KeyboardTypeOptions,
-  StyleSheet,
-  TextInput,
-} from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { useState } from "react";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { useState } from 'react'
+import { KeyboardTypeOptions, StyleSheet, Text, TextInput, View } from 'react-native'
 
-import { MaskedTextInput } from "react-native-mask-text";
-import { COLORS } from "../../constants/Colors";
+import { MaskedTextInput } from 'react-native-mask-text'
+import { COLORS } from '../../constants/Colors'
 
 interface InputProps {
-  label: string;
-  value?: string;
-  placeholder?: string;
-  onChangeText: (text: string, rawText?: string) => void;
-  onInputPress?: (clicked: boolean) => void;
-  marginTop?: number;
-  marginBottom?: number;
-  icons?: Array<any>;
-  iconColor?: string;
-  iconSize?: number;
-  obscureText?: boolean;
-  multiline?: boolean;
-  numberOfLines?: number;
-  keyboardType?: KeyboardTypeOptions;
-  autoCapitalize?: "none" | "sentences" | "words" | "characters";
-  error?: boolean;
-  textColor?: string;
-  textWeight?: "normal" | "bold";
-  mask?: string;
-  erroMessage?: string;
-  addrRef?: any;
-  flexGrow?: number;
+  label: string
+  value?: string
+  placeholder?: string
+  onChangeText: (text: string, rawText?: string) => void
+  onInputPress?: (clicked: boolean) => void
+  marginTop?: number
+  marginBottom?: number
+  icons?: Array<any>
+  iconColor?: string
+  iconSize?: number
+  obscureText?: boolean
+  multiline?: boolean
+  numberOfLines?: number
+  keyboardType?: KeyboardTypeOptions
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters'
+  error?: boolean
+  textColor?: string
+  textWeight?: 'normal' | 'bold'
+  mask?: string
+  erroMessage?: string
+  addrRef?: any
+  flexGrow?: number
 }
 
 export default function CustomInputWithTextAndIcon(props: InputProps) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
 
   return (
     <>
@@ -48,16 +42,16 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
           ...(props.flexGrow && { flexGrow: props.flexGrow }),
           marginTop: props.marginTop,
           marginBottom: props.marginBottom,
-          borderColor: props.error ? COLORS.dangerColor : COLORS.grayColor,
-          ...(!props.error && isFocused && styles.inputFocused),
+          borderColor: props.error ? COLORS.red : COLORS.lightGray,
+          ...(!props.error && isFocused && styles.inputFocused)
         }}
       >
         <Text
           style={
             (isFocused ? styles.labelFocused : styles.label,
             {
-              fontWeight: props.textWeight || "bold",
-              color: props.textColor || COLORS.grayColor,
+              fontWeight: props.textWeight || 'bold',
+              color: props.textColor || COLORS.darkBlue
             })
           }
         >
@@ -69,20 +63,20 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
               ref={props.addrRef}
               autoCapitalize={props.autoCapitalize}
               onFocus={() => {
-                setIsFocused(true);
-                props.onInputPress && props.onInputPress(true);
+                setIsFocused(true)
+                props.onInputPress && props.onInputPress(true)
               }}
               onBlur={() => {
-                setIsFocused(false);
+                setIsFocused(false)
               }}
               style={{
                 ...styles.inputText,
-                color: props.textColor || COLORS.grayColor,
-                fontWeight: props.textWeight || "normal",
+                color: props.textColor || COLORS.darkBlue,
+                fontWeight: props.textWeight || 'normal'
               }}
               mask={props.mask}
               onChangeText={(text, rawText) => {
-                props.onChangeText(text, rawText);
+                props.onChangeText(text, rawText)
               }}
               value={props.value}
               placeholder={props.placeholder}
@@ -97,18 +91,18 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
               autoCapitalize={props.autoCapitalize}
               onFocus={() => setIsFocused(true)}
               onBlur={() => {
-                setIsFocused(false);
+                setIsFocused(false)
               }}
               style={{
                 ...styles.inputText,
-                color: props.textColor || COLORS.grayColor,
-                fontWeight: props.textWeight || "normal",
-                height: props.multiline ? props.numberOfLines : null,
+                color: props.textColor || COLORS.darkBlue,
+                fontWeight: props.textWeight || 'normal',
+                height: props.multiline ? props.numberOfLines : null
               }}
               multiline={props.multiline}
               numberOfLines={props.multiline ? props.numberOfLines : null}
               onChangeText={(text) => {
-                props.onChangeText(text, text);
+                props.onChangeText(text, text)
               }}
               value={props.value}
               placeholder={props.placeholder}
@@ -122,7 +116,7 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
               name={!showPassword ? props.icons[0] : props.icons[1]}
               onPress={() => setShowPassword(!showPassword)}
               size={props.iconSize}
-              style={{ position: "absolute", right: 10 }}
+              style={{ position: 'absolute', right: 10 }}
               color={props.iconColor}
             />
           )}
@@ -130,7 +124,7 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
       </View>
       {props.error && <Text style={styles.invalid}>{props.erroMessage}</Text>}
     </>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -139,34 +133,36 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    borderColor: COLORS.grayColor,
-    borderRadius: 7,
+    borderColor: COLORS.darkGray,
+    borderRadius: 7
   },
   inputFocused: {
     borderWidth: 1,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    borderColor: COLORS.blueColor,
+    borderColor: COLORS.lightBlue,
     borderRadius: 7,
-    backgroundColor: COLORS.lightBlueColor,
+    backgroundColor: COLORS.translucentBlue
   },
   label: {
-    color: COLORS.lightGrayColor,
-    fontWeight: "500",
+    color: COLORS.lightGray,
+    fontWeight: '500'
   },
   labelFocused: {
-    color: COLORS.blueColor,
-    fontWeight: "bold",
+    fontSize: 120,
+    height: 400,
+    color: COLORS.darkBlue,
+    fontWeight: 'bold'
   },
   inputText: {
-    color: COLORS.grayColor,
+    color: COLORS.darkGray,
     marginTop: 10,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   invalid: {
     marginTop: 3,
     marginLeft: 2,
-    color: COLORS.dangerColor,
-    fontSize: 10,
-  },
-});
+    color: COLORS.red,
+    fontSize: 10
+  }
+})

@@ -39,10 +39,10 @@ export const OcurrenceModalContent = ({ setModalVisible, teamUserId, eventId, te
       try {
         await axiosApi.post(`/occurrences/eventOccurrences`, newOccurences)
         showMessage({
-          backgroundColor: COLORS.greenColor,
+          backgroundColor: COLORS.green,
           message: 'Ocorrência registrada com sucesso!',
           titleStyle: {
-            color: COLORS.whiteColor,
+            color: COLORS.white,
             fontWeight: 'bold'
           },
           style: {
@@ -100,7 +100,7 @@ export const OcurrenceModalContent = ({ setModalVisible, teamUserId, eventId, te
                 <View key={index} style={styles.checkboxContainer}>
                   <CheckBox
                     size={18}
-                    borderColor={COLORS.primaryColor}
+                    borderColor={COLORS.darkBlue}
                     checked={checkBox.checked}
                     setChecked={(checked: boolean) => {
                       const newCheckBoxes = [...checkBoxes]
@@ -140,8 +140,8 @@ export const OcurrenceModalContent = ({ setModalVisible, teamUserId, eventId, te
                 color:
                   checkBoxes.some((checkBox) => checkBox.checked && checkBox.id !== 4) ||
                   (checkBoxes.some((checkBox) => checkBox.checked && checkBox.id === 4) && otherValue !== '')
-                    ? COLORS.primaryColor
-                    : COLORS.lightGrayColor
+                    ? COLORS.darkBlue
+                    : COLORS.lightGray
               }}
             >
               ENVIAR
@@ -182,20 +182,20 @@ const styles = StyleSheet.create({
   },
   label: {
     margin: 8,
-    color: COLORS.mediumBlueColor,
+    color: COLORS.mediumBlue,
     fontWeight: 'bold'
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     marginBottom: 20,
     textAlign: 'center'
   },
   subTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     marginBottom: 20,
     marginTop: 10
   },
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 20,
     borderTopWidth: 1,
-    borderTopColor: COLORS.lightGrayColor
+    borderTopColor: COLORS.lightGray
   },
   submit: {
     fontSize: 15,

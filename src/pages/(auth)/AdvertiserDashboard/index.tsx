@@ -1,56 +1,56 @@
-import { useIsFocused } from "@react-navigation/native";
-import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { AdverstiserAbout } from "../../../components/AdvertiserDashboard/About";
-import { AdverstiserPastEvents } from "../../../components/AdvertiserDashboard/PastEvents";
-import { AdverstiserPlaces } from "../../../components/AdvertiserDashboard/Places";
-import { BackButton } from "../../../components/BackButton";
-import { COLORS } from "../../../constants/Colors";
-import { IMAGES } from "../../../constants/Images";
-import { PADDINGS } from "../../../constants/Paddings";
-import { axiosApi } from "../../../services/axios";
-import { useGlobalStore } from "../../../store";
+import { useIsFocused } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { AdverstiserAbout } from '../../../components/AdvertiserDashboard/About'
+import { AdverstiserPastEvents } from '../../../components/AdvertiserDashboard/PastEvents'
+import { AdverstiserPlaces } from '../../../components/AdvertiserDashboard/Places'
+import { BackButton } from '../../../components/BackButton'
+import { COLORS } from '../../../constants/Colors'
+import { IMAGES } from '../../../constants/Images'
+import { PADDINGS } from '../../../constants/Paddings'
+import { axiosApi } from '../../../services/axios'
+import { useGlobalStore } from '../../../store'
 
 export const AdvertiserDashboardScreen = ({ route, navigation }) => {
-  const { advertiserId } = route.params;
-  const [activeTab, setActiveTab] = useState<"about" | "pastEvents" | "places" | "people">("about");
+  const { advertiserId } = route.params
+  const [activeTab, setActiveTab] = useState<'about' | 'pastEvents' | 'places' | 'people'>('about')
 
-  const isFocused = useIsFocused();
-  const [places, setPlaces] = useState([]);
+  const isFocused = useIsFocused()
+  const [places, setPlaces] = useState([])
   const [advertiser, setAdvertiser] = useState<{
-    id: number;
-    name: string;
-    url: string;
-    about: string;
-    events: [];
-    pastEvents: [];
-  }>();
+    id: number
+    name: string
+    url: string
+    about: string
+    events: []
+    pastEvents: []
+  }>()
 
   const loadAdvertiser = async () => {
-    useGlobalStore.setState({ isLoading: true });
+    useGlobalStore.setState({ isLoading: true })
 
-    const [adv, pls] = await Promise.all([axiosApi.get(`/advertisers/${advertiserId}`), axiosApi.get(`/advertisers/${advertiserId}/places/`)]);
+    const [adv, pls] = await Promise.all([axiosApi.get(`/advertisers/${advertiserId}`), axiosApi.get(`/advertisers/${advertiserId}/places/`)])
 
-    useGlobalStore.setState({ isLoading: false });
+    useGlobalStore.setState({ isLoading: false })
 
-    setAdvertiser(adv.data.data);
-    setPlaces(pls.data.data);
-  };
+    setAdvertiser(adv.data.data)
+    setPlaces(pls.data.data)
+  }
 
   useEffect(() => {
-    loadAdvertiser();
-  }, [isFocused]);
+    loadAdvertiser()
+  }, [isFocused])
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: COLORS.whiteColor }}>
-      <View style={{ flex: 1, backgroundColor: COLORS.whiteColor }}>
+    <ScrollView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <View style={{ flex: 1, backgroundColor: COLORS.white }}>
         <View style={styles.container}>
           <View
             style={{
               marginTop: 50,
-              justifyContent: "space-between",
-              flexDirection: "row",
+              justifyContent: 'space-between',
+              flexDirection: 'row'
             }}
           >
             <BackButton Icon={IMAGES.ICONS.BackButtonWhite} />
@@ -73,116 +73,116 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
         <View style={styles.tabs}>
           <ScrollView
             contentContainerStyle={{
-              backgroundColor: COLORS.primaryColor,
+              backgroundColor: COLORS.darkBlue
             }}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
           >
-            <TouchableOpacity onPress={() => setActiveTab("about")}>
-              <View style={activeTab === "about" ? styles.tabItemActive : styles.tabItem}>
-                <Text style={activeTab === "about" ? styles.tabItemTextActive : styles.tabItemText}>SOBRE A EMPRESA</Text>
+            <TouchableOpacity onPress={() => setActiveTab('about')}>
+              <View style={activeTab === 'about' ? styles.tabItemActive : styles.tabItem}>
+                <Text style={activeTab === 'about' ? styles.tabItemTextActive : styles.tabItemText}>SOBRE A EMPRESA</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setActiveTab("pastEvents")}>
-              <View style={activeTab === "pastEvents" ? styles.tabItemActive : styles.tabItem}>
-                <Text style={activeTab === "pastEvents" ? styles.tabItemTextActive : styles.tabItemText}>EVENTOS PASSADOS</Text>
+            <TouchableOpacity onPress={() => setActiveTab('pastEvents')}>
+              <View style={activeTab === 'pastEvents' ? styles.tabItemActive : styles.tabItem}>
+                <Text style={activeTab === 'pastEvents' ? styles.tabItemTextActive : styles.tabItemText}>EVENTOS PASSADOS</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setActiveTab("places")}>
-              <View style={activeTab === "places" ? styles.tabItemActive : styles.tabItem}>
-                <Text style={activeTab === "places" ? styles.tabItemTextActive : styles.tabItemText}>MEUS LOCAIS</Text>
+            <TouchableOpacity onPress={() => setActiveTab('places')}>
+              <View style={activeTab === 'places' ? styles.tabItemActive : styles.tabItem}>
+                <Text style={activeTab === 'places' ? styles.tabItemTextActive : styles.tabItemText}>MEUS LOCAIS</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setActiveTab("people")}>
-              <View style={activeTab === "people" ? { ...styles.tabItemActive, marginRight: 50 } : { ...styles.tabItem, marginRight: 50 }}>
-                <Text style={activeTab === "people" ? styles.tabItemTextActive : styles.tabItemText}>PESSOAS</Text>
+            <TouchableOpacity onPress={() => setActiveTab('people')}>
+              <View style={activeTab === 'people' ? { ...styles.tabItemActive, marginRight: 50 } : { ...styles.tabItem, marginRight: 50 }}>
+                <Text style={activeTab === 'people' ? styles.tabItemTextActive : styles.tabItemText}>PESSOAS</Text>
               </View>
             </TouchableOpacity>
           </ScrollView>
         </View>
-        {activeTab === "about" && <AdverstiserAbout advertiser={advertiser} />}
-        {activeTab === "pastEvents" && <AdverstiserPastEvents advertiser={advertiser} />}
-        {activeTab === "places" && <AdverstiserPlaces places={places} advertiserId={advertiserId} reload={loadAdvertiser} />}
+        {activeTab === 'about' && <AdverstiserAbout advertiser={advertiser} />}
+        {activeTab === 'pastEvents' && <AdverstiserPastEvents advertiser={advertiser} />}
+        {activeTab === 'places' && <AdverstiserPlaces places={places} advertiserId={advertiserId} reload={loadAdvertiser} />}
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     height: 350,
-    backgroundColor: COLORS.primaryColor,
-    paddingHorizontal: PADDINGS.horizontal,
+    backgroundColor: COLORS.darkBlue,
+    paddingHorizontal: PADDINGS.horizontal
   },
   actions: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    gap: 15,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 15
   },
   advertiserContainer: {
     padding: 10,
     marginTop: 50,
-    width: "90%",
+    width: '90%',
     height: 200,
-    backgroundColor: COLORS.whiteColor,
-    alignSelf: "center",
-    position: "relative",
+    backgroundColor: COLORS.white,
+    alignSelf: 'center',
+    position: 'relative',
     borderRadius: 5,
-    shadowColor: COLORS.blackColor,
+    shadowColor: COLORS.black,
     shadowOffset: {
       width: 0,
-      height: 10,
+      height: 10
     },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.2
   },
   advertiserImageContainer: {
     width: 130,
     height: 130,
     borderRadius: 50000,
-    position: "absolute",
+    position: 'absolute',
     top: -70,
-    backgroundColor: "#7709D8",
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#7709D8',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 10,
-    borderColor: COLORS.primaryColor,
+    borderColor: COLORS.darkBlue
   },
   advertiserImage: {
-    maxHeight: 30,
+    maxHeight: 30
   },
   advertiserDetails: {
-    alignSelf: "center",
-    marginTop: 60,
+    alignSelf: 'center',
+    marginTop: 60
   },
   name: {
     fontSize: 20,
-    fontWeight: "bold",
-    color: COLORS.primaryColor,
-    textAlign: "center",
+    fontWeight: 'bold',
+    color: COLORS.darkBlue,
+    textAlign: 'center'
   },
   title: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: COLORS.primaryColor,
-    textAlign: "center",
+    fontWeight: 'bold',
+    color: COLORS.darkBlue,
+    textAlign: 'center'
   },
   about: {
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     lineHeight: 20,
-    marginTop: 15,
+    marginTop: 15
   },
   url: {
     fontSize: 15,
-    color: COLORS.secBlueColor,
-    textAlign: "center",
+    color: COLORS.lightBlue,
+    textAlign: 'center',
     marginTop: 5,
-    fontWeight: "700",
+    fontWeight: '700'
   },
   tabs: {
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.darkBlue,
     height: 32,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   tabItem: {
     marginLeft: 30,
@@ -190,39 +190,39 @@ const styles = StyleSheet.create({
     height: 32,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 15
   },
   tabItemActive: {
     marginLeft: 30,
     minWidth: 100,
     height: 32,
-    backgroundColor: COLORS.whiteColor,
+    backgroundColor: COLORS.white,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 15
   },
   tabItemText: {
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     fontSize: 11,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   tabItemTextActive: {
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontSize: 11,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   tabItemContent: {
     paddingHorizontal: PADDINGS.horizontal,
     flex: 1,
-    backgroundColor: COLORS.whiteColor,
-    paddingTop: 40,
+    backgroundColor: COLORS.white,
+    paddingTop: 40
   },
   advertisersList: {
     marginTop: 10,
-    marginBottom: 20,
-  },
-});
+    marginBottom: 20
+  }
+})

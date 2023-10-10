@@ -1,12 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../../constants/Colors";
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { COLORS } from '../../constants/Colors'
 
 interface TabItemProps {
-  label: string;
-  item: any;
-  activeTab: any;
-  isLast?: boolean;
-  setActiveTab: (tab: string) => void;
+  label: string
+  item: any
+  activeTab: any
+  isLast?: boolean
+  setActiveTab: (tab: string) => void
 }
 
 export const TabItem = ({ item, label, activeTab, setActiveTab, isLast = false }: TabItemProps) => {
@@ -16,8 +16,8 @@ export const TabItem = ({ item, label, activeTab, setActiveTab, isLast = false }
         <Text style={activeTab === item ? styles.tabItemTextActive : styles.tabItemText}>{label}</Text>
       </View>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   tabItem: {
@@ -26,29 +26,29 @@ const styles = StyleSheet.create({
     height: 32,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 15
   },
   tabItemActive: {
     marginLeft: 30,
     minWidth: 100,
     height: 32,
-    backgroundColor: COLORS.whiteColor,
+    backgroundColor: COLORS.white,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 15
   },
   tabItemText: {
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     fontSize: 11,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   tabItemTextActive: {
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontSize: 11,
-    fontWeight: "bold",
-  },
-});
+    fontWeight: 'bold'
+  }
+})

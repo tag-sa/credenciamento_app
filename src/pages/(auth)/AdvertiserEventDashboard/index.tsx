@@ -92,22 +92,22 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
         {
           name: 'Confirmados',
           val: totalTeamsUsersConfirmed,
-          color: COLORS.mediumBlueColor,
-          legendFontColor: COLORS.mediumBlueColor,
+          color: COLORS.mediumBlue,
+          legendFontColor: COLORS.mediumBlue,
           legendFontSize: 12
         },
         {
           name: 'Não confirmados',
           val: totalTeamsUsersNotConfirmed,
-          color: COLORS.lightGrayColor,
-          legendFontColor: COLORS.grayColor,
+          color: COLORS.lightGray,
+          legendFontColor: COLORS.darkGray,
           legendFontSize: 12
         },
         {
           name: 'Recusados',
           val: totalTeamsUsersRefused,
-          color: COLORS.redColor,
-          legendFontColor: COLORS.redColor,
+          color: COLORS.red,
+          legendFontColor: COLORS.red,
           legendFontSize: 12
         }
       ])
@@ -119,10 +119,10 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
   useEffect(() => {
     if (newEvent && newEvent === true) {
       showMessage({
-        backgroundColor: COLORS.greenColor,
+        backgroundColor: COLORS.green,
         message: 'Evento criado com sucesso!',
         titleStyle: {
-          color: COLORS.whiteColor,
+          color: COLORS.white,
           fontWeight: 'bold'
         },
         style: {
@@ -138,8 +138,8 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
   }, [isFocused])
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: COLORS.whiteColor }}>
-      <View style={{ flex: 1, backgroundColor: COLORS.whiteColor }}>
+    <ScrollView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <View style={{ flex: 1, backgroundColor: COLORS.white }}>
         <View style={styles.container}>
           <View
             style={{
@@ -221,7 +221,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
         <View style={styles.tabs}>
           <ScrollView
             contentContainerStyle={{
-              backgroundColor: COLORS.primaryColor
+              backgroundColor: COLORS.darkBlue
             }}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -275,7 +275,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.darkBlue,
     paddingHorizontal: PADDINGS.horizontal
   },
   actions: {
@@ -288,11 +288,11 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     marginTop: 80,
     width: '90%',
-    backgroundColor: COLORS.whiteColor,
+    backgroundColor: COLORS.white,
     alignSelf: 'center',
     position: 'relative',
     borderRadius: 5,
-    shadowColor: COLORS.blackColor,
+    shadowColor: COLORS.black,
     shadowOffset: {
       width: 0,
       height: 10
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     paddingVertical: 25,
     marginTop: 15,
     width: '90%',
-    borderColor: COLORS.whiteColor,
+    borderColor: COLORS.white,
     borderWidth: 1,
     alignSelf: 'center',
     borderRadius: 5,
@@ -313,20 +313,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   generalSummaryBigNumber: {
-    color: COLORS.whiteColor,
+    color: COLORS.white,
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 22
   },
   generalSummaryLabel: {
-    color: COLORS.mediumBlueColor,
+    color: COLORS.mediumBlue,
     fontWeight: 'bold',
     fontSize: 10
   },
   advertiserContainerTitle: {
     textAlign: 'center',
     fontSize: 15,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold',
     marginTop: 50
   },
@@ -339,24 +339,24 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   summaryLabel: {
-    color: COLORS.mediumBlueColor,
+    color: COLORS.mediumBlue,
     fontSize: 13,
     fontWeight: 'bold'
   },
   summaryRefused: {
-    color: COLORS.redColor,
+    color: COLORS.red,
     fontWeight: 'bold',
     fontSize: 22
   },
   summaryConfirmed: {
-    color: COLORS.mediumBlueColor,
+    color: COLORS.mediumBlue,
     fontWeight: 'bold',
     fontSize: 22
   },
   summaryNotConfirmed: {
     fontWeight: 'bold',
     fontSize: 22,
-    color: COLORS.grayColor
+    color: COLORS.darkGray
   },
   advertiserImageContainer: {
     width: 130,
@@ -364,12 +364,12 @@ const styles = StyleSheet.create({
     borderRadius: 50000,
     position: 'absolute',
     top: -70,
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.darkBlue,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 10,
-    borderColor: COLORS.primaryColor
+    borderColor: COLORS.darkBlue
   },
   advertiserImage: {
     maxHeight: 30
@@ -377,22 +377,22 @@ const styles = StyleSheet.create({
   eventName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: COLORS.whiteColor
+    color: COLORS.white
   },
   advertiserName: {
     marginTop: 2,
     fontSize: 12,
-    color: COLORS.whiteColor
+    color: COLORS.white
   },
   tabs: {
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.darkBlue,
     height: 32,
     flexDirection: 'row'
   },
   tabItemContent: {
     paddingHorizontal: PADDINGS.horizontal,
     flex: 1,
-    backgroundColor: COLORS.whiteColor,
+    backgroundColor: COLORS.white,
     paddingTop: 40
   }
 })

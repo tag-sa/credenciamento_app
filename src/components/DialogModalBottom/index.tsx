@@ -1,75 +1,64 @@
-import React, { useCallback, useMemo, useRef, useEffect } from "react";
-import { View, Text, StyleSheet, Button, FlatList } from "react-native";
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
-import { COLORS } from "../../constants/Colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { COLORS } from '../../constants/Colors'
 
 interface DialogModalProps {
-  data: Array<{ id: number; name: string }>;
-  openModal: boolean;
-  onModalPresented?: () => void;
-  onModalDismissed?: () => void;
-  onSheetChange?: (index: number) => void;
-  onSelectItem: (item: any) => void;
+  data: Array<{ id: number; name: string }>
+  openModal: boolean
+  onModalPresented?: () => void
+  onModalDismissed?: () => void
+  onSheetChange?: (index: number) => void
+  onSelectItem: (item: any) => void
 }
 
-export const DialogModalBottomSheet: React.FC<DialogModalProps> = ({
-  openModal,
-  onModalPresented,
-  onModalDismissed,
-  onSheetChange,
-  data,
-  onSelectItem,
-}) => {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["45%", "50%"], []);
+export const DialogModalBottomSheet: React.FC<DialogModalProps> = ({ openModal, onModalPresented, onModalDismissed, onSheetChange, data, onSelectItem }) => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null)
+  const snapPoints = useMemo(() => ['45%', '50%'], [])
 
   const handleSheetChanges = useCallback(
     (index: number) => {
-      onSheetChange && onSheetChange(index);
+      onSheetChange && onSheetChange(index)
 
       if (index < 1) {
-        bottomSheetModalRef.current?.dismiss();
-        onModalDismissed();
+        bottomSheetModalRef.current?.dismiss()
+        onModalDismissed()
       }
     },
     [onSheetChange]
-  );
+  )
 
   useEffect(() => {
     if (openModal) {
-      bottomSheetModalRef.current?.present();
-      onModalPresented && onModalPresented();
+      bottomSheetModalRef.current?.present()
+      onModalPresented && onModalPresented()
     } else {
-      bottomSheetModalRef.current?.dismiss();
-      onModalDismissed();
+      bottomSheetModalRef.current?.dismiss()
+      onModalDismissed()
     }
-  }, [openModal]);
+  }, [openModal])
 
   return (
     <BottomSheetModalProvider>
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={1}
-        handleStyle={{ backgroundColor: COLORS.grayColor }}
+        handleStyle={{ backgroundColor: COLORS.darkGray }}
         handleComponent={() => (
           <View
             style={{
               paddingTop: 10,
-              paddingBottom: 5,
+              paddingBottom: 5
             }}
           >
             <View
               style={{
-                alignSelf: "center",
+                alignSelf: 'center',
                 width: 35,
                 height: 3,
-                backgroundColor: COLORS.mediumBlueColor,
-                borderRadius: 10,
+                backgroundColor: COLORS.mediumBlue,
+                borderRadius: 10
               }}
             />
           </View>
@@ -84,14 +73,14 @@ export const DialogModalBottomSheet: React.FC<DialogModalProps> = ({
             opacity={0.5}
             {...props}
             onPress={() => {
-              onModalDismissed();
+              onModalDismissed()
             }}
           />
         )}
       >
         <View style={styles.contentContainer}>
           <FlatList
-            style={{ width: "100%", paddingHorizontal: 20 }}
+            style={{ width: '100%', paddingHorizontal: 20 }}
             data={data}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.id.toString()}
@@ -99,24 +88,24 @@ export const DialogModalBottomSheet: React.FC<DialogModalProps> = ({
               <TouchableOpacity
                 onPress={() => {
                   // useGlobalStore.setState({ hideBottomTabBar: false });
-                  onSelectItem(item);
-                  onModalDismissed();
+                  onSelectItem(item)
+                  onModalDismissed()
                 }}
               >
                 <View
                   style={{
                     flex: 1,
                     borderBottomWidth: 1,
-                    borderBottomColor: COLORS.lightBlueColor,
+                    borderBottomColor: COLORS.lightBlue,
                     paddingVertical: 15,
-                    paddingLeft: 20,
+                    paddingLeft: 20
                   }}
                   key={index}
                 >
                   <Text
                     style={{
-                      color: COLORS.mediumBlueColor,
-                      fontWeight: "bold",
+                      color: COLORS.mediumBlue,
+                      fontWeight: 'bold'
                     }}
                   >
                     {item.name}
@@ -128,18 +117,18 @@ export const DialogModalBottomSheet: React.FC<DialogModalProps> = ({
         </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   modalStyle: {
-    overflow: "hidden",
+    overflow: 'hidden',
     borderWidth: 1,
-    borderColor: COLORS.grayColor,
-    borderRadius: 20,
+    borderColor: COLORS.darkGray,
+    borderRadius: 20
   },
   contentContainer: {
     flex: 1,
-    alignItems: "center",
-  },
-});
+    alignItems: 'center'
+  }
+})

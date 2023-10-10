@@ -1,33 +1,32 @@
-import { View, Text, StyleSheet } from "react-native";
-import { AdvertiserStartBanner } from "../../AdvertiserStartBanner";
-import { HowToStartSteps } from "../../HowToStartSteps/HowToStartSteps";
-import Button from "../../Button/Button";
-import { COLORS } from "../../../constants/Colors";
-import { PADDINGS } from "../../../constants/Paddings";
-import { useEffect, useState } from "react";
-import { axiosApi } from "../../../services/axios";
-import { useGlobalStore } from "../../../store";
-import { AdvertiserStarterSteps } from "../../AdvertiserStarterSteps";
-import { AdvertiserListItem } from "../../AdvertiserListItem";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { COLORS } from '../../../constants/Colors'
+import { PADDINGS } from '../../../constants/Paddings'
+import { axiosApi } from '../../../services/axios'
+import { useGlobalStore } from '../../../store'
+import { AdvertiserListItem } from '../../AdvertiserListItem'
+import { AdvertiserStartBanner } from '../../AdvertiserStartBanner'
+import { AdvertiserStarterSteps } from '../../AdvertiserStarterSteps'
+import Button from '../../Button/Button'
 
 export const AdvertiserDashboardComponent = () => {
-  const navigation = useNavigation<any>();
-  const [advertisers, setAdvertisers] = useState([]);
+  const navigation = useNavigation<any>()
+  const [advertisers, setAdvertisers] = useState([])
 
   useEffect(() => {
     const load = async () => {
-      useGlobalStore.setState({ isLoading: true });
+      useGlobalStore.setState({ isLoading: true })
 
-      const { data } = await axiosApi.get("/advertisers");
+      const { data } = await axiosApi.get('/advertisers')
 
-      useGlobalStore.setState({ isLoading: false });
+      useGlobalStore.setState({ isLoading: false })
 
-      setAdvertisers(data.data);
-    };
+      setAdvertisers(data.data)
+    }
 
-    load();
-  }, []);
+    load()
+  }, [])
 
   return (
     <>
@@ -36,13 +35,9 @@ export const AdvertiserDashboardComponent = () => {
         <View style={{ marginVertical: 20 }}>
           <AdvertiserStartBanner />
         </View>
-        <Text style={style.howTo}>
-          {!advertisers.length ? "Como começar?" : "Meus anunciantes"}
-        </Text>
+        <Text style={style.howTo}>{!advertisers.length ? 'Como começar?' : 'Meus anunciantes'}</Text>
       </View>
-      {!advertisers.length && (
-        <AdvertiserStarterSteps navigation={navigation} />
-      )}
+      {!advertisers.length && <AdvertiserStarterSteps navigation={navigation} />}
 
       {advertisers.length > 0 && (
         <>
@@ -53,48 +48,44 @@ export const AdvertiserDashboardComponent = () => {
                 name={advertiser.name}
                 url={advertiser.url}
                 onClick={() => {
-                  navigation.navigate("AdvertiserDashboardScreen", {
-                    advertiserId: advertiser.id,
-                  });
+                  navigation.navigate('AdvertiserDashboardScreen', {
+                    advertiserId: advertiser.id
+                  })
                 }}
                 onDelete={() => {
-                  console.log(advertiser.id);
+                  console.log(advertiser.id)
                 }}
               />
             ))}
           </View>
 
           <View style={{ marginBottom: 30 }}>
-            <Button
-              buttonEnabled={true}
-              onPress={() => navigation.navigate("AdvertiverAddScreen")}
-              label={"Novo anunciante"}
-            />
+            <Button buttonEnabled={true} onPress={() => navigation.navigate('AdvertiverAddScreen')} label={'Novo anunciante'} />
           </View>
         </>
       )}
     </>
-  );
-};
+  )
+}
 
 const style = StyleSheet.create({
   body: {
-    backgroundColor: COLORS.whiteColor,
-    paddingHorizontal: PADDINGS.horizontal,
+    backgroundColor: COLORS.white,
+    paddingHorizontal: PADDINGS.horizontal
   },
   hello: {
     fontSize: 20,
-    color: COLORS.primaryColor,
-    marginTop: 20,
+    color: COLORS.darkBlue,
+    marginTop: 20
   },
   howTo: {
     fontSize: 20,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     marginTop: 10,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   advertisersList: {
     marginTop: 20,
-    paddingHorizontal: PADDINGS.horizontal,
-  },
-});
+    paddingHorizontal: PADDINGS.horizontal
+  }
+})

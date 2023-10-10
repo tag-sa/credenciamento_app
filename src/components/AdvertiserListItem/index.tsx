@@ -1,20 +1,15 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { COLORS } from "../../constants/Colors";
-import { IMAGES } from "../../constants/Images";
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { COLORS } from '../../constants/Colors'
+import { IMAGES } from '../../constants/Images'
 
 type AdvertiserListItemProps = {
-  name: string;
-  url: string;
-  onClick: () => void;
-  onDelete: () => void;
-};
+  name: string
+  url: string
+  onClick: () => void
+  onDelete: () => void
+}
 
-export const AdvertiserListItem = ({
-  name,
-  url,
-  onClick,
-  onDelete,
-}: AdvertiserListItemProps) => {
+export const AdvertiserListItem = ({ name, url, onClick, onDelete }: AdvertiserListItemProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onClick} style={styles.containerClick}>
@@ -33,47 +28,47 @@ export const AdvertiserListItem = ({
         </View>
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: COLORS.lightGrayColor,
+    borderColor: COLORS.lightGray,
     borderRadius: 10,
     borderWidth: 1,
     height: 90,
     marginVertical: 8,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   containerClick: {
     flexGrow: 1,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   textContainer: {
-    justifyContent: "center",
-    paddingHorizontal: 20,
+    justifyContent: 'center',
+    paddingHorizontal: 20
   },
   name: {
     fontSize: 16,
-    color: COLORS.primaryColor,
-    fontWeight: "bold",
+    color: COLORS.darkBlue,
+    fontWeight: 'bold'
   },
   url: {
     fontSize: 14,
     marginTop: 4,
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue
   },
   imageContainer: {
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    backgroundColor: COLORS.lightGrayColor,
-    justifyContent: "center",
-    alignItems: "center",
-    width: 70,
+    backgroundColor: COLORS.lightGray,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 70
   },
   iconContainer: {
     padding: 10,
-    alignItems: "flex-end",
-    width: 70,
-  },
-});
+    alignItems: 'flex-end',
+    width: 70
+  }
+})

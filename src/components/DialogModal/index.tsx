@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: COLORS.blackColor,
+    backgroundColor: COLORS.black,
     opacity: 0.6
   },
   modal: {
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   card: {
-    backgroundColor: COLORS.whiteColor,
+    backgroundColor: COLORS.white,
     borderRadius: 7,
     height: 200,
     width: 350,
@@ -96,25 +96,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
-    color: COLORS.primaryColor
+    color: COLORS.darkBlue
   },
   message: {
     textAlign: 'center',
     fontWeight: '700',
     fontSize: 13,
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     marginTop: 20
   },
   cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderTopWidth: 1,
-    borderTopColor: COLORS.lightGrayColor,
+    borderTopColor: COLORS.lightGray,
     marginTop: 20
   },
   cancelButton: {
     borderRightWidth: 1,
-    borderRightColor: COLORS.lightGrayColor,
+    borderRightColor: COLORS.lightGray,
     flexGrow: 1,
 
     alignSelf: 'center',
@@ -130,11 +130,11 @@ const styles = StyleSheet.create({
     paddingVertical: 15
   },
   canceText: {
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold'
   },
   confirmText: {
-    color: COLORS.redColor,
+    color: COLORS.red,
     fontWeight: 'bold'
   }
 })

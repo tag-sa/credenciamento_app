@@ -1,25 +1,17 @@
-import { View, StyleSheet, Text } from "react-native";
-import { COLORS } from "../../constants/Colors";
+import { StyleSheet, Text, View } from 'react-native'
+import { COLORS } from '../../constants/Colors'
 
 interface HowToStartStepsProps {
-  step: number;
-  text: string;
-  isReverse?: boolean;
-  marginTop?: number;
-  marginBottom?: number;
-  marginLeft?: number;
-  marginRight?: number;
+  step: number
+  text: string
+  isReverse?: boolean
+  marginTop?: number
+  marginBottom?: number
+  marginLeft?: number
+  marginRight?: number
 }
 
-export const HowToStartSteps = ({
-  step,
-  text,
-  isReverse,
-  marginTop,
-  marginBottom,
-  marginLeft,
-  marginRight,
-}: HowToStartStepsProps) => {
+export const HowToStartSteps = ({ step, text, isReverse, marginTop, marginBottom, marginLeft, marginRight }: HowToStartStepsProps) => {
   return (
     <View
       style={
@@ -29,14 +21,14 @@ export const HowToStartSteps = ({
               marginTop,
               marginBottom,
               marginLeft,
-              marginRight,
+              marginRight
             }
           : {
               ...styles.container,
               marginTop,
               marginBottom,
               marginLeft,
-              marginRight,
+              marginRight
             }
       }
     >
@@ -47,71 +39,71 @@ export const HowToStartSteps = ({
         style={{
           ...styles.text,
           marginRight: isReverse ? 25 : 40,
-          marginLeft: isReverse ? 40 : 25,
+          marginLeft: isReverse ? 40 : 25
         }}
       >
         {text}
       </Text>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     height: 66,
-    width: "100%",
-    flexDirection: "row",
-    backgroundColor: COLORS.mediumBlueColor,
+    width: '100%',
+    flexDirection: 'row',
+    backgroundColor: COLORS.mediumBlue,
     borderTopLeftRadius: 40,
     borderBottomLeftRadius: 40,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
-    alignItems: "center",
+    alignItems: 'center'
   },
   containerReverse: {
     height: 66,
-    width: "100%",
-    flexDirection: "row-reverse",
-    backgroundColor: COLORS.mediumBlueColor,
+    width: '100%',
+    flexDirection: 'row-reverse',
+    backgroundColor: COLORS.mediumBlue,
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
     borderTopRightRadius: 40,
     borderBottomRightRadius: 40,
-    alignItems: "center",
+    alignItems: 'center'
   },
   step: {
-    backgroundColor: COLORS.orangeColor,
+    backgroundColor: COLORS.orange,
     borderRadius: 50,
     width: 66,
     height: 66,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: COLORS.blackColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: COLORS.black,
     shadowOffset: { width: 3, height: 1 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.5
   },
   stepReverse: {
-    backgroundColor: COLORS.orangeColor,
+    backgroundColor: COLORS.orange,
     borderRadius: 50,
     width: 66,
     height: 66,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: COLORS.blackColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: COLORS.black,
     shadowOffset: { width: -3, height: 1 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.5
   },
   stepText: {
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontSize: 30,
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   text: {
     flex: 1,
-    flexWrap: "wrap",
-    color: COLORS.primaryColor,
+    flexWrap: 'wrap',
+    color: COLORS.darkBlue,
     fontSize: 10,
-    fontWeight: "bold",
-    marginLeft: 20,
-  },
-});
+    fontWeight: 'bold',
+    marginLeft: 20
+  }
+})

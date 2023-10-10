@@ -24,7 +24,7 @@ export const DashboardScreen = ({ navigation }) => {
       automaticallyAdjustKeyboardInsets={true}
       contentContainerStyle={{
         flexGrow: 1,
-        backgroundColor: COLORS.whiteColor
+        backgroundColor: COLORS.white
       }}
     >
       {user?.type == 'pj' ? <AdvertiserDashboardComponent /> : <WorkerDashboardComponent />}

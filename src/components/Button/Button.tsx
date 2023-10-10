@@ -1,18 +1,18 @@
-import { Text, TouchableOpacity } from "react-native";
-import { COLORS } from "../../constants/Colors";
+import { Text, TouchableOpacity } from 'react-native'
+import { COLORS } from '../../constants/Colors'
 
 interface ButtonProps {
-  buttonEnabled?: boolean;
-  onPress: () => void;
-  label: string;
-  width?: number;
-  height?: number;
-  marginTop?: number;
-  borderRadius?: number;
-  textColor?: string;
-  fontSize?: number;
-  buttonEnabledColor?: string;
-  buttonDisabledColor?: string;
+  buttonEnabled?: boolean
+  onPress: () => void
+  label: string
+  width?: number
+  height?: number
+  marginTop?: number
+  borderRadius?: number
+  textColor?: string
+  fontSize?: number
+  buttonEnabledColor?: string
+  buttonDisabledColor?: string
 }
 
 export default function Button({
@@ -23,10 +23,10 @@ export default function Button({
   marginTop = 20,
   width = 250,
   borderRadius = 10,
-  buttonDisabledColor = COLORS.lightBlueColor,
-  buttonEnabledColor = COLORS.blueColor,
+  buttonDisabledColor = COLORS.lightBlue,
+  buttonEnabledColor = COLORS.darkBlue,
   fontSize = 18,
-  textColor = COLORS.whiteColor,
+  textColor = COLORS.white
 }: ButtonProps) {
   return (
     <TouchableOpacity
@@ -36,14 +36,14 @@ export default function Button({
         borderRadius,
         height,
         marginTop,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         width,
-        alignSelf: "center",
+        alignSelf: 'center'
       }}
       onPress={() => {
         if (buttonEnabled) {
-          onPress();
+          onPress()
         }
       }}
     >
@@ -51,12 +51,12 @@ export default function Button({
         style={{
           color: textColor,
           fontSize,
-          fontWeight: "bold",
-          letterSpacing: 1.2,
+          fontWeight: 'bold',
+          letterSpacing: 1.2
         }}
       >
         {label}
       </Text>
     </TouchableOpacity>
-  );
+  )
 }

@@ -23,7 +23,7 @@ type AdvertiserEventTeamProps = {
 export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDuplicate, isPastEvent }: AdvertiserEventTeamProps) => {
   let totalTeamsUsers = 0
   let totalTeamsUsersConfirmed = 0
-  let fillColor = COLORS.redColor
+  let fillColor = COLORS.red
 
   totalTeamsUsers += team.teamsUsers.length
 
@@ -34,9 +34,9 @@ export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDup
   })
 
   if (totalTeamsUsersConfirmed > 30 && totalTeamsUsersConfirmed < 70) {
-    fillColor = COLORS.orangeColor
+    fillColor = COLORS.orange
   } else if (totalTeamsUsersConfirmed > 70) {
-    fillColor = COLORS.primaryColor
+    fillColor = COLORS.darkBlue
   }
 
   return (
@@ -60,7 +60,7 @@ export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDup
           </Text>
 
           <View style={{ marginTop: 10 }}>
-            <Progress.Bar progress={0.3} unfilledColor={COLORS.grayColor} borderWidth={0} color={fillColor} />
+            <Progress.Bar progress={0.3} unfilledColor={COLORS.darkGray} borderWidth={0} color={fillColor} />
           </View>
 
           <View style={{ flexDirection: 'row', marginTop: 10 }}>
@@ -92,7 +92,7 @@ export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDup
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: COLORS.lightGrayColor,
+    borderColor: COLORS.lightGray,
     borderRadius: 10,
     height: 90,
     marginVertical: 8,
@@ -110,19 +110,19 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    color: COLORS.primaryColor,
+    color: COLORS.darkBlue,
     fontWeight: 'bold'
   },
   vacancy: {
     fontSize: 14,
     marginTop: 4,
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     fontWeight: 'bold'
   },
   imageContainer: {
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.darkBlue,
     justifyContent: 'center',
     alignItems: 'center',
     width: 42
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   details: {
     fontSize: 10,
-    color: COLORS.secBlueColor,
+    color: COLORS.lightBlue,
     marginLeft: 5,
     fontWeight: 'bold'
   }

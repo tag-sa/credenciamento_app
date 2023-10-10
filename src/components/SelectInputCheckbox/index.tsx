@@ -2,20 +2,19 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../../constants/Colors'
 
 interface InputProps {
-  label: string
-  value?: string
+  value?: string[]
   placeholder?: string
   onInputPress?: (_) => void
   marginTop?: number
   marginBottom?: number
-  error?: boolean
+
   textColor?: string
   textWeight?: 'normal' | 'bold'
-  erroMessage?: string
+
   addrRef?: any
 }
 
-export default function CustomSelectInput(props: InputProps) {
+export default function CustomSelectInputCheckbox(props: InputProps) {
   return (
     <>
       <Pressable onPress={props.onInputPress}>
@@ -24,24 +23,29 @@ export default function CustomSelectInput(props: InputProps) {
             ...styles.input,
             marginTop: props.marginTop,
             marginBottom: props.marginBottom,
-            borderColor: props.error ? COLORS.red : COLORS.darkGray
+            borderColor: COLORS.darkGray
           }}
         >
-          <Text
-            style={{
-              ...styles.label,
-              fontWeight: props.textWeight || 'bold',
-              color: props.textColor || COLORS.darkGray
-            }}
-          >
-            {props.label}
+          <Text style={styles.inputText}>
+            {!props.value.length && props.placeholder}
+            {props.value && props.value.length > 0 && (
+              <>
+                {props.value.length > 2 && (
+                  <>
+                    {props.value[0]}, {props.value[1]}, +{props.value.length - 2}
+                  </>
+                )}
+                {props.value.length <= 2 && (
+                  <>
+                    {props.value[0]}
+                    {props.value.length > 1 && <>, {props.value[1]}</>}
+                  </>
+                )}
+              </>
+            )}
           </Text>
-          <View style={styles.inputView}>
-            <Text style={styles.inputText}>{!props.value ? props.placeholder : props.value}</Text>
-          </View>
         </View>
       </Pressable>
-      {props.error && <Text style={styles.invalid}>{props.erroMessage}</Text>}
     </>
   )
 }
@@ -58,10 +62,8 @@ const styles = StyleSheet.create({
     color: COLORS.lightGray,
     fontWeight: '500'
   },
-  inputView: {
-    marginTop: 10
-  },
   inputText: {
+    paddingVertical: 10,
     color: COLORS.darkGray
   },
   invalid: {
