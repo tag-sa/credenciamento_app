@@ -35,10 +35,9 @@ export const auth = (): AuthProps => {
   }
 
   const getToken = async () => {
-    const user = await getUser()
-
-    return user ? user.access_token : null
-  }
+    const user = await getUser();
+    return user ? user.access_token : null;
+  };
 
   return {
     getUser,

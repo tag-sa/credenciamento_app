@@ -182,6 +182,8 @@ export const AccountCreateScreen = ({ navigation }) => {
 
                   navigation.replace('Dashboard')
                 } catch (error) {
+                  console.log(error, 1)
+                  console.log(error.response.data, 1)
                   //TODO: tratar erros
                   let title = 'Erro ao fazer login'
                   let message = 'Usuário ou senha inválidos'

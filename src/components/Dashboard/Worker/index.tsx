@@ -4,6 +4,8 @@ import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
 import { PADDINGS } from '../../../constants/Paddings'
 
+import EventCategoryList from '../../AdvertiserEventDashboard/Carroussel'
+import JobsList from '../../AdvertiserEventDashboard/JobsList'
 import { NotFound } from '../../NotFound'
 import { WorkerDashboardBannersComponent } from '../../WorkerDashboardBanners'
 
@@ -31,8 +33,10 @@ export const WorkerDashboardComponent = () => {
             />
           </ScrollView>
         </View>
-        <Text style={style.howTo}>Como começar?</Text>
-        {!jobs.length ? <NotFound /> : <View />}
+        <EventCategoryList />
+        <Text style={style.howTo}>Vagas em destaque </Text>
+        {/* <Text style={style.howTo}>Como começar?</Text> */}
+        {!jobs.length ? <JobsList onClick={undefined} /> : <NotFound />}
       </View>
     </>
   )
