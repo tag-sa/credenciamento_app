@@ -1,19 +1,29 @@
 import { Slider } from '@miblanchard/react-native-slider'
 import { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { BackButton } from '../../../components/BackButton'
 import { CheckBox } from '../../../components/CheckBox'
 import Radio from '../../../components/Radio/Radio'
 
+import { DialogModal } from '../../../components/DialogModal'
 import { DialogModalBottomSheetWithCheckbox } from '../../../components/DialogModalBottomWithCheckbox'
 import CustomSelectInputCheckbox from '../../../components/SelectInputCheckbox'
 import { Switch } from '../../../components/Switch'
 import { COLORS } from '../../../constants/Colors'
 import { PADDINGS } from '../../../constants/Paddings'
+import { auth } from '../../../services/auth'
 import { axiosApi } from '../../../services/axios'
 import { useGlobalStore } from '../../../store'
 
-export const SettingsPage = () => {
+export const SettingsPage = ({ navigation }) => {
+  const MIN_DISTANCE = 1
+  const MAX_DISTANCE = 100
+
+  const [jobsType, setJobsType] = useState('')
+  const [distance, setDistance] = useState(1)
+  const [openModal, setOpenModal] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
+
   const [isEnabledConvocation, setIsEnabledConvocation] = useState(false)
   const [isEnabledJobsNotifications, setIsEnabledJobsNotifications] = useState(false)
   const [isEnabledConvocationNeedsApproval, setIsEnabledConvocationNeedsApproval] = useState(false)
@@ -23,7 +33,7 @@ export const SettingsPage = () => {
   const [notificationsCheckBoxes, setNotificationsCheckBoxes] = useState([
     {
       id: 1,
-      label: 'SMS',
+      label: 'Sms',
       field: 'sms',
       checked: false
     },
@@ -41,7 +51,7 @@ export const SettingsPage = () => {
     },
     {
       id: 4,
-      label: 'WHATS',
+      label: 'Whats',
       field: 'whatsapp',
       checked: false
     }
@@ -62,41 +72,6 @@ export const SettingsPage = () => {
     }
   ])
 
-  const [jobsType, setJobsType] = useState('')
-  const [distance, setDistance] = useState(1)
-  const MIN_DISTANCE = 1
-  const MAX_DISTANCE = 100
-
-  const [openModal, setOpenModal] = useState(false)
-  const handleOpenModal = () => {
-    setOpenModal(true)
-  }
-  const handleModalDismissed = async (newSelectedValues: Array<{ function_id: number }>) => {
-    useGlobalStore.setState({ isLoading: true })
-
-    setUserFunctions(newSelectedValues)
-    setOpenModal(false)
-
-    console.log(newSelectedValues)
-
-    const { data } = await axiosApi.post(`/users/settings/functions`, {
-      functions_ids: newSelectedValues.map((func) => func.function_id)
-    })
-
-    console.log(data)
-
-    useGlobalStore.setState({ isLoading: false })
-  }
-
-  const handleUpdateConvocation = async () => {
-    setIsEnabledConvocation(!isEnabledConvocation)
-
-    await axiosApi.patch(`/users/settings`, {
-      field: 'enable_convocation',
-      value: !isEnabledConvocation
-    })
-  }
-
   useEffect(() => {
     const loadFunctions = async () => {
       useGlobalStore.setState({ isLoading: true })
@@ -108,7 +83,6 @@ export const SettingsPage = () => {
       const jobs_notifications: { type: 'email' | 'sms' | 'push' | 'whats' }[] = userSettings.data.jobs_notifications
 
       if (jobs_notifications) {
-        setIsEnabledJobsNotifications(true)
         const newNotificationsCheckBoxes = [...notificationsCheckBoxes]
         jobs_notifications.forEach((notification) => {
           const index = newNotificationsCheckBoxes.findIndex((checkBox) => checkBox.field == notification.type)
@@ -125,6 +99,7 @@ export const SettingsPage = () => {
       setDistance(settings?.distance)
       setIsEnabledConvocationNeedsApproval(settings?.convocations_needs_approval)
       setUserFunctions(userSettings.data.functions)
+      setIsEnabledJobsNotifications(!settings?.disabled_jobs_notifications)
 
       if (settings?.show_score) {
         const newInformationsToShowCheckboxex = [...informationsToShowCheckboxex]
@@ -146,8 +121,87 @@ export const SettingsPage = () => {
     loadFunctions()
   }, [])
 
+  const handleOpenModal = () => {
+    setOpenModal(true)
+  }
+  const handleModalDismissed = async (newSelectedValues: Array<{ function_id: number }>) => {
+    useGlobalStore.setState({ isLoading: true })
+
+    setUserFunctions(newSelectedValues)
+    setOpenModal(false)
+
+    await axiosApi.post(`/users/settings/functions`, {
+      functions_ids: newSelectedValues.map((func) => func.function_id)
+    })
+
+    useGlobalStore.setState({ isLoading: false })
+  }
+
+  const handleUpdateConvocation = async () => {
+    setIsEnabledConvocation(!isEnabledConvocation)
+
+    await axiosApi.patch(`/users/settings`, {
+      field: 'enable_convocation',
+      value: !isEnabledConvocation
+    })
+  }
+
+  const disableJobsNotifications = async () => {
+    if (notificationsCheckBoxes.some((notification) => notification.checked)) {
+      setIsEnabledJobsNotifications(!isEnabledJobsNotifications)
+    }
+
+    await axiosApi.patch(`/users/settings`, {
+      field: 'disabled_jobs_notifications',
+      value: !isEnabledJobsNotifications
+    })
+
+    await axiosApi.post(`/users/settings/jobs-notifications`, {
+      types: []
+    })
+
+    setNotificationsCheckBoxes(
+      notificationsCheckBoxes.map((notification) => {
+        notification.checked = false
+        return notification
+      })
+    )
+  }
+
+  const handleNotificationsTypesUpdate = async () => {
+    const typesToSave = notificationsCheckBoxes.filter((notification) => notification.checked).map((notification) => notification.field)
+
+    await axiosApi.post(`/users/settings/jobs-notifications`, {
+      types: typesToSave
+    })
+
+    setIsEnabledJobsNotifications(typesToSave.length > 0)
+  }
+
+  const handleTerminateAccount = async () => {
+    useGlobalStore.setState({ isLoading: true })
+
+    await axiosApi.delete(`/users/terminate-account`)
+    await auth().logout(navigation)
+    useGlobalStore.setState({ isLoading: false })
+  }
+
   return (
     <>
+      <DialogModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        title={'Deletar minha conta'}
+        cancelText="Voltar"
+        confirmText="Deletar"
+        message={[
+          'Caso você seja o único administrador de algum evento, a deleção de conta implica na deleção do evento como um todo.',
+          'Caso existam outros administradores a deleção de conta irá tirar o seu acesso á este evento e ao app em geral, sendo necessário criação de nova conta e novo convite para voltar a ter acesso.',
+          'Todos os anunciantes cadastrados por você deixam de existir na plataforma.',
+          'Caso você tenha se candidatado á uma vaga, a mesma voltará a ficar disponível.'
+        ]}
+        confirmAction={handleTerminateAccount}
+      />
       <ScrollView automaticallyAdjustKeyboardInsets={true} contentContainerStyle={styles.scrollView}>
         <View style={styles.container}>
           <View style={{ marginTop: 10, marginBottom: 30 }}>
@@ -176,12 +230,7 @@ export const SettingsPage = () => {
             <View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
                 <Text style={styles.option}>Notificações de vagas</Text>
-                <Switch
-                  isEnabled={isEnabledJobsNotifications}
-                  toggleSwitch={() => setIsEnabledJobsNotifications(!isEnabledJobsNotifications)}
-                  activeText="Ativo"
-                  inactiveText="Inativo"
-                />
+                <Switch isEnabled={isEnabledJobsNotifications} toggleSwitch={disableJobsNotifications} activeText="Ativo" inactiveText="Inativo" />
               </View>
               <Text style={styles.optionDescriptions}>
                 Essa configuração permite que você seja avisado quando uma nova vaga for publicada. Você pode escolher receber por sms ou por push (notificação do aplicativo).
@@ -196,10 +245,12 @@ export const SettingsPage = () => {
                       checkBorderColor="white"
                       borderColor={COLORS.darkBlue}
                       checked={checkBox.checked}
-                      setChecked={(checked: boolean) => {
+                      setChecked={async (checked: boolean) => {
                         const newCheckBoxes = [...notificationsCheckBoxes]
                         newCheckBoxes[index].checked = checked
                         setNotificationsCheckBoxes(newCheckBoxes)
+
+                        await handleNotificationsTypesUpdate()
                       }}
                     />
                     <Text style={styles.label}>{checkBox.label}</Text>
@@ -338,7 +389,9 @@ export const SettingsPage = () => {
               </Text>
             </View>
           </View>
-          <Text style={{ color: COLORS.red, fontWeight: 'bold', fontSize: 16, marginTop: 50, marginBottom: 50 }}>Deletar minha conta</Text>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Text style={{ color: COLORS.red, fontWeight: 'bold', fontSize: 16, marginTop: 50, marginBottom: 50 }}>Deletar minha conta</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
 

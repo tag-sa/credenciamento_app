@@ -7,7 +7,7 @@ import { PADDINGS } from '../../constants/Paddings'
 
 interface DialogModalProps {
   title: string
-  message: string
+  message: string | string[]
   confirmText?: string
   cancelText?: string
   closeIcon?: FC<SvgProps>
@@ -37,7 +37,15 @@ export const DialogModal = ({
           </View>
           <View style={styles.cardBody}>
             <Text style={styles.title}>{title}</Text>
-            <Text style={styles.message}>{message}</Text>
+            {typeof message === 'object' ? (
+              message.map((item, index) => (
+                <Text key={index} style={styles.message}>
+                  {item}
+                </Text>
+              ))
+            ) : (
+              <Text style={styles.message}>{message}</Text>
+            )}
           </View>
 
           <View style={styles.cardFooter}>
@@ -79,7 +87,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.white,
     borderRadius: 7,
-    height: 200,
+    minHeight: 200,
     width: 350,
     paddingTop: PADDINGS.vertical
   },

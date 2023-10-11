@@ -72,7 +72,6 @@ export const DialogModalBottomSheetWithCheckbox: React.FC<DialogModalBottomSheet
             alignItems: 'center'
           }}
         >
-          <Text>{selectedValuesState.map((selectedValue) => selectedValue.function_id).join(', ')}</Text>
           <FlatList
             style={{ width: '100%', paddingHorizontal: 20 }}
             data={data}
