@@ -9,7 +9,7 @@ import CustomSelectInput from '../../../components/SelectInput'
 import { COLORS } from '../../../constants/Colors'
 import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
-import { useGlobalStore } from '../../../store'
+import { useLoadingStore } from '../../../store/loading.store'
 
 export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
   const { event } = route.params
@@ -59,12 +59,12 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
     setEventTimeEnd(moment.utc(event.date_end).format('HH:mm'))
 
     const loadFunctions = async () => {
-      useGlobalStore.setState({ isLoading: true })
+      useLoadingStore.setState({ isLoading: true })
 
       const { data } = await axiosApi.get(`/functions`)
       setFunctions(data.data)
 
-      useGlobalStore.setState({ isLoading: false })
+      useLoadingStore.setState({ isLoading: false })
     }
 
     loadFunctions()

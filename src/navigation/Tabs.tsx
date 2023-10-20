@@ -1,19 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useEffect, useState } from 'react'
-import { COLORS } from '../constants/Colors'
-import { UserType } from '../model/user.model'
-import { AdvertiserScreen } from '../pages/(auth)/Advertiser'
-import { DashboardScreen } from '../pages/(auth)/Dashboard'
-import { JobsScreen } from '../pages/(auth)/Jobs'
-import { ProfileScreen } from '../pages/(auth)/Profile'
-import { auth } from '../services/auth'
-
 import AdvertiserItem from '../components/AuthBottomMenu/Advertiser'
 import HomeItem from '../components/AuthBottomMenu/Home'
-import JobsItem from '../components/AuthBottomMenu/Jobs'
 import ProfileItem from '../components/AuthBottomMenu/Profile'
 import { HeaderComponent } from '../components/Header'
+import { COLORS } from '../constants/Colors'
 import { IMAGES } from '../constants/Images'
+import { UserType } from '../model/user.model'
+import { AdvertiserScreen } from '../pages/(auth)/Advertiser'
 import { AdvertiverAddScreen } from '../pages/(auth)/AdvertiserAdd'
 import { AdvertiserDashboardScreen } from '../pages/(auth)/AdvertiserDashboard'
 import { AdvertiverEventAddScreen } from '../pages/(auth)/AdvertiserEventAdd'
@@ -22,17 +16,21 @@ import { AdvertiverEventTeamAddScreen } from '../pages/(auth)/AdvertiserEventTea
 import { AdvertiserEventTeamAddCreatedShareScreen } from '../pages/(auth)/AdvertiserEventTeamAddCreatedShare'
 import { AdvertiserEventTeamDashboardScreen } from '../pages/(auth)/AdvertiserEventTeamDashboard'
 import { AdvertiverPlaceAddScreen } from '../pages/(auth)/AdvertiserPlaceAdd'
+import { DashboardScreen } from '../pages/(auth)/Dashboard'
+import { ProfileScreen } from '../pages/(auth)/Profile'
 import { WorkerProfiledScreen } from '../pages/(auth)/WorkerProfile'
+import { useUserStore } from '../store/user.store'
 
 const Tab = createBottomTabNavigator()
 
 export function MyTabs({ route }) {
   const { screenName } = route.params
+  const { getUser } = useUserStore()
   const [user, setUser] = useState<UserType>()
 
   useEffect(() => {
     async function load() {
-      const user = await auth().getUser()
+      const user = getUser()
 
       setUser(user)
     }
@@ -85,7 +83,7 @@ export function MyTabs({ route }) {
         />
       )}
 
-      {user?.type === 'pf' && (
+      {/* {user?.type === 'pf' && (
         <Tab.Screen
           name="Jobs"
           component={JobsScreen}
@@ -93,11 +91,12 @@ export function MyTabs({ route }) {
             tabBarLabel: ({ focused }) => <JobsItem focused={focused} />
           }}
         />
-      )}
+      )} */}
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
+          header: () => <HeaderComponent backgroundColor={COLORS.darkBlue} LeftIcon={IMAGES.ICONS.HamburguerWhite} RightIcon={IMAGES.ICONS.IconProfileWhiteBackground} />,
           tabBarLabel: ({ focused }) => <ProfileItem focused={focused} />
         }}
       />

@@ -10,7 +10,7 @@ import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
 import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
-import { useGlobalStore } from '../../../store'
+import { useLoadingStore } from '../../../store/loading.store'
 
 export const AdvertiserDashboardScreen = ({ route, navigation }) => {
   const { advertiserId } = route.params
@@ -28,11 +28,11 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
   }>()
 
   const loadAdvertiser = async () => {
-    useGlobalStore.setState({ isLoading: true })
+    useLoadingStore.setState({ isLoading: true })
 
     const [adv, pls] = await Promise.all([axiosApi.get(`/advertisers/${advertiserId}`), axiosApi.get(`/advertisers/${advertiserId}/places/`)])
 
-    useGlobalStore.setState({ isLoading: false })
+    useLoadingStore.setState({ isLoading: false })
 
     setAdvertiser(adv.data.data)
     setPlaces(pls.data.data)
@@ -54,7 +54,6 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
             }}
           >
             <BackButton Icon={IMAGES.ICONS.BackButtonWhite} />
-            <IMAGES.ICONS.FilterWhite />
           </View>
           <View style={styles.advertiserContainer}>
             <View style={styles.advertiserImageContainer}>

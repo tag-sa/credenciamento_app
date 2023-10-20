@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native'
 import { StyleSheet, Text, View } from 'react-native'
 import { NumericFormat } from 'react-number-format'
 import { COLORS } from '../../../constants/Colors'
@@ -18,8 +17,6 @@ interface AdvertiserEventCostsProps {
 }
 
 export const AdvertiserEventCostsTab = ({ teams, totalExecuted, totalPreview, totalTeamsUsers, totalTeamsUsersConfirmed }: AdvertiserEventCostsProps) => {
-  const navigation = useNavigation<any>()
-
   return (
     <>
       <View style={styles.content}>

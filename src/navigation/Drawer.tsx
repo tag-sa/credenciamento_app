@@ -10,19 +10,19 @@ import { IMAGES } from '../constants/Images'
 import { PADDINGS } from '../constants/Paddings'
 import { UserType } from '../model/user.model'
 import { SettingsPage } from '../pages/(auth)/Settings'
-import { auth } from '../services/auth'
+import { useUserStore } from '../store/user.store'
 import { MyTabs } from './Tabs'
 
 const Drawer = createDrawerNavigator()
 
 export const MyDrawer = () => {
+  const { getUser, logout } = useUserStore()
   const [user, setUser] = useState<UserType>()
   const [notifications, setNotifications] = useState([])
 
   useEffect(() => {
     async function load() {
-      const user = await auth().getUser()
-
+      const user = getUser()
       setUser(user)
     }
 
@@ -98,7 +98,7 @@ export const MyDrawer = () => {
 
             <TouchableOpacity
               onPress={async () => {
-                await auth().logout(props.navigation)
+                await logout(props.navigation)
               }}
             >
               <Text style={{ color: COLORS.darkBlue, fontWeight: 'bold', fontSize: 16, marginTop: 20 }}>Sair</Text>

@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Image, ScrollView, StyleSheet, View } from 'react-native'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import { showMessage } from 'react-native-flash-message'
 import Button from '../../../components/Button/Button'
@@ -11,15 +12,15 @@ import RegistrationSteps from '../../../components/RegistrationSteps/Registratio
 import { COLORS } from '../../../constants/Colors'
 import { PADDINGS } from '../../../constants/Paddings'
 import { UserType } from '../../../model/user.model'
-import { auth } from '../../../services/auth'
 import { axiosApi } from '../../../services/axios'
+import { useUserStore } from '../../../store/user.store'
 import Step1 from './steps/step-1'
 import Step2 from './steps/step-2'
 import Step3 from './steps/step-3'
 
 export const AccountCreateScreen = ({ navigation }) => {
   const { top } = useSafeAreaInsets()
-
+  const { setUser } = useUserStore()
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -171,19 +172,16 @@ export const AccountCreateScreen = ({ navigation }) => {
                     id: login.data.user.id,
                     name: login.data.user.name,
                     email: login.data.user.email,
-                    access_token: login.data.access_token,
                     nickname: login.data.user.nickname,
                     document: login.data.user.type == 'pj' ? login.data.user.cnpj : login.data.user.cpf,
                     type: login.data.user.type
                   }
 
-                  await auth().setUser(user)
-                  await auth().setToken(login.data.access_token)
+                  setUser(user)
+                  await AsyncStorage.setItem('token', login.data.access_token)
 
                   navigation.replace('Dashboard')
                 } catch (error) {
-                  console.log(error, 1)
-                  console.log(error.response.data, 1)
                   //TODO: tratar erros
                   let title = 'Erro ao fazer login'
                   let message = 'Usuário ou senha inválidos'

@@ -1,75 +1,68 @@
-import { useNavigation } from '@react-navigation/native'
+import moment from 'moment'
 import { StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../../../constants/Colors'
+import { IMAGES } from '../../../constants/Images'
 import { PADDINGS } from '../../../constants/Paddings'
-import { AdvertiserEventItem } from '../../AdvertiserEventItem'
-import Button from '../../Button/Button'
 
-export const AdverstiserEventAboutTab = ({ advertiser }) => {
-  const navigation = useNavigation<any>()
+interface AdverstiserEventAboutTabProps {
+  dateStart: string
+  dateEnd: string
+  placeName: string
+  placeAddress: string
+}
+
+export const AdverstiserEventAboutTab = (props: AdverstiserEventAboutTabProps) => {
   return (
     <View style={styles.tabItemContent}>
-      <Text style={{ ...styles.title, textAlign: 'left' }}>{advertiser?.name}</Text>
-      <Text style={{ ...styles.about, textAlign: 'left' }}>{advertiser?.about}</Text>
-      <Text style={{ ...styles.title, marginTop: 30, textAlign: 'left' }}>Eventos da empresa</Text>
-
-      <View style={styles.advertisersList}>
-        {advertiser?.pastEvents?.map((event, index) => (
-          <AdvertiserEventItem
-            key={index}
-            event={event}
-            onClick={() => {
-              navigation.navigate('AdvertiserEventDashboardScreen', {
-                eventId: event.id
-              })
-            }}
-            onDelete={() => {
-              console.log(event.id)
-            }}
-          />
-        ))}
+      <Text style={{ ...styles.title, textAlign: 'left' }}>Informações</Text>
+      <View style={{ ...styles.aboutItem, marginTop: 35 }}>
+        <IMAGES.ICONS.EmptyCalendar />
+        <Text style={styles.aboutItemText}>
+          {moment(props.dateStart).format('DD/MM/YYYY')} á {moment(props.dateEnd).format('DD/MM/YYYY')}
+        </Text>
       </View>
-      <View style={{ marginBottom: 30 }}>
-        <Button
-          buttonEnabled={true}
-          onPress={() =>
-            navigation.navigate('AdvertiverEventAddScreen', {
-              advertiserId: advertiser?.id
-            })
-          }
-          label={'Novo evento'}
-        />
+      <View style={styles.aboutItem}>
+        <IMAGES.ICONS.ClockAboutEvent />
+        <Text style={styles.aboutItemText}>
+          {moment(props.dateStart).format('HH:mm')} á {moment(props.dateEnd).format('HH:mm')}
+        </Text>
+      </View>
+      <View style={{ ...styles.aboutItem, borderBottomWidth: 0 }}>
+        <IMAGES.ICONS.LocationAboutEvent />
+        <View>
+          <Text style={styles.aboutItemText}>{props.placeName}</Text>
+          <Text style={{ ...styles.aboutItemText, color: COLORS.lightBlue, fontSize: 12 }}>{props.placeAddress}</Text>
+        </View>
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  name: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.darkBlue,
-    textAlign: 'center'
-  },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
     color: COLORS.darkBlue,
     textAlign: 'center'
   },
-  about: {
-    color: COLORS.lightBlue,
-    lineHeight: 20,
-    marginTop: 15
-  },
   tabItemContent: {
     paddingHorizontal: PADDINGS.horizontal,
     flex: 1,
     backgroundColor: COLORS.white,
-    paddingTop: 40
+    paddingVertical: 30
   },
-  advertisersList: {
-    marginTop: 10,
-    marginBottom: 20
+  aboutItem: {
+    marginTop: 20,
+    paddingHorizontal: PADDINGS.horizontal,
+    gap: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.lightBlue
+  },
+  aboutItemText: {
+    color: COLORS.darkBlue,
+    fontWeight: 'bold'
   }
 })

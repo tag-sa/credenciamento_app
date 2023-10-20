@@ -12,7 +12,7 @@ import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
 import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
-import { useGlobalStore } from '../../../store'
+import { useLoadingStore } from '../../../store/loading.store'
 
 export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
   const { eventId, newEvent, isPastEvent } = route.params
@@ -25,6 +25,15 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
     total_by_answers: number
     total_executed: number
     total_preview: number
+    place: {
+      name: string
+      address: string
+      city: string
+      neighborhood: string
+      number: string
+      state: string
+      zip: string
+    }
   }>()
 
   const [advertiser, setAdvertiser] = useState<{
@@ -50,7 +59,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
     let totalTeamsUsersNotConfirmed = 0
     let totalTeamsUsersRefused = 0
 
-    useGlobalStore.setState({ isLoading: true })
+    useLoadingStore.setState({ isLoading: true })
 
     setEvent(undefined)
     setAdvertiser(undefined)
@@ -113,7 +122,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
       ])
     }
 
-    useGlobalStore.setState({ isLoading: false })
+    useLoadingStore.setState({ isLoading: false })
   }
 
   useEffect(() => {
@@ -256,7 +265,12 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
 
         {activeTab === 'about' && (
           // TODO
-          <AdverstiserEventAboutTab advertiser={undefined} />
+          <AdverstiserEventAboutTab
+            dateStart={event?.dateStart}
+            dateEnd={event?.dateEnd}
+            placeName={event?.place?.name}
+            placeAddress={`${event?.place?.address}, ${event?.place?.number} - ${event?.place?.neighborhood}, ${event?.place?.city} - ${event?.place?.state}`}
+          />
         )}
         {activeTab === 'teams' && <AdverstiserEventsTeamsTab isPastEvent={isPastEvent} teams={teams} event={event} />}
         {activeTab === 'costs' && (

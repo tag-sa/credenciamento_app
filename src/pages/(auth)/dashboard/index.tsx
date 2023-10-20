@@ -4,14 +4,15 @@ import { AdvertiserDashboardComponent } from '../../../components/Dashboard/Adve
 import { WorkerDashboardComponent } from '../../../components/Dashboard/Worker'
 import { COLORS } from '../../../constants/Colors'
 import { UserType } from '../../../model/user.model'
-import { auth } from '../../../services/auth'
+import { useUserStore } from '../../../store/user.store'
 
-export const DashboardScreen = ({ navigation }) => {
+export const DashboardScreen = () => {
+  const { getUser } = useUserStore()
   const [user, setUser] = useState<UserType>()
 
   useEffect(() => {
     async function load() {
-      const user = await auth().getUser()
+      const user = getUser()
 
       setUser(user)
     }
@@ -27,7 +28,8 @@ export const DashboardScreen = ({ navigation }) => {
         backgroundColor: COLORS.white
       }}
     >
-      {user?.type == 'pj' ? <AdvertiserDashboardComponent /> : <WorkerDashboardComponent />}
+      {user?.type === 'pj' && <AdvertiserDashboardComponent />}
+      {user?.type === 'pf' && <WorkerDashboardComponent />}
     </ScrollView>
   )
 }

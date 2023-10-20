@@ -11,18 +11,21 @@ import CustomSelectInputCheckbox from '../../../components/SelectInputCheckbox'
 import { Switch } from '../../../components/Switch'
 import { COLORS } from '../../../constants/Colors'
 import { PADDINGS } from '../../../constants/Paddings'
-import { auth } from '../../../services/auth'
 import { axiosApi } from '../../../services/axios'
-import { useGlobalStore } from '../../../store'
+import { useLoadingStore } from '../../../store/loading.store'
+import { useUserStore } from '../../../store/user.store'
 
 export const SettingsPage = ({ navigation }) => {
   const MIN_DISTANCE = 1
   const MAX_DISTANCE = 100
 
+  const { getUser, logout } = useUserStore()
   const [jobsType, setJobsType] = useState('')
   const [distance, setDistance] = useState(1)
   const [openModal, setOpenModal] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
+
+  const [userType, setUserType] = useState<'pf' | 'pj'>('pf')
 
   const [isEnabledConvocation, setIsEnabledConvocation] = useState(false)
   const [isEnabledJobsNotifications, setIsEnabledJobsNotifications] = useState(false)
@@ -74,7 +77,10 @@ export const SettingsPage = ({ navigation }) => {
 
   useEffect(() => {
     const loadFunctions = async () => {
-      useGlobalStore.setState({ isLoading: true })
+      useLoadingStore.setState({ isLoading: true })
+
+      const user = getUser()
+      setUserType(user?.type)
 
       const allData = await Promise.all([axiosApi.get(`/functions`), axiosApi.get(`/users/settings`)])
 
@@ -115,7 +121,7 @@ export const SettingsPage = ({ navigation }) => {
 
       setIsEnabledJobsNotifications(notificationsCheckBoxes.some((notification) => notification.checked))
 
-      useGlobalStore.setState({ isLoading: false })
+      useLoadingStore.setState({ isLoading: false })
     }
 
     loadFunctions()
@@ -125,7 +131,7 @@ export const SettingsPage = ({ navigation }) => {
     setOpenModal(true)
   }
   const handleModalDismissed = async (newSelectedValues: Array<{ function_id: number }>) => {
-    useGlobalStore.setState({ isLoading: true })
+    useLoadingStore.setState({ isLoading: true })
 
     setUserFunctions(newSelectedValues)
     setOpenModal(false)
@@ -134,7 +140,7 @@ export const SettingsPage = ({ navigation }) => {
       functions_ids: newSelectedValues.map((func) => func.function_id)
     })
 
-    useGlobalStore.setState({ isLoading: false })
+    useLoadingStore.setState({ isLoading: false })
   }
 
   const handleUpdateConvocation = async () => {
@@ -179,11 +185,11 @@ export const SettingsPage = ({ navigation }) => {
   }
 
   const handleTerminateAccount = async () => {
-    useGlobalStore.setState({ isLoading: true })
+    useLoadingStore.setState({ isLoading: true })
 
     await axiosApi.delete(`/users/terminate-account`)
-    await auth().logout(navigation)
-    useGlobalStore.setState({ isLoading: false })
+    logout(navigation)
+    useLoadingStore.setState({ isLoading: false })
   }
 
   return (
@@ -208,186 +214,190 @@ export const SettingsPage = ({ navigation }) => {
             <BackButton />
           </View>
 
-          <Text style={styles.title}>Configurações candidato</Text>
-          <View style={styles.content}>
-            <View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.option}>Disponibilidade do perfil</Text>
-                <Switch
-                  isEnabled={isEnabledConvocation}
-                  toggleSwitch={handleUpdateConvocation}
-                  activeFontWeight={'bold'}
-                  inactiveFontWeight="bold"
-                  activeText="Ativo"
-                  inactiveText="Inativo"
-                />
-              </View>
-              <Text style={styles.optionDescriptions}>
-                Essa configuração permite que anunciantes te convoquem para uma vaga. Caso não esteja em busca de uma oportunidade você pode desabilitar no botão acima.
-              </Text>
-            </View>
-
-            <View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
-                <Text style={styles.option}>Notificações de vagas</Text>
-                <Switch isEnabled={isEnabledJobsNotifications} toggleSwitch={disableJobsNotifications} activeText="Ativo" inactiveText="Inativo" />
-              </View>
-              <Text style={styles.optionDescriptions}>
-                Essa configuração permite que você seja avisado quando uma nova vaga for publicada. Você pode escolher receber por sms ou por push (notificação do aplicativo).
-              </Text>
-
-              <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                {notificationsCheckBoxes.map((checkBox, index) => (
-                  <View key={index} style={styles.checkboxContainer}>
-                    <CheckBox
-                      size={18}
-                      backgroundColor={COLORS.darkBlue}
-                      checkBorderColor="white"
-                      borderColor={COLORS.darkBlue}
-                      checked={checkBox.checked}
-                      setChecked={async (checked: boolean) => {
-                        const newCheckBoxes = [...notificationsCheckBoxes]
-                        newCheckBoxes[index].checked = checked
-                        setNotificationsCheckBoxes(newCheckBoxes)
-
-                        await handleNotificationsTypesUpdate()
-                      }}
+          {userType === 'pf' && (
+            <>
+              <Text style={styles.title}>Configurações candidato</Text>
+              <View style={styles.content}>
+                <View>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text style={styles.option}>Disponibilidade do perfil</Text>
+                    <Switch
+                      isEnabled={isEnabledConvocation}
+                      toggleSwitch={handleUpdateConvocation}
+                      activeFontWeight={'bold'}
+                      inactiveFontWeight="bold"
+                      activeText="Ativo"
+                      inactiveText="Inativo"
                     />
-                    <Text style={styles.label}>{checkBox.label}</Text>
                   </View>
-                ))}
-              </View>
-            </View>
+                  <Text style={styles.optionDescriptions}>
+                    Essa configuração permite que anunciantes te convoquem para uma vaga. Caso não esteja em busca de uma oportunidade você pode desabilitar no botão acima.
+                  </Text>
+                </View>
 
-            <View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-                <Text style={styles.option}>Tipo de vagas</Text>
-              </View>
-              <Text style={styles.optionDescriptions}>Essa configuração define quais vagas serão notificadas para você.</Text>
+                <View>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
+                    <Text style={styles.option}>Notificações de vagas</Text>
+                    <Switch isEnabled={isEnabledJobsNotifications} toggleSwitch={disableJobsNotifications} activeText="Ativo" inactiveText="Inativo" />
+                  </View>
+                  <Text style={styles.optionDescriptions}>
+                    Essa configuração permite que você seja avisado quando uma nova vaga for publicada. Você pode escolher receber por sms ou por push (notificação do aplicativo).
+                  </Text>
 
-              <Radio
-                setValue={(val) => {
-                  setJobsType(val)
-                  axiosApi.patch(`/users/settings`, {
-                    field: 'jobs_types',
-                    value: val
-                  })
-                }}
-                initialSelectedValue={jobsType}
-                items={[
-                  { label: 'Por função', value: 'by_function' },
-                  { label: 'Geral', value: 'general' }
-                ]}
-              />
-            </View>
+                  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                    {notificationsCheckBoxes.map((checkBox, index) => (
+                      <View key={index} style={styles.checkboxContainer}>
+                        <CheckBox
+                          size={18}
+                          backgroundColor={COLORS.darkBlue}
+                          checkBorderColor="white"
+                          borderColor={COLORS.darkBlue}
+                          checked={checkBox.checked}
+                          setChecked={async (checked: boolean) => {
+                            const newCheckBoxes = [...notificationsCheckBoxes]
+                            newCheckBoxes[index].checked = checked
+                            setNotificationsCheckBoxes(newCheckBoxes)
 
-            <View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30, marginBottom: 10 }}>
-                <Text style={styles.option}>Funções</Text>
-              </View>
-              <CustomSelectInputCheckbox
-                value={userFunctions.map((userFunction) => {
-                  const index = functions.findIndex((func) => func.id === userFunction.function_id)
-                  return functions[index].name
-                })}
-                placeholder="Selecione uma função"
-                marginTop={0}
-                onInputPress={handleOpenModal}
-              />
-            </View>
+                            await handleNotificationsTypesUpdate()
+                          }}
+                        />
+                        <Text style={styles.label}>{checkBox.label}</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
 
-            <View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
-                <Text style={styles.option}>Distância</Text>
-              </View>
-              <Text style={styles.optionDescriptions}>Selecionando a distância máxima para deslocamento mostraremos vagas disponíveis conforme a sua definição.</Text>
+                <View>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+                    <Text style={styles.option}>Tipo de vagas</Text>
+                  </View>
+                  <Text style={styles.optionDescriptions}>Essa configuração define quais vagas serão notificadas para você.</Text>
 
-              <View style={{ marginTop: 30 }}>
-                <Slider
-                  animateTransitions
-                  minimumTrackTintColor={COLORS.darkBlue}
-                  maximumTrackTintColor={COLORS.lightBlue}
-                  minimumValue={MIN_DISTANCE}
-                  maximumValue={MAX_DISTANCE}
-                  trackStyle={{ height: 10, borderRadius: 10 }}
-                  step={1}
-                  renderAboveThumbComponent={() => <Text style={{ color: COLORS.darkBlue, fontWeight: 'bold' }}>{distance}km</Text>}
-                  thumbTintColor={COLORS.darkBlue}
-                  onValueChange={(value) => setDistance(+value)}
-                  value={distance}
-                  onSlidingComplete={async ([distance]) =>
-                    await axiosApi.patch(`/users/settings`, {
-                      field: 'distance',
-                      value: distance
-                    })
-                  }
-                />
+                  <Radio
+                    setValue={(val) => {
+                      setJobsType(val)
+                      axiosApi.patch(`/users/settings`, {
+                        field: 'jobs_types',
+                        value: val
+                      })
+                    }}
+                    initialSelectedValue={jobsType}
+                    items={[
+                      { label: 'Por função', value: 'by_function' },
+                      { label: 'Geral', value: 'general' }
+                    ]}
+                  />
+                </View>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={{ color: COLORS.darkBlue, fontWeight: '700' }}>{MIN_DISTANCE}km</Text>
-                  <Text style={{ color: COLORS.darkBlue, fontWeight: '700' }}>{MAX_DISTANCE}km</Text>
+                <View>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30, marginBottom: 10 }}>
+                    <Text style={styles.option}>Funções</Text>
+                  </View>
+                  <CustomSelectInputCheckbox
+                    value={userFunctions.map((userFunction) => {
+                      const index = functions.findIndex((func) => func.id === userFunction.function_id)
+                      return functions[index].name
+                    })}
+                    placeholder="Selecione uma função"
+                    marginTop={0}
+                    onInputPress={handleOpenModal}
+                  />
+                </View>
+
+                <View>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
+                    <Text style={styles.option}>Distância</Text>
+                  </View>
+                  <Text style={styles.optionDescriptions}>Selecionando a distância máxima para deslocamento mostraremos vagas disponíveis conforme a sua definição.</Text>
+
+                  <View style={{ marginTop: 30 }}>
+                    <Slider
+                      animateTransitions
+                      minimumTrackTintColor={COLORS.darkBlue}
+                      maximumTrackTintColor={COLORS.lightBlue}
+                      minimumValue={MIN_DISTANCE}
+                      maximumValue={MAX_DISTANCE}
+                      trackStyle={{ height: 10, borderRadius: 10 }}
+                      step={1}
+                      renderAboveThumbComponent={() => <Text style={{ color: COLORS.darkBlue, fontWeight: 'bold' }}>{distance}km</Text>}
+                      thumbTintColor={COLORS.darkBlue}
+                      onValueChange={(value) => setDistance(+value)}
+                      value={distance}
+                      onSlidingComplete={async ([distance]) =>
+                        await axiosApi.patch(`/users/settings`, {
+                          field: 'distance',
+                          value: distance
+                        })
+                      }
+                    />
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                      <Text style={{ color: COLORS.darkBlue, fontWeight: '700' }}>{MIN_DISTANCE}km</Text>
+                      <Text style={{ color: COLORS.darkBlue, fontWeight: '700' }}>{MAX_DISTANCE}km</Text>
+                    </View>
+                  </View>
+                </View>
+
+                <View>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
+                    <Text style={styles.option}>Informações no meu perfil</Text>
+                  </View>
+                  <Text style={styles.optionDescriptions}>
+                    Aqui você escolhe as informações que aparecerão para anunciantes no seu perfil. Lembramos que essas informações te ajudam na contratação.
+                  </Text>
+
+                  <View style={{ flexDirection: 'row' }}>
+                    {informationsToShowCheckboxex.map((checkB, idx) => (
+                      <View key={idx} style={styles.checkboxContainer}>
+                        <CheckBox
+                          size={18}
+                          backgroundColor={COLORS.darkBlue}
+                          checkBorderColor="white"
+                          borderColor={COLORS.darkBlue}
+                          checked={checkB.checked}
+                          setChecked={(checked: boolean) => {
+                            const newCheckBoxes = [...informationsToShowCheckboxex]
+                            newCheckBoxes[idx].checked = checked
+                            setInformationsToShowCheckboxex(newCheckBoxes)
+
+                            axiosApi.patch(`/users/settings`, {
+                              field: checkB.field,
+                              value: checked
+                            })
+                          }}
+                        />
+                        <Text style={styles.label}>{checkB.label}</Text>
+                      </View>
+                    ))}
+                  </View>
                 </View>
               </View>
+            </>
+          )}
+
+          <Text style={{ ...styles.title, marginTop: 20 }}>Configurações anunciante</Text>
+
+          <View style={{ marginTop: 30 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={styles.option}>Aprovação de candidatos</Text>
+              <Switch
+                isEnabled={isEnabledConvocationNeedsApproval}
+                toggleSwitch={() => {
+                  setIsEnabledConvocationNeedsApproval(!isEnabledConvocationNeedsApproval)
+
+                  axiosApi.patch(`/users/settings`, {
+                    field: 'convocations_needs_approval',
+                    value: !isEnabledConvocationNeedsApproval
+                  })
+                }}
+                activeText="Ativo"
+                inactiveText="Inativo"
+              />
             </View>
-
-            <View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 30 }}>
-                <Text style={styles.option}>Informações no meu perfil</Text>
-              </View>
-              <Text style={styles.optionDescriptions}>
-                Aqui você escolhe as informações que aparecerão para anunciantes no seu perfil. Lembramos que essas informações te ajudam na contratação.
-              </Text>
-
-              <View style={{ flexDirection: 'row' }}>
-                {informationsToShowCheckboxex.map((checkB, idx) => (
-                  <View key={idx} style={styles.checkboxContainer}>
-                    <CheckBox
-                      size={18}
-                      backgroundColor={COLORS.darkBlue}
-                      checkBorderColor="white"
-                      borderColor={COLORS.darkBlue}
-                      checked={checkB.checked}
-                      setChecked={(checked: boolean) => {
-                        const newCheckBoxes = [...informationsToShowCheckboxex]
-                        newCheckBoxes[idx].checked = checked
-                        setInformationsToShowCheckboxex(newCheckBoxes)
-
-                        axiosApi.patch(`/users/settings`, {
-                          field: checkB.field,
-                          value: checked
-                        })
-                      }}
-                    />
-                    <Text style={styles.label}>{checkB.label}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-
-            <Text style={{ ...styles.title, marginTop: 20 }}>Configurações anunciante</Text>
-
-            <View style={{ marginTop: 30 }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.option}>Aprovação de candidatos</Text>
-                <Switch
-                  isEnabled={isEnabledConvocationNeedsApproval}
-                  toggleSwitch={() => {
-                    setIsEnabledConvocationNeedsApproval(!isEnabledConvocationNeedsApproval)
-
-                    axiosApi.patch(`/users/settings`, {
-                      field: 'convocations_needs_approval',
-                      value: !isEnabledConvocationNeedsApproval
-                    })
-                  }}
-                  activeText="Ativo"
-                  inactiveText="Inativo"
-                />
-              </View>
-              <Text style={styles.optionDescriptions}>
-                Se você ativar essa opção, todos as pessoas que se candidatarem a uma vaga deverão passar pela sua aprovação. Caso contrário, todo candidato fica automaticamente
-                confirmado ao se candidatar.
-              </Text>
-            </View>
+            <Text style={styles.optionDescriptions}>
+              Se você ativar essa opção, todos as pessoas que se candidatarem a uma vaga deverão passar pela sua aprovação. Caso contrário, todo candidato fica automaticamente
+              confirmado ao se candidatar.
+            </Text>
           </View>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={{ color: COLORS.red, fontWeight: 'bold', fontSize: 16, marginTop: 50, marginBottom: 50 }}>Deletar minha conta</Text>

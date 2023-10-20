@@ -14,6 +14,8 @@ export const AdverstiserAbout = ({ advertiser }) => {
       <Text style={{ ...styles.title, marginTop: 30, textAlign: 'left' }}>Eventos da empresa</Text>
 
       <View style={styles.advertisersList}>
+        {advertiser?.events?.length === 0 && <Text style={{ color: COLORS.red, fontWeight: 'bold' }}>Nenhum evento encontrado</Text>}
+
         {advertiser?.events?.map((event, index) => (
           <AdvertiserEventItem
             key={index}

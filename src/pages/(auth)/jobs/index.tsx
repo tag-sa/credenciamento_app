@@ -1,34 +1,33 @@
-import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import { auth } from "../../../services/auth";
-import { UserType } from "../../../model/user.model";
-import JobsList from "../../../components/AdvertiserEventDashboard/JobsList";
-import { COLORS } from "../../../constants/Colors";
-import { TabItem } from "../../../components/TabItem";
-import { PADDINGS } from "../../../constants/Paddings";
+import { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
+import JobsList from '../../../components/AdvertiserEventDashboard/JobsList'
+import { TabItem } from '../../../components/TabItem'
+import { COLORS } from '../../../constants/Colors'
+import { PADDINGS } from '../../../constants/Paddings'
+import { UserType } from '../../../model/user.model'
+import { useUserStore } from '../../../store/user.store'
 
 export const JobsScreen = ({ navigation }) => {
-  const [activeTab, setActiveTab] = useState<
-    "available" | "favorite" | "applications"
-  >("available");
-  const [user, setUser] = useState<UserType>();
+  const { getUser } = useUserStore()
+  const [activeTab, setActiveTab] = useState<'available' | 'favorite' | 'applications'>('available')
+  const [user, setUser] = useState<UserType>()
 
   useEffect(() => {
     async function load() {
-      const user = await auth().getUser();
+      const user = getUser()
 
-      setUser(user);
+      setUser(user)
     }
 
-    load();
-  }, []);
+    load()
+  }, [])
 
   return (
     <>
       <View style={styles.tabs}>
         <ScrollView
           contentContainerStyle={{
-            backgroundColor: COLORS.primaryColor,
+            backgroundColor: COLORS.darkBlue
           }}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
@@ -37,16 +36,16 @@ export const JobsScreen = ({ navigation }) => {
             label="DISPONÍVEIS"
             item="available"
             activeTab={activeTab}
-            setActiveTab={(tab: "available" | "favorite" | "applications") => {
-              setActiveTab(tab);
+            setActiveTab={(tab: 'available' | 'favorite' | 'applications') => {
+              setActiveTab(tab)
             }}
           />
           <TabItem
             label="FAVORITAS"
             item="favorite"
             activeTab={activeTab}
-            setActiveTab={(tab: "available" | "favorite" | "applications") => {
-              setActiveTab(tab);
+            setActiveTab={(tab: 'available' | 'favorite' | 'applications') => {
+              setActiveTab(tab)
             }}
           />
           <TabItem
@@ -54,33 +53,31 @@ export const JobsScreen = ({ navigation }) => {
             label="MINHAS CANDIDATURAS"
             item="applications"
             activeTab={activeTab}
-            setActiveTab={(tab: "available" | "favorite" | "applications") => {
-              setActiveTab(tab);
+            setActiveTab={(tab: 'available' | 'favorite' | 'applications') => {
+              setActiveTab(tab)
             }}
           />
         </ScrollView>
       </View>
 
-      <View style={styles.containerJobs}>
-        {activeTab === "available" && <JobsList onClick={undefined} />}
-      </View>
+      <View style={styles.containerJobs}>{activeTab === 'available' && <JobsList onClick={undefined} />}</View>
     </>
-  );
-};
+  )
+}
 const styles = StyleSheet.create({
   tabs: {
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.darkBlue,
     height: 32,
-    flexDirection: "row",
+    flexDirection: 'row'
   },
   body: {
-    backgroundColor: COLORS.whiteColor,
-    paddingHorizontal: PADDINGS.horizontal,
+    backgroundColor: COLORS.white,
+    paddingHorizontal: PADDINGS.horizontal
   },
   containerJobs: {
-    backgroundColor: COLORS.whiteColor,
+    backgroundColor: COLORS.white,
     paddingHorizontal: PADDINGS.horizontal,
-    height: "100%",
-    position: "relative",
-  },
-});
+    height: '100%',
+    position: 'relative'
+  }
+})

@@ -13,7 +13,7 @@ import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
 import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
-import { useGlobalStore } from '../../../store'
+import { useLoadingStore } from '../../../store/loading.store'
 
 export const WorkerProfiledScreen = ({ navigation, route }) => {
   const isFocused = useIsFocused()
@@ -49,7 +49,7 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
   const [courses, setCourses] = useState<any[]>([])
 
   const loadData = async () => {
-    useGlobalStore.setState({ isLoading: false })
+    useLoadingStore.setState({ isLoading: false })
 
     const { data } = await axiosApi.get(`/users/${userId}/worker-profile`)
 
@@ -96,17 +96,17 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
       }
     }
 
-    useGlobalStore.setState({ isLoading: false })
+    useLoadingStore.setState({ isLoading: false })
   }
 
   const execButtonAction = async () => {
     if (!currentInvitationStatus) {
       try {
-        useGlobalStore.setState({ isLoading: true })
+        useLoadingStore.setState({ isLoading: true })
         await axiosApi.post(`/events/${eventId}/teams/${teamId}/add`, {
           user_id: userId
         })
-        useGlobalStore.setState({ isLoading: false })
+        useLoadingStore.setState({ isLoading: false })
         navigation.navigate('AdvertiserEventTeamDashboardScreen', {
           teamId: teamId,
           eventId
@@ -119,9 +119,9 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
 
     if (currentInvitationStatus === 'a') {
       try {
-        useGlobalStore.setState({ isLoading: true })
+        useLoadingStore.setState({ isLoading: true })
         await axiosApi.put(`/events/${eventId}/teams/${teamId}/${teamUserId}/confirm`)
-        useGlobalStore.setState({ isLoading: false })
+        useLoadingStore.setState({ isLoading: false })
         navigation.navigate('AdvertiserEventTeamDashboardScreen', {
           teamId: teamId,
           eventId

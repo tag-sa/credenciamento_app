@@ -6,7 +6,7 @@ import { MaskedTextInput } from 'react-native-mask-text'
 import { COLORS } from '../../constants/Colors'
 
 interface InputProps {
-  label: string
+  label?: string
   value?: string
   placeholder?: string
   onChangeText: (text: string, rawText?: string) => void
@@ -46,17 +46,20 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
           ...(!props.error && isFocused && styles.inputFocused)
         }}
       >
-        <Text
-          style={
-            (isFocused ? styles.labelFocused : styles.label,
-            {
-              fontWeight: props.textWeight || 'bold',
-              color: props.textColor || COLORS.darkBlue
-            })
-          }
-        >
-          {props.label}
-        </Text>
+        {props.label && (
+          <Text
+            style={
+              (isFocused ? styles.labelFocused : styles.label,
+              {
+                fontWeight: props.textWeight || 'bold',
+                color: props.textColor || COLORS.darkBlue
+              })
+            }
+          >
+            {props.label}
+          </Text>
+        )}
+
         <View>
           {props.mask && (
             <MaskedTextInput
@@ -72,7 +75,8 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
               style={{
                 ...styles.inputText,
                 color: props.textColor || COLORS.darkBlue,
-                fontWeight: props.textWeight || 'normal'
+                fontWeight: props.textWeight || 'normal',
+                marginTop: props.label ? 10 : 0
               }}
               mask={props.mask}
               onChangeText={(text, rawText) => {
@@ -97,7 +101,8 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
                 ...styles.inputText,
                 color: props.textColor || COLORS.darkBlue,
                 fontWeight: props.textWeight || 'normal',
-                height: props.multiline ? props.numberOfLines : null
+                height: props.multiline ? props.numberOfLines : null,
+                marginTop: props.label ? 10 : 0
               }}
               multiline={props.multiline}
               numberOfLines={props.multiline ? props.numberOfLines : null}
@@ -156,7 +161,7 @@ const styles = StyleSheet.create({
   },
   inputText: {
     color: COLORS.darkGray,
-    marginTop: 10,
+
     fontWeight: 'bold'
   },
   invalid: {

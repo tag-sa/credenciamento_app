@@ -3,9 +3,19 @@ import { StyleSheet, View } from 'react-native'
 import { COLORS } from '../../../constants/Colors'
 import { PADDINGS } from '../../../constants/Paddings'
 import { AdvertiserEventItem } from '../../AdvertiserEventItem'
+import { NotFound } from '../../NotFound'
 
 export const AdverstiserPastEvents = ({ advertiser }) => {
   const navigation = useNavigation<any>()
+
+  if (!advertiser?.pastEvents?.length) {
+    return (
+      <View style={{ marginBottom: 50, paddingHorizontal: PADDINGS.horizontal }}>
+        <NotFound text_1="Nenhum evento encontrado" />
+      </View>
+    )
+  }
+
   return (
     <View style={styles.tabItemContent}>
       <View style={styles.advertisersList}>

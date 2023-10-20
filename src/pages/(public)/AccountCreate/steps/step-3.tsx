@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import CustomInputWithTextAndIcon from '../../../../components/Input/CustomInputWithTextAndIcon'
 import { axiosApi } from '../../../../services/axios'
-import { useGlobalStore } from '../../../../store'
+import { useLoadingStore } from '../../../../store/loading.store'
 
 interface Step3Props {
   retProps(zip: string, addressNickname: string, addressNumber: string, address: string, neighborhood: string, city: string, state: string, errors: Array<String>): void
@@ -21,7 +21,7 @@ export default function Step3({ retProps }: Step3Props) {
   const cepMask = '99999-999'
 
   const fetchAddress = async (val: string) => {
-    useGlobalStore.setState({ isLoading: true })
+    useLoadingStore.setState({ isLoading: true })
 
     try {
       const search = await axiosApi.get(`/zip/${val}`)
@@ -39,7 +39,7 @@ export default function Step3({ retProps }: Step3Props) {
       }
     }
 
-    useGlobalStore.setState({ isLoading: false })
+    useLoadingStore.setState({ isLoading: false })
   }
 
   return (

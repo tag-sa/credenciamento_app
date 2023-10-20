@@ -6,7 +6,7 @@ import CustomInputWithTextAndIcon from '../../../components/Input/CustomInputWit
 import { COLORS } from '../../../constants/Colors'
 import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
-import { useGlobalStore } from '../../../store'
+import { useLoadingStore } from '../../../store/loading.store'
 
 export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
   const [name, setName] = useState('')
@@ -28,7 +28,7 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
   const saveAdvertiserPlace = async () => {
     if (!buttonEnabled) return
 
-    useGlobalStore.setState({ isLoading: true })
+    useLoadingStore.setState({ isLoading: true })
 
     try {
       await axiosApi.post(`/advertisers/${advertiserId}/places`, {
@@ -48,11 +48,11 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
       console.log(e.response.data)
     }
 
-    useGlobalStore.setState({ isLoading: false })
+    useLoadingStore.setState({ isLoading: false })
   }
 
   const fetchAddress = async (val: string) => {
-    useGlobalStore.setState({ isLoading: true })
+    useLoadingStore.setState({ isLoading: true })
 
     try {
       const search = await axiosApi.get(`/zip/${val}`)
@@ -69,7 +69,7 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
       }
     }
 
-    useGlobalStore.setState({ isLoading: false })
+    useLoadingStore.setState({ isLoading: false })
   }
 
   useEffect(() => {

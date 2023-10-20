@@ -1,13 +1,13 @@
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../../constants/Colors'
-import { useGlobalStore } from '../../store'
+import { useLoadingStore } from '../../store/loading.store'
 
 interface LoadingProps {
   // children: React.ReactNode;
 }
 
 export default function Loading() {
-  const isLoading = useGlobalStore((store) => store.isLoading)
+  const isLoading = useLoadingStore((store) => store.isLoading)
 
   return (
     isLoading && (

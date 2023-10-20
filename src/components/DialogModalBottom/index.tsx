@@ -87,7 +87,7 @@ export const DialogModalBottomSheet: React.FC<DialogModalProps> = ({ openModal, 
             renderItem={({ item, index }) => (
               <TouchableOpacity
                 onPress={() => {
-                  // useGlobalStore.setState({ hideBottomTabBar: false });
+                  // useLoadingStore.setState({ hideBottomTabBar: false });
                   onSelectItem(item)
                   onModalDismissed()
                 }}

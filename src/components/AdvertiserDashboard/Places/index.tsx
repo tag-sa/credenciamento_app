@@ -7,9 +7,10 @@ import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
 import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
-import { useGlobalStore } from '../../../store'
+import { useLoadingStore } from '../../../store/loading.store'
 import Button from '../../Button/Button'
 import { DialogModal } from '../../DialogModal'
+import { NotFound } from '../../NotFound'
 
 interface AdvertiserPlacesProps {
   advertiserId: number
@@ -37,14 +38,14 @@ export const AdverstiserPlaces = ({ advertiserId, places, reload }: AdvertiserPl
   const [placeId, setPlaceId] = useState('')
 
   const removePlace = async () => {
-    useGlobalStore.setState({ isLoading: true })
+    useLoadingStore.setState({ isLoading: true })
 
     try {
       await axiosApi.delete(`/advertisers/${advertiserId}/places/${placeId}`)
       reload()
-      useGlobalStore.setState({ isLoading: false })
+      useLoadingStore.setState({ isLoading: false })
     } catch (e) {
-      useGlobalStore.setState({ isLoading: false })
+      useLoadingStore.setState({ isLoading: false })
       showMessage({
         backgroundColor: COLORS.red,
         message: 'Erro ao remover local',
@@ -65,6 +66,12 @@ export const AdverstiserPlaces = ({ advertiserId, places, reload }: AdvertiserPl
           message={'Ao remover local todos os eventos relacionados á este local também serão excluídos.'}
           confirmAction={removePlace}
         />
+
+        {!places?.length && (
+          <View style={{ marginBottom: 0, paddingHorizontal: PADDINGS.horizontal }}>
+            <NotFound text_1="Nenhum local encontrado" text_2="Cadastre um novo local clicando no botão abaixo" />
+          </View>
+        )}
 
         {places?.map((place, index) => (
           <View

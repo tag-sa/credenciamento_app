@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useEffect, useState } from 'react'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
@@ -6,10 +7,11 @@ import CustomInputWithTextAndIcon from '../../../components/Input/CustomInputWit
 import { COLORS } from '../../../constants/Colors'
 import { PADDINGS } from '../../../constants/Paddings'
 import { UserType } from '../../../model/user.model'
-import { auth } from '../../../services/auth'
 import { axiosApi } from '../../../services/axios'
+import { useUserStore } from '../../../store/user.store'
 
 export const LoginScreen = ({ navigation }) => {
+  const { setUser, getUser } = useUserStore()
   const { top } = useSafeAreaInsets()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -17,7 +19,7 @@ export const LoginScreen = ({ navigation }) => {
 
   useEffect(() => {
     async function checkLogin() {
-      const user = await auth().getUser()
+      const user = getUser()
 
       if (user) {
         navigation.replace('Dashboard')
@@ -39,30 +41,30 @@ export const LoginScreen = ({ navigation }) => {
     try {
       const { data: login } = await axiosApi.post('/users/login', {
         email,
-        password,
-      });
+        password
+      })
       const user: UserType = {
         id: login.data.user.id,
         name: login.data.user.name,
         email: login.data.user.email,
-        access_token: login.data.access_token,
         nickname: login.data.user.nickname,
         document: login.data.user.type == 'pj' ? login.data.user.cnpj : login.data.user.cpf,
         type: login.data.user.type
       }
 
-      await auth().setUser(user);
-      await auth().setToken(login.data.access_token);
-      navigation.replace("Dashboard");
+      setUser(user)
+      await AsyncStorage.setItem('token', login.data.access_token)
+
+      navigation.replace('Dashboard')
     } catch (error) {
       console.log(error.response)
-      let title = "Erro ao fazer login";
-      let message = "Usuário ou senha inválidos";
+      let title = 'Erro ao fazer login'
+      let message = 'Usuário ou senha inválidos'
 
       if (error.response.status !== 401) {
         message = 'Não foi possível fazer login, tente novamente mais tarde'
       }
-console.log(8888)
+
       showMessage({
         backgroundColor: COLORS.red,
         hideStatusBar: true,

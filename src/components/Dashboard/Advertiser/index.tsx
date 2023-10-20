@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../../../constants/Colors'
 import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
-import { useGlobalStore } from '../../../store'
+import { useLoadingStore } from '../../../store/loading.store'
 import { AdvertiserListItem } from '../../AdvertiserListItem'
 import { AdvertiserStartBanner } from '../../AdvertiserStartBanner'
 import { AdvertiserStarterSteps } from '../../AdvertiserStarterSteps'
@@ -16,11 +16,11 @@ export const AdvertiserDashboardComponent = () => {
 
   useEffect(() => {
     const load = async () => {
-      useGlobalStore.setState({ isLoading: true })
+      useLoadingStore.setState({ isLoading: true })
 
       const { data } = await axiosApi.get('/advertisers')
 
-      useGlobalStore.setState({ isLoading: false })
+      useLoadingStore.setState({ isLoading: false })
 
       setAdvertisers(data.data)
     }

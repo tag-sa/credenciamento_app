@@ -1,24 +1,25 @@
-import { useEffect, useState } from "react";
-import { View, Text } from "react-native";
-import { auth } from "../../../services/auth";
-import { UserType } from "../../../model/user.model";
+import { useEffect, useState } from 'react'
+import { Text, View } from 'react-native'
+import { UserType } from '../../../model/user.model'
+import { useUserStore } from '../../../store/user.store'
 
 export const AdvertiserScreen = ({ navigation }) => {
-  const [user, setUser] = useState<UserType>();
+  const { getUser } = useUserStore()
+  const [user, setUser] = useState<UserType>()
 
   useEffect(() => {
     async function load() {
-      const user = await auth().getUser();
+      const user = getUser()
 
-      setUser(user);
+      setUser(user)
     }
 
-    load();
-  }, []);
+    load()
+  }, [])
 
   return (
     <View style={{ flex: 1 }}>
       <Text>Advertiver</Text>
     </View>
-  );
-};
+  )
+}

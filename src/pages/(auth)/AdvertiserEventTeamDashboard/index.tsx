@@ -12,7 +12,7 @@ import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
 import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
-import { useGlobalStore } from '../../../store'
+import { useLoadingStore } from '../../../store/loading.store'
 
 export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
   const { teamId, eventId, isPastEvent } = route.params
@@ -39,7 +39,7 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
   const isFocused = useIsFocused()
 
   const loadData = async () => {
-    useGlobalStore.setState({ isLoading: true })
+    useLoadingStore.setState({ isLoading: true })
 
     const [teamData, usersData] = await Promise.all([axiosApi.get(`/events/${eventId}/teams/${teamId}`), axiosApi.get(`/events/${eventId}/teams/${teamId}/available-users`)])
 
@@ -122,7 +122,7 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
       }
     ])
 
-    useGlobalStore.setState({ isLoading: false })
+    useLoadingStore.setState({ isLoading: false })
   }
 
   useEffect(() => {
