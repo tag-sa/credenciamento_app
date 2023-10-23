@@ -66,10 +66,11 @@ export const PersonalDataTab = ({}: PersonalDataTabProps) => {
       userState.name = name
       userState.email = email
       userState.document = document
+
       useLoadingStore.setState({ isLoading: false })
+
       setUser(userState)
     } catch (e) {
-      console.log(333)
       // TODO: handle error
       useLoadingStore.setState({ isLoading: false })
     }

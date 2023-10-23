@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
 import { PADDINGS } from '../../../constants/Paddings'
+import { File } from '../../../utils/file'
 import { NotFound } from '../../NotFound'
 
 interface WorkerQualificationsTabProps {
@@ -16,6 +17,11 @@ export const WorkerQualificationsTab = ({ courses }: WorkerQualificationsTabProp
         <NotFound text_1="Nenhum certificado encontrado" />
       </View>
     )
+  }
+
+  const handleDownload = async (url: string) => {
+    const file = new File(url)
+    await file.download()
   }
 
   return (
@@ -40,9 +46,11 @@ export const WorkerQualificationsTab = ({ courses }: WorkerQualificationsTabProp
               }}
             >
               <Text style={styles.name}>{item.course.name}</Text>
-              <TouchableOpacity>
-                <IMAGES.ICONS.Download />
-              </TouchableOpacity>
+              {item.certified && item.certified_url && (
+                <TouchableOpacity onPress={() => handleDownload(item.certified_url)}>
+                  <IMAGES.ICONS.Download />
+                </TouchableOpacity>
+              )}
             </View>
           )
         }}

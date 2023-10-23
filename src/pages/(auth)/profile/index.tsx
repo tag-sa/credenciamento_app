@@ -6,10 +6,12 @@ import { Avatar } from '../../../components/Avatar'
 import { BackButton } from '../../../components/BackButton'
 import { PersonalDataTab } from '../../../components/ProfileTabs/PersonalData'
 import { ProfileTab } from '../../../components/ProfileTabs/Profile'
+import { QualificationsTab } from '../../../components/ProfileTabs/Qualifications'
 import { TabItem } from '../../../components/TabItem'
 import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
 import { PADDINGS } from '../../../constants/Paddings'
+import { UserCourse } from '../../../model/user-course.model'
 import { UserType } from '../../../model/user.model'
 import { axiosApi } from '../../../services/axios'
 import { useLoadingStore } from '../../../store/loading.store'
@@ -29,7 +31,16 @@ export const ProfileScreen = ({ navigation }) => {
   const [workerEvents, setWorkerEvents] = useState<any[]>([])
 
   const [jobs, setJobs] = useState<string[]>([])
-  const [courses, setCourses] = useState<any[]>([])
+
+  const [courses, setCourses] = useState<
+    {
+      id: number
+      name: string
+      hasOpacity: boolean
+      icon: string
+      courses: UserCourse[]
+    }[]
+  >([])
 
   const loadData = async () => {
     useLoadingStore.setState({ isLoading: false })
@@ -44,18 +55,7 @@ export const ProfileScreen = ({ navigation }) => {
 
     setAdvertisers(data.data.related_advertisers)
     setWorkerEvents(data.data.worked_events)
-
-    // setAddress({
-    //   address: data?.data?.addresses[0]?.address,
-    //   number: data?.data?.addresses[0]?.number,
-    //   neighborhood: data?.data?.addresses[0]?.neighborhood,
-    //   city: data?.data?.addresses[0]?.city,
-    //   state: data?.data?.addresses[0]?.state,
-    //   zip: data?.data?.addresses[0]?.zip
-    // })
-
-    // setJobs(data?.data?.UsersFunctions?.map((item) => item.function.name))
-    // setCourses(data?.data?.UsersCourses)
+    setCourses(data.data.courses)
 
     useLoadingStore.setState({ isLoading: false })
   }
@@ -190,8 +190,8 @@ export const ProfileScreen = ({ navigation }) => {
             </View>
 
             {activeTab === 'profile' && <ProfileTab jobs={workerEvents} name={user?.name} advertisers={advertisers} userId={user?.id} about={user?.about} userType={user?.type} />}
-            {/* {activeTab === 'qualifications' && <WorkerQualificationsTab courses={courses} />} */}
             {activeTab === 'personalData' && <PersonalDataTab />}
+            {activeTab === 'qualifications' && <QualificationsTab qualifications={courses} />}
           </View>
         </>
       )}

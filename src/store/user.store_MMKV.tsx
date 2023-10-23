@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MMKV } from 'react-native-mmkv'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
@@ -20,6 +21,16 @@ interface IUserStore {
   getUser: () => IUser | null
   logout: (navigation: any) => void
 }
+const storage = new MMKV()
+
+const MMKVStorage = {
+  getItem: (key: string) => {
+    const value = storage.getString(key)
+    return value ? Promise.resolve(value) : Promise.reject(null)
+  },
+  setItem: (key: string, value: string) => Promise.resolve(storage.set(key, value)),
+  removeItem: (key: string) => Promise.resolve(storage.delete(key))
+}
 
 export const useUserStore = create<IUserStore>()(
   persist(
@@ -39,8 +50,8 @@ export const useUserStore = create<IUserStore>()(
       }
     }),
     {
-      name: 'user-storage',
-      storage: createJSONStorage(() => AsyncStorage)
+      name: 'user-storage', // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => MMKVStorage) // here's the storage instance
     }
   )
 )

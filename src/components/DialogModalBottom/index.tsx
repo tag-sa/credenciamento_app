@@ -87,14 +87,12 @@ export const DialogModalBottomSheet: React.FC<DialogModalProps> = ({ openModal, 
             renderItem={({ item, index }) => (
               <TouchableOpacity
                 onPress={() => {
-                  // useLoadingStore.setState({ hideBottomTabBar: false });
                   onSelectItem(item)
                   onModalDismissed()
                 }}
               >
                 <View
                   style={{
-                    flex: 1,
                     borderBottomWidth: 1,
                     borderBottomColor: COLORS.lightBlue,
                     paddingVertical: 15,

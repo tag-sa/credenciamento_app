@@ -27,7 +27,7 @@ export const AdvertiserEventTeamAddCreatedShareScreen = ({ route, navigation }) 
       <View style={{ flex: 1, alignItems: 'center', marginTop: 70 }}>
         <IMAGES.ICONS.IconCheckWhite />
         <Text style={{ color: COLORS.white, fontSize: 23, fontWeight: 'bold' }}>Anúncio criado</Text>
-        <Text style={{ color: COLORS.mediumBlue, fontWeight: '600', marginTop: 6, marginBottom: 10, fontSize: 9 }}>Para gerenciar acesse o menu gestão do anunciante.</Text>
+        <Text style={{ color: COLORS.lightBlue, fontWeight: '600', marginTop: 6, marginBottom: 10, fontSize: 9 }}>Para gerenciar acesse o menu gestão do anunciante.</Text>
         <Text style={{ color: COLORS.white, fontSize: 14, fontWeight: '600', lineHeight: 20, textAlign: 'justify', paddingHorizontal: 5, marginTop: 15 }}>
           Você poderá compartilhar essa vaga em seus grupos de whatsapp gratuitamente ou realizar disparos para as pessoas no nosso banco de dados,{' '}
           <Text style={{ color: COLORS.mediumBlue, fontWeight: '800' }}>verifique condições.</Text>
@@ -35,7 +35,7 @@ export const AdvertiserEventTeamAddCreatedShareScreen = ({ route, navigation }) 
         <TouchableOpacity
           activeOpacity={0.7}
           style={{
-            backgroundColor: COLORS.lightBlue,
+            backgroundColor: COLORS.white,
             borderRadius: 6,
             height: 50,
             marginTop: 45,

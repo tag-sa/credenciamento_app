@@ -24,7 +24,7 @@ export default function CustomSelectInput(props: InputProps) {
             ...styles.input,
             marginTop: props.marginTop,
             marginBottom: props.marginBottom,
-            borderColor: props.error ? COLORS.red : COLORS.darkGray
+            borderColor: props.error ? COLORS.red : COLORS.lightGray
           }}
         >
           <Text

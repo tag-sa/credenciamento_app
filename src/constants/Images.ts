@@ -17,6 +17,7 @@ import IconCheckWhite from '../../assets/images/icons/icon-check-white.svg'
 import Clock from '../../assets/images/icons/icon-clock.svg'
 import Close from '../../assets/images/icons/icon-close.svg'
 import IconCorporation from '../../assets/images/icons/icon-corporation.svg'
+import IconCourseAwaiting from '../../assets/images/icons/icon-course-awaiting.svg'
 import Download from '../../assets/images/icons/icon-download.svg'
 import Duplicate from '../../assets/images/icons/icon-duplicate.svg'
 import ClockAboutEvent from '../../assets/images/icons/icon-event-clock.svg'
@@ -60,7 +61,6 @@ import DashboardBanner1 from '../../assets/images/icons/icon-worker-banner-1.svg
 import DashboardBanner2 from '../../assets/images/icons/icon-worker-banner-2.svg'
 import YellowStar from '../../assets/images/icons/icon-yellow-star.svg'
 import ManSeatDesk from '../../assets/images/icons/man-seat-desk.svg'
-
 export const IMAGES = {
   ADVERTISER: {
     ManSeatDesk
@@ -126,7 +126,8 @@ export const IMAGES = {
     RoundedPlus,
     EmptyCalendar,
     ClockAboutEvent,
-    LocationAboutEvent
+    LocationAboutEvent,
+    IconCourseAwaiting
   },
   DRAWER: {
     Settings,

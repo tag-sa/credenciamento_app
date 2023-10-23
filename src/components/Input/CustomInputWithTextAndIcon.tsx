@@ -22,7 +22,6 @@ interface InputProps {
   keyboardType?: KeyboardTypeOptions
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters'
   error?: boolean
-  textColor?: string
   textWeight?: 'normal' | 'bold'
   mask?: string
   erroMessage?: string
@@ -52,7 +51,7 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
               (isFocused ? styles.labelFocused : styles.label,
               {
                 fontWeight: props.textWeight || 'bold',
-                color: props.textColor || COLORS.darkBlue
+                color: isFocused ? COLORS.darkBlue : COLORS.darkGray
               })
             }
           >
@@ -74,7 +73,7 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
               }}
               style={{
                 ...styles.inputText,
-                color: props.textColor || COLORS.darkBlue,
+                color: isFocused ? COLORS.darkBlue : COLORS.darkGray,
                 fontWeight: props.textWeight || 'normal',
                 marginTop: props.label ? 10 : 0
               }}
@@ -99,7 +98,7 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
               }}
               style={{
                 ...styles.inputText,
-                color: props.textColor || COLORS.darkBlue,
+                color: isFocused ? COLORS.darkBlue : COLORS.darkGray,
                 fontWeight: props.textWeight || 'normal',
                 height: props.multiline ? props.numberOfLines : null,
                 marginTop: props.label ? 10 : 0

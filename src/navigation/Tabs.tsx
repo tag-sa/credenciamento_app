@@ -18,6 +18,7 @@ import { AdvertiserEventTeamDashboardScreen } from '../pages/(auth)/AdvertiserEv
 import { AdvertiverPlaceAddScreen } from '../pages/(auth)/AdvertiserPlaceAdd'
 import { DashboardScreen } from '../pages/(auth)/Dashboard'
 import { ProfileScreen } from '../pages/(auth)/Profile'
+import { ProfileAddQualificationScreen } from '../pages/(auth)/ProfileAddQualification'
 import { WorkerProfiledScreen } from '../pages/(auth)/WorkerProfile'
 import { useUserStore } from '../store/user.store'
 
@@ -153,6 +154,14 @@ export function MyTabs({ route }) {
         component={WorkerProfiledScreen}
         options={{
           header: () => <HeaderComponent backgroundColor={COLORS.darkBlue} LeftIcon={IMAGES.ICONS.HamburguerWhite} />,
+          tabBarButton: () => null
+        }}
+      />
+      <Tab.Screen
+        name="ProfileAddQualificationScreen"
+        component={ProfileAddQualificationScreen}
+        options={{
+          // header: () => <HeaderComponent backgroundColor={COLORS.darkBlue} LeftIcon={IMAGES.ICONS.HamburguerWhite} />,
           tabBarButton: () => null
         }}
       />
