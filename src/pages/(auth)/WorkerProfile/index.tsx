@@ -74,7 +74,7 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
     })
 
     setJobs(data?.data?.UsersFunctions?.map((item) => item.function.name))
-    console.log(data?.data?.courses, 222)
+
     setCourses(data?.data?.courses)
 
     if (data.data.worked_events && data.data.worked_events.length > 5) {

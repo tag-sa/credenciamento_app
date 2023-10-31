@@ -14,7 +14,7 @@ export const AdvertiserListItem = ({ name, url, onClick, onDelete }: AdvertiserL
     <View style={styles.container}>
       <TouchableOpacity onPress={onClick} style={styles.containerClick}>
         <View style={styles.imageContainer}>
-          <Text>Image</Text>
+          <IMAGES.ICONS.BullhornWhite width={35} height={35} />
         </View>
 
         <View style={styles.textContainer}>
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    backgroundColor: COLORS.lightGray,
+    backgroundColor: COLORS.darkBlue,
     justifyContent: 'center',
     alignItems: 'center',
     width: 70

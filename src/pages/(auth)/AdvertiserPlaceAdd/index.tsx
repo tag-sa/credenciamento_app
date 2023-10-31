@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { showMessage } from 'react-native-flash-message'
 import { BackButton } from '../../../components/BackButton'
 import Button from '../../../components/Button/Button'
 import CustomInputWithTextAndIcon from '../../../components/Input/CustomInputWithTextAndIcon'
@@ -8,10 +9,16 @@ import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
 import { useLoadingStore } from '../../../store/loading.store'
 
-export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
+interface SaveAdvertiserPlaceProps {
+  navigation: any
+  route: any
+}
+
+export const AdvertiverPlaceAddScreen = ({ navigation, route }: SaveAdvertiserPlaceProps) => {
   const [name, setName] = useState('')
 
-  const { advertiserId } = route.params
+  const { advertiserId, backToEvent } = route.params
+
   const [buttonEnabled, setButtonEnabled] = useState(false)
   const [errors, setErrors] = useState([])
   const [zip, setZip] = useState('')
@@ -22,6 +29,7 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
   const [state, setState] = useState('')
   const addressNumberInputRef = useRef(null)
   const nameInputRef = useRef(null)
+  const [showMessageStatus, setShowMessageStatus] = useState(false)
 
   const cepMask = '99999-999'
 
@@ -40,6 +48,14 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
         city,
         state
       })
+
+      useLoadingStore.setState({ isLoading: false })
+
+      if (backToEvent) {
+        return navigation.navigate('AdvertiverEventAddScreen', {
+          advertiserId: advertiserId
+        })
+      }
 
       navigation.navigate('AdvertiserDashboardScreen', {
         advertiserId
@@ -73,6 +89,25 @@ export const AdvertiverPlaceAddScreen = ({ navigation, route }) => {
   }
 
   useEffect(() => {
+    if (backToEvent && !showMessageStatus) {
+      showMessage({
+        backgroundColor: COLORS.green,
+        message: 'Para cadastrar um evento, você precisa primeiro cadastrar um local.',
+        titleStyle: {
+          color: COLORS.white,
+          fontWeight: 'bold'
+        },
+        style: {
+          justifyContent: 'center',
+          alignItems: 'center'
+        },
+        type: 'success',
+        icon: 'none'
+      })
+    }
+
+    setShowMessageStatus(true)
+
     if (name && zip && addressNumber && address && neighborhood && city && state) {
       setButtonEnabled(true)
     } else {

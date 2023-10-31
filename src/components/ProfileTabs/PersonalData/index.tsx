@@ -7,11 +7,13 @@ import { PADDINGS } from '../../../constants/Paddings'
 
 import { axiosApi } from '../../../services/axios'
 
-import { UserType } from '../../../model/user.model'
+import { User, UserType } from '../../../model/user.model'
 import { useLoadingStore } from '../../../store/loading.store'
 import { useUserStore } from '../../../store/user.store'
 import Button from '../../Button/Button'
+import { DialogModalBottomSheet } from '../../DialogModalBottom'
 import CustomInputWithTextAndIcon from '../../Input/CustomInputWithTextAndIcon'
+import CustomSelectInput from '../../SelectInput'
 
 interface PersonalDataTabProps {}
 
@@ -24,9 +26,26 @@ export const PersonalDataTab = ({}: PersonalDataTabProps) => {
   const [phone, setPhone] = useState('')
   const [userState, setUserState] = useState<UserType>(null)
   const [documentMask, setDocumentMask] = useState('999.999.999-99')
-  const [phoneMask, setPhoneMask] = useState('(99) 99999-9999')
-
+  // const [phoneMask, setPhoneMask] = useState('(99) 99999-9999')
+  const [gender, setGender] = useState<{ id: string; name: string }>()
   const [errors, setErrors] = useState<string[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleModalPresented = () => {
+    setIsModalOpen(true)
+  }
+
+  const handleModalDismissed = () => {
+    setIsModalOpen(false)
+  }
+
+  const handleOpenModal = () => {
+    if (isModalOpen) {
+      setIsModalOpen(false)
+    } else {
+      setIsModalOpen(true)
+    }
+  }
 
   const validateCpf = (val: string) => cpf.isValid(val)
   const validateCnpj = (val: string) => cnpj.isValid(val)
@@ -41,6 +60,7 @@ export const PersonalDataTab = ({}: PersonalDataTabProps) => {
       setName(user?.name)
       setEmail(user?.email)
       setDocument(user?.document)
+      setGender(User.genders.find((u) => u.id == user?.gender))
     }
 
     load()
@@ -66,6 +86,7 @@ export const PersonalDataTab = ({}: PersonalDataTabProps) => {
       userState.name = name
       userState.email = email
       userState.document = document
+      userState.gender = gender.id
 
       useLoadingStore.setState({ isLoading: false })
 
@@ -185,11 +206,33 @@ export const PersonalDataTab = ({}: PersonalDataTabProps) => {
           iconColor={COLORS.darkBlue}
           obscureText={true}
         />
+
+        {userState?.type === 'pf' && (
+          <CustomSelectInput
+            placeholder="Selecionar Gênero"
+            label={'Gênero'}
+            error={errors.includes('gender')}
+            marginTop={20}
+            value={gender?.name}
+            onInputPress={handleOpenModal}
+          />
+        )}
       </>
 
       <View style={{ marginVertical: 30 }}>
         <Button label="SALVAR" buttonEnabled={!errors.length} onPress={handleUpdate} />
       </View>
+
+      <DialogModalBottomSheet
+        data={User.genders}
+        openModal={isModalOpen}
+        onModalPresented={handleModalPresented}
+        onModalDismissed={handleModalDismissed}
+        onSelectItem={(item) => {
+          setGender(item)
+          handleModalDismissed()
+        }}
+      />
     </View>
   )
 }

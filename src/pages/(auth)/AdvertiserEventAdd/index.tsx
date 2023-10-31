@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
@@ -12,7 +13,7 @@ import { axiosApi } from '../../../services/axios'
 
 export const AdvertiverEventAddScreen = ({ navigation, route }) => {
   const { advertiserId } = route.params
-
+  const isFocused = useIsFocused()
   const [name, setName] = useState('')
   const [eventDateStart, setEventDateStart] = useState('')
   const [eventDateEnd, setEventDateEnd] = useState('')
@@ -55,6 +56,11 @@ export const AdvertiverEventAddScreen = ({ navigation, route }) => {
           return acc
         }, [])
       )
+    } else {
+      navigation.navigate('AdvertiverPlaceAddScreen', {
+        advertiserId,
+        backToEvent: true
+      })
     }
   }
 
@@ -68,7 +74,7 @@ export const AdvertiverEventAddScreen = ({ navigation, route }) => {
     if (!places.length) {
       loadPlaces()
     }
-  }, [name, eventPlace, eventDateStart, eventDateEnd, eventTimeStart, eventTimeEnd])
+  }, [name, eventPlace, eventDateStart, eventDateEnd, eventTimeStart, eventTimeEnd, isFocused])
 
   const save = async () => {
     const toSave = {
@@ -86,12 +92,19 @@ export const AdvertiverEventAddScreen = ({ navigation, route }) => {
         eventId: data.data.id,
         newEvent: true
       })
-    } catch (e) {}
+    } catch (e) {
+      //TODO: handle error
+      console.log(e.response.data)
+    }
   }
 
   return (
     <>
-      <ScrollView>
+      <ScrollView
+        style={{
+          backgroundColor: COLORS.white
+        }}
+      >
         <View style={style.container}>
           <View style={{ marginTop: 10 }}>
             <BackButton route="AdvertiserDashboardScreen" routeParams={{ advertiserId }} />

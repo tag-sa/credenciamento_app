@@ -9,27 +9,46 @@ import { AdvertiserListItem } from '../../AdvertiserListItem'
 import { AdvertiserStartBanner } from '../../AdvertiserStartBanner'
 import { AdvertiserStarterSteps } from '../../AdvertiserStarterSteps'
 import Button from '../../Button/Button'
+import { DialogModal } from '../../DialogModal'
 
 export const AdvertiserDashboardComponent = () => {
   const navigation = useNavigation<any>()
   const [advertisers, setAdvertisers] = useState([])
+  const [advertiserId, setAdvertiserId] = useState()
+  const [modalVisible, setModalVisible] = useState(false)
+
+  const load = async () => {
+    useLoadingStore.setState({ isLoading: true })
+
+    const { data } = await axiosApi.get('/advertisers')
+
+    useLoadingStore.setState({ isLoading: false })
+
+    setAdvertisers(data.data)
+  }
 
   useEffect(() => {
-    const load = async () => {
-      useLoadingStore.setState({ isLoading: true })
-
-      const { data } = await axiosApi.get('/advertisers')
-
-      useLoadingStore.setState({ isLoading: false })
-
-      setAdvertisers(data.data)
-    }
-
     load()
   }, [])
 
+  const onTeamDelete = async () => {
+    try {
+      await axiosApi.delete(`advertisers/${advertiserId}`)
+      load()
+    } catch (error) {
+      //TODO: tratar erro
+    }
+  }
+
   return (
     <>
+      <DialogModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        title={'Remover Anunciante?'}
+        message={'Ao remover o anunciante, todos os eventos e pessoas convocadas serão removidos.'}
+        confirmAction={onTeamDelete}
+      />
       <View style={style.body}>
         <Text style={style.hello}>Olá</Text>
         <View style={{ marginVertical: 20 }}>
@@ -53,7 +72,8 @@ export const AdvertiserDashboardComponent = () => {
                   })
                 }}
                 onDelete={() => {
-                  console.log(advertiser.id)
+                  setAdvertiserId(advertiser.id)
+                  setModalVisible(true)
                 }}
               />
             ))}

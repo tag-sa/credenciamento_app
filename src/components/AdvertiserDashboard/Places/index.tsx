@@ -1,8 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
 import { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
 import { PADDINGS } from '../../../constants/Paddings'
@@ -90,7 +89,7 @@ export const AdverstiserPlaces = ({ advertiserId, places, reload }: AdvertiserPl
                 {place.address}, {place.number}
               </Text>
               <View style={{ flexDirection: 'row', gap: 5 }}>
-                <Text style={styles.state}>{place.neighborhood}dasdas</Text>
+                <Text style={styles.state}>{place.neighborhood}</Text>
                 <Text style={styles.city}>{place.city}</Text>
                 <Text style={styles.state}>{place.state}</Text>
               </View>

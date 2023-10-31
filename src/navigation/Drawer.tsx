@@ -10,6 +10,8 @@ import { IMAGES } from '../constants/Images'
 import { PADDINGS } from '../constants/Paddings'
 import { UserType } from '../model/user.model'
 import { SettingsPage } from '../pages/(auth)/Settings'
+import { AccountCreateScreen } from '../pages/(public)/AccountCreate'
+import { LoginScreen } from '../pages/(public)/Login'
 import { useUserStore } from '../store/user.store'
 import { MyTabs } from './Tabs'
 
@@ -121,9 +123,18 @@ export const MyDrawer = () => {
         }
       }}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
+      initialRouteName="Login"
     >
-      <Drawer.Screen name="DashboardDrawer" options={{ title: 'Dashboard' }} component={MyTabs} initialParams={{ screenName: 'Dashboard' }} />
+      <Drawer.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          swipeEdgeWidth: 0
+        }}
+      />
+      <Drawer.Screen name="AccountCreate" component={AccountCreateScreen} />
       <Drawer.Screen name="Settings" options={{ title: 'Configurações', headerShown: true, swipeEdgeWidth: 0, header: () => <HeaderComponent /> }} component={SettingsPage} />
+      <Drawer.Screen name="DashboardDrawer" options={{ title: 'Dashboard' }} component={MyTabs} initialParams={{ screenName: 'Dashboard' }} />
 
       {/* {user?.type == 'pj' && <Drawer.Screen name="AdvertiserDrawer" options={{ title: 'Anunciante' }} component={MyTabs} initialParams={{ screenName: 'Advertiser' }} />}
 

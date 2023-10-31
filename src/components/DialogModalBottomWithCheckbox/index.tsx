@@ -1,7 +1,6 @@
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { FlatList, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS } from '../../constants/Colors'
 import { CheckBox } from '../CheckBox'
 

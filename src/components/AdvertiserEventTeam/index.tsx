@@ -6,6 +6,7 @@ import { IMAGES } from '../../constants/Images'
 
 type AdvertiserEventTeamProps = {
   team: {
+    id: number
     name: string
     quantity: number
     date_start: string

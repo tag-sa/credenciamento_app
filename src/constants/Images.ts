@@ -10,6 +10,7 @@ import BackButtonWhite from '../../assets/images/icons/icon-back-button-white.sv
 import BackButton from '../../assets/images/icons/icon-back-button.svg'
 import IconBarbecue from '../../assets/images/icons/icon-barbecue.svg'
 import IconBirthday from '../../assets/images/icons/icon-birthday.svg'
+import BullhornBlue from '../../assets/images/icons/icon-bullhorne-blue.svg'
 import EmptyCalendar from '../../assets/images/icons/icon-calendar-empty.svg'
 import Calendar from '../../assets/images/icons/icon-calendar.svg'
 import IconCap from '../../assets/images/icons/icon-cap.svg'
@@ -57,11 +58,14 @@ import IconSport from '../../assets/images/icons/icon-sport.svg'
 import SwitchButton from '../../assets/images/icons/icon-switch-button.svg'
 import IconTeamsUsers from '../../assets/images/icons/icon-team-users.svg'
 import Trash from '../../assets/images/icons/icon-trash.svg'
+import IconUser from '../../assets/images/icons/icon-user.svg'
 import DashboardBanner1 from '../../assets/images/icons/icon-worker-banner-1.svg'
 import DashboardBanner2 from '../../assets/images/icons/icon-worker-banner-2.svg'
 import YellowStar from '../../assets/images/icons/icon-yellow-star.svg'
 import ManSeatDesk from '../../assets/images/icons/man-seat-desk.svg'
+
 export const IMAGES = {
+  Logo: require('../../assets/images/logo.png'),
   ADVERTISER: {
     ManSeatDesk
   },
@@ -127,7 +131,9 @@ export const IMAGES = {
     EmptyCalendar,
     ClockAboutEvent,
     LocationAboutEvent,
-    IconCourseAwaiting
+    IconCourseAwaiting,
+    IconUser,
+    BullhornBlue
   },
   DRAWER: {
     Settings,

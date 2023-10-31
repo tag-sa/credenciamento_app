@@ -1,9 +1,9 @@
 import { useIsFocused } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { AdverstiserAbout } from '../../../components/AdvertiserDashboard/About'
 import { AdverstiserPastEvents } from '../../../components/AdvertiserDashboard/PastEvents'
+import { AdverstiserPeople } from '../../../components/AdvertiserDashboard/People'
 import { AdverstiserPlaces } from '../../../components/AdvertiserDashboard/Places'
 import { BackButton } from '../../../components/BackButton'
 import { COLORS } from '../../../constants/Colors'
@@ -15,6 +15,8 @@ import { useLoadingStore } from '../../../store/loading.store'
 export const AdvertiserDashboardScreen = ({ route, navigation }) => {
   const { advertiserId } = route.params
   const [activeTab, setActiveTab] = useState<'about' | 'pastEvents' | 'places' | 'people'>('about')
+  const [users, setUsers] = useState<any[]>([])
+  const [invitedUsers, setInvitedUsers] = useState<any[]>([])
 
   const isFocused = useIsFocused()
   const [places, setPlaces] = useState([])
@@ -30,12 +32,17 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
   const loadAdvertiser = async () => {
     useLoadingStore.setState({ isLoading: true })
 
-    const [adv, pls] = await Promise.all([axiosApi.get(`/advertisers/${advertiserId}`), axiosApi.get(`/advertisers/${advertiserId}/places/`)])
-
-    useLoadingStore.setState({ isLoading: false })
-
+    const [adv, pls, users] = await Promise.all([
+      axiosApi.get(`/advertisers/${advertiserId}`),
+      axiosApi.get(`/advertisers/${advertiserId}/places/`),
+      axiosApi.get(`/advertisers/${advertiserId}/people/`)
+    ])
     setAdvertiser(adv.data.data)
     setPlaces(pls.data.data)
+    setUsers(users.data.data.users)
+    setInvitedUsers(users.data.data.invites)
+
+    useLoadingStore.setState({ isLoading: false })
   }
 
   useEffect(() => {
@@ -57,7 +64,7 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.advertiserContainer}>
             <View style={styles.advertiserImageContainer}>
-              <IMAGES.ICONS.BullhornWhite style={styles.advertiserImage} />
+              <IMAGES.ICONS.BullhornBlue width={45} height={45} />
             </View>
             <View style={styles.actions}>
               <IMAGES.ICONS.Like />
@@ -102,6 +109,7 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
         {activeTab === 'about' && <AdverstiserAbout advertiser={advertiser} />}
         {activeTab === 'pastEvents' && <AdverstiserPastEvents advertiser={advertiser} />}
         {activeTab === 'places' && <AdverstiserPlaces places={places} advertiserId={advertiserId} reload={loadAdvertiser} />}
+        {activeTab === 'people' && <AdverstiserPeople users={users} invites={invitedUsers} advertiserId={advertiserId} reload={loadAdvertiser} />}
       </View>
     </ScrollView>
   )
@@ -140,7 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 50000,
     position: 'absolute',
     top: -70,
-    backgroundColor: '#7709D8',
+    backgroundColor: COLORS.white,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',

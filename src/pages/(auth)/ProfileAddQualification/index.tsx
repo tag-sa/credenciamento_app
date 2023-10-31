@@ -84,7 +84,7 @@ export const ProfileAddQualificationScreen = ({ navigation, route }) => {
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
-            console.log('Image successfully uploaded to S3')
+            console.log('successfully uploaded to S3')
           } else {
             console.log('Error while sending the image to S3')
           }

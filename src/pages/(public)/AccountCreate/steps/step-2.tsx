@@ -4,15 +4,18 @@ import CustomInputWithTextAndIcon from '../../../../components/Input/CustomInput
 
 import { cnpj, cpf } from 'cpf-cnpj-validator'
 import moment from 'moment'
+import CustomSelectInput from '../../../../components/SelectInput'
 import { COLORS } from '../../../../constants/Colors'
 import { PADDINGS } from '../../../../constants/Paddings'
 
 interface Step2Props {
   type: string
   retProps(document: string, date: string, errors: Array<String>): void
+  openGenderModal(): void
+  gender: { id: number; name: string }
 }
 
-export default function Step2({ type, retProps }: Step2Props) {
+export default function Step2({ type, retProps, openGenderModal, gender }: Step2Props) {
   const [errors, setErrors] = useState([])
   const [document, setDocument] = useState('')
   const [date, setDate] = useState('')
@@ -75,6 +78,10 @@ export default function Step2({ type, retProps }: Step2Props) {
         value={date}
         placeholder={type === 'pf' ? 'dd/mm/aaaa' : 'dd/mm/aaaa'}
       />
+
+      {type === 'pf' && (
+        <CustomSelectInput placeholder="Selecionar Gênero" label={'Gênero'} error={errors.includes('gender')} marginTop={20} value={gender?.name} onInputPress={openGenderModal} />
+      )}
     </>
   )
 }

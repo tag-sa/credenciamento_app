@@ -1,12 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native'
 import FlashMessage from 'react-native-flash-message'
-import { MyStack } from './navigation/Stack'
+import { MyDrawer } from './navigation/Drawer'
 
 export const Router = () => {
   return (
     <NavigationContainer>
       <FlashMessage position="top" />
-      <MyStack />
+      <MyDrawer />
     </NavigationContainer>
   )
 }

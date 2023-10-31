@@ -49,6 +49,7 @@ export const ProfileScreen = ({ navigation }) => {
 
     setRating(data.data.score)
     setUser(getUser())
+
     if (data.data.worked_events && data.data.worked_events.length > 5) {
       setShowRating(true)
     }

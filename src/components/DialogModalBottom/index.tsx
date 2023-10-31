@@ -1,11 +1,10 @@
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS } from '../../constants/Colors'
 
 interface DialogModalProps {
-  data: Array<{ id: number; name: string }>
+  data: Array<{ id: number | string; name: string }>
   openModal: boolean
   onModalPresented?: () => void
   onModalDismissed?: () => void
@@ -127,6 +126,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    zIndex: 9999
   }
 })

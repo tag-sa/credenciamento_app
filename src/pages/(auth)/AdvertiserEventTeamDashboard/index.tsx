@@ -22,7 +22,7 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
   const [teamsUsers, setTeamsUsers] = useState<any>([])
 
   const [totalTeamsUsersNotConfirmedInPercent, setTotalTeamsUsersNotConfirmedInPercent] = useState('0')
-  const [totalRefusedInPercent, setTotalRefusedInPercent] = useState('0')
+  // const [totalRefusedInPercent, setTotalRefusedInPercent] = useState('0')
 
   const [totalPreview, setTotalPreview] = useState(0)
 
@@ -64,26 +64,18 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
       data.data.teamsUsers.map((tu) => {
         if (tu.user && tu.user_id != null) {
           totalUsersReplied++
-
-          if (tu.confirmed == 'c') {
-            totalUsersRepliedWithConfirmation++
-            if (tu.user.gender == 'm') {
-              totalMale++
-            }
-
-            if (tu.user.gender == 'f') {
-              totalFemale++
-            }
-          }
+          if (tu.confirmed == 'c') totalUsersRepliedWithConfirmation++
+          if (tu.user.gender == 'm') totalMale++
+          if (tu.user.gender == 'f') totalFemale++
         }
       })
 
-      if (totalMale > 0 && totalUsersRepliedWithConfirmation > 0) {
-        totalMaleInPercent = (totalMale / totalUsersRepliedWithConfirmation) * 100
+      if (totalMale > 0 && totalUsersReplied > 0) {
+        totalMaleInPercent = (totalMale / totalUsersReplied) * 100
       }
 
-      if (totalFemale > 0 && totalUsersRepliedWithConfirmation > 0) {
-        totalFemaleInPercent = (totalFemale / totalUsersRepliedWithConfirmation) * 100
+      if (totalFemale > 0 && totalUsersReplied > 0) {
+        totalFemaleInPercent = (totalFemale / totalUsersReplied) * 100
       }
 
       if (totalUsersReplied > 0 && totalUsers > 0) {
@@ -98,7 +90,7 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
     setTotalFemaleInPercent(totalFemaleInPercent)
 
     setTotalTeamsUsersNotConfirmedInPercent(((totalTeamsUsersNotConfirmed / data.data.teamsUsers.length) * 100).toFixed(0))
-    setTotalRefusedInPercent(((totalTeamsUsersRefused / data.data.teamsUsers.length) * 100).toFixed(0))
+    // setTotalRefusedInPercent(((totalTeamsUsersRefused / data.data.teamsUsers.length) * 100).toFixed(0))
 
     setCovocationProgressInPercent(convocationProgressInPercent)
     setTotalTeamsUsersConfirmed(totalTeamsUsersConfirmed)
@@ -194,13 +186,13 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
                       <Text style={styles.summaryNotConfirmed}>{totalTeamsUsersNotConfirmedInPercent}%</Text>
                       <Text style={styles.summaryLabel}>sem resposta</Text>
                     </View>
-                    <View>
+                    {/* <View>
                       <Text style={styles.summaryRefused}>{totalRefusedInPercent}%</Text>
                       <Text style={styles.summaryLabel}>não vão</Text>
-                    </View>
+                    </View> */}
                     <View>
                       <Text style={styles.summaryConfirmed}>{totalUsersReplied}%</Text>
-                      <Text style={styles.summaryLabel}>confirmados</Text>
+                      <Text style={styles.summaryLabel}>convocados</Text>
                     </View>
                   </View>
                 </View>
@@ -446,7 +438,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginTop: 15,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'flex-end'
   },
   summaryLabel: {

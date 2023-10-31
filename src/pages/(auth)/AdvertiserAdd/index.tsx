@@ -6,6 +6,7 @@ import CustomInputWithTextAndIcon from '../../../components/Input/CustomInputWit
 import { COLORS } from '../../../constants/Colors'
 import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
+import { useLoadingStore } from '../../../store/loading.store'
 
 export const AdvertiverAddScreen = ({ navigation }) => {
   const [name, setName] = useState('')
@@ -44,15 +45,18 @@ export const AdvertiverAddScreen = ({ navigation }) => {
           label="Salvar"
           buttonEnabled={name.length > 0}
           onPress={async () => {
+            useLoadingStore.setState({ isLoading: true })
             try {
               await axiosApi.post('/advertisers', {
                 name,
                 url,
                 about
               })
+              useLoadingStore.setState({ isLoading: false })
 
               navigation.replace('Dashboard')
             } catch (error) {
+              useLoadingStore.setState({ isLoading: false })
               console.log(error.response.data)
             }
           }}

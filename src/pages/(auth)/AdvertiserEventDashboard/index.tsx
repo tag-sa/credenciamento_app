@@ -20,8 +20,8 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
 
   const [event, setEvent] = useState<{
     name: string
-    dateStart: string
-    dateEnd: string
+    date_start: string
+    date_end: string
     total_by_answers: number
     total_executed: number
     total_preview: number
@@ -48,7 +48,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
   const [totalTeamsUsers, setTotalTeamsUsers] = useState<number>(0)
   const [totalTeamsUsersConfirmed, setTotalTeamsUsersConfirmed] = useState(0)
   const [totalCompletedInPercent, setTotalCompletedInPercent] = useState('0')
-  const [totalRefusedInPercent, setTotalRefusedInPercent] = useState('0')
+  // const [totalRefusedInPercent, setTotalRefusedInPercent] = useState('0')
   const [chartData, setChartData] = useState<any[]>([])
 
   const isFocused = useIsFocused()
@@ -72,6 +72,8 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
 
     const { data } = await axiosApi.get(`/events/${eventId}`)
 
+    console.log(data.data)
+
     setEvent(data.data)
     setAdvertiser(data.data.advertiser)
     setTeams(data.data.teams)
@@ -94,7 +96,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
       setTotalTeamsUsers(totalTeamsUsers)
       setTotalTeamsUsersConfirmed(totalTeamsUsersConfirmed)
 
-      setTotalRefusedInPercent(((totalTeamsUsersRefused / totalTeamsUsers) * 100).toFixed(0))
+      // setTotalRefusedInPercent(((totalTeamsUsersRefused / totalTeamsUsers) * 100).toFixed(0))
       setTotalCompletedInPercent(((totalTeamsUsersConfirmed / totalTeamsUsers) * 100).toFixed(0))
       setTotalTeamsUsersNotConfirmedInPercent(((totalTeamsUsersNotConfirmed / totalTeamsUsers) * 100).toFixed(0))
       setChartData([
@@ -193,10 +195,10 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
                   <Text style={styles.summaryNotConfirmed}>{totalTeamsUsersNotConfirmedInPercent}%</Text>
                   <Text style={styles.summaryLabel}>sem resposta</Text>
                 </View>
-                <View>
+                {/* <View>
                   <Text style={styles.summaryRefused}>{totalRefusedInPercent}%</Text>
                   <Text style={styles.summaryLabel}>não vão</Text>
-                </View>
+                </View> */}
                 <View>
                   <Text style={styles.summaryConfirmed}>{totalCompletedInPercent}%</Text>
                   <Text style={styles.summaryLabel}>confirmados</Text>
@@ -266,13 +268,22 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
         {activeTab === 'about' && (
           // TODO
           <AdverstiserEventAboutTab
-            dateStart={event?.dateStart}
-            dateEnd={event?.dateEnd}
+            dateStart={event?.date_start}
+            dateEnd={event?.date_end}
             placeName={event?.place?.name}
             placeAddress={`${event?.place?.address}, ${event?.place?.number} - ${event?.place?.neighborhood}, ${event?.place?.city} - ${event?.place?.state}`}
           />
         )}
-        {activeTab === 'teams' && <AdverstiserEventsTeamsTab isPastEvent={isPastEvent} teams={teams} event={event} />}
+        {activeTab === 'teams' && (
+          <AdverstiserEventsTeamsTab
+            reload={(status) => {
+              if (status) loadData()
+            }}
+            isPastEvent={isPastEvent}
+            teams={teams}
+            event={event}
+          />
+        )}
         {activeTab === 'costs' && (
           <AdvertiserEventCostsTab
             totalTeamsUsers={totalTeamsUsers}
@@ -349,7 +360,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginTop: 15,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'flex-end'
   },
   summaryLabel: {

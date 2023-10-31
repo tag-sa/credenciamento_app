@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { DialogModalBottomSheet } from '../../../components/DialogModalBottom'
 import CustomInputWithTextAndIcon from '../../../components/Input/CustomInputWithTextAndIcon'
 import { COLORS } from '../../../constants/Colors'
 import { PADDINGS } from '../../../constants/Paddings'
@@ -10,22 +12,26 @@ import { UserType } from '../../../model/user.model'
 import { axiosApi } from '../../../services/axios'
 import { useUserStore } from '../../../store/user.store'
 
-export const LoginScreen = ({ navigation }) => {
+export const LoginScreen = () => {
+  const navigation = useNavigation<any>()
   const { setUser, getUser } = useUserStore()
   const { top } = useSafeAreaInsets()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [invalidEmail, setInvalidEmail] = useState(false)
 
-  useEffect(() => {
-    async function checkLogin() {
-      const user = getUser()
+  async function checkLogin() {
+    const user = getUser()
 
-      if (user) {
-        navigation.replace('Dashboard')
-      }
+    if (user) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'DashboardDrawer' }]
+      })
     }
+  }
 
+  useEffect(() => {
     checkLogin()
   }, [])
 
@@ -46,18 +52,22 @@ export const LoginScreen = ({ navigation }) => {
       const user: UserType = {
         id: login.data.user.id,
         name: login.data.user.name,
+        gender: login.data.user.gender,
         email: login.data.user.email,
         nickname: login.data.user.nickname,
         document: login.data.user.type == 'pj' ? login.data.user.cnpj : login.data.user.cpf,
-        type: login.data.user.type
+        type: login.data.user.type,
+        about: login.data.user.about
       }
 
       setUser(user)
       await AsyncStorage.setItem('token', login.data.access_token)
 
-      navigation.replace('Dashboard')
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'DashboardDrawer' }]
+      })
     } catch (error) {
-      console.log(error.response)
       let title = 'Erro ao fazer login'
       let message = 'Usuário ou senha inválidos'
 
@@ -78,6 +88,13 @@ export const LoginScreen = ({ navigation }) => {
 
   return (
     <>
+      <DialogModalBottomSheet
+        data={[{ id: 1, name: 'teste' }]}
+        openModal={true}
+        // onModalPresented={handleModalPresented}
+        // onModalDismissed={handleModalDismissed}
+        onSelectItem={() => {}}
+      />
       <ScrollView automaticallyAdjustKeyboardInsets={true} contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ ...styles.container, paddingTop: top }}>
           <View style={styles.header}>
