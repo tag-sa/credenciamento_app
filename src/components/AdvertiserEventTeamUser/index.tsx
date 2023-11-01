@@ -8,6 +8,7 @@ import Button from '../Button/Button'
 type AdvertiserEventTeamUserProps = {
   user: {
     name: string
+    avatar: string
     birthdate: string
     score: number
   }
@@ -42,7 +43,7 @@ export const AdvertiserEventTeamUser = ({ onClick, onButtonClick, user, teamConf
   return (
     <View style={styles.container}>
       <Pressable style={styles.imageContainer} onPress={onClick}>
-        <Avatar uri="https://via.placeholder.com/150/24f355" />
+        <Avatar emptyUriIcon={IMAGES.ICONS.IconUser} loggedUser={false} uri={user.avatar} borderWidth={0} />
       </Pressable>
 
       <View

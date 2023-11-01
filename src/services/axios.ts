@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
+import { MMKV } from 'react-native-mmkv'
 
 const axiosApi = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
@@ -10,7 +10,8 @@ const axiosApi = axios.create({
 
 axiosApi.interceptors.request.use(
   async (config) => {
-    const token = await AsyncStorage.getItem('token')
+    const storage = new MMKV()
+    const token = storage.getString('token')
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
@@ -18,9 +19,7 @@ axiosApi.interceptors.request.use(
 
     return config
   },
-  (error) => {
-    return Promise.reject(error)
-  }
+  (error) => Promise.reject(error)
 )
 
 export { axiosApi }

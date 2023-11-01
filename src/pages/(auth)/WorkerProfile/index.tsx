@@ -33,6 +33,7 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
     birthdate: string
     score: number
     email: string
+    avatar?: string
     document: string
   }>()
 
@@ -59,6 +60,7 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
       birthdate: data.data.birthdate,
       score: data.data.score,
       email: data.data.email,
+      avatar: data.data.avatar,
       document: data.data.document
     })
 
@@ -162,7 +164,7 @@ export const WorkerProfiledScreen = ({ navigation, route }) => {
               </View>
               <View style={styles.advertiserContainer}>
                 <View style={styles.advertiserImageContainer}>
-                  <Avatar uri="https://via.placeholder.com/150/24f355" width={120} height={120} borderRadius={50000} borderWidth={8} />
+                  <Avatar emptyUriIcon={IMAGES.ICONS.IconUser} loggedUser={false} uri={user.avatar} width={120} height={120} borderRadius={50000} borderWidth={8} />
                 </View>
 
                 <View style={styles.actions}>

@@ -71,8 +71,6 @@ export const AdvertiserEventDashboardScreen = ({ route }) => {
 
     const { data } = await axiosApi.get(`/events/${eventId}`)
 
-    console.log(data.data)
-
     setEvent(data.data)
     setAdvertiser(data.data.advertiser)
     setTeams(data.data.teams)

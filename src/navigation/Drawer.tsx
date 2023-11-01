@@ -51,7 +51,7 @@ export const MyDrawer = () => {
         >
           <View style={{ marginTop: 15 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-              <Avatar uri="https://via.placeholder.com/150/24f355" height={35} width={35} borderWidth={0} />
+              <Avatar height={35} width={35} borderWidth={0} />
               <Text style={{ fontSize: 16, fontWeight: 'bold', color: COLORS.darkBlue }}>Olá {user?.name}</Text>
             </View>
             <View style={{ marginTop: 40, gap: 10 }}>

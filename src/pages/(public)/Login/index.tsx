@@ -1,4 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
+// import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MMKV } from 'react-native-mmkv'
 import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -19,6 +20,7 @@ export const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [invalidEmail, setInvalidEmail] = useState(false)
+  const storage = new MMKV()
 
   async function checkLogin() {
     const user = getUser()
@@ -57,11 +59,13 @@ export const LoginScreen = () => {
         nickname: login.data.user.nickname,
         document: login.data.user.type == 'pj' ? login.data.user.cnpj : login.data.user.cpf,
         type: login.data.user.type,
-        about: login.data.user.about
+        about: login.data.user.about,
+        avatarUrl: login.data.user.avatar
       }
 
       setUser(user)
-      await AsyncStorage.setItem('token', login.data.access_token)
+
+      storage.set('token', login.data.access_token)
 
       navigation.reset({
         index: 0,

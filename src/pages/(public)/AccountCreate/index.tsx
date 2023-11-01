@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Image, ScrollView, StyleSheet, View } from 'react-native'
-
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MMKV } from 'react-native-mmkv'
 import { useNavigation } from '@react-navigation/native'
 import moment from 'moment'
 import { showMessage } from 'react-native-flash-message'
@@ -22,6 +21,7 @@ import Step2 from './steps/step-2'
 import Step3 from './steps/step-3'
 
 export const AccountCreateScreen = () => {
+  const storage = new MMKV()
   const navigation = useNavigation<any>()
   const { top } = useSafeAreaInsets()
   const { setUser } = useUserStore()
@@ -146,7 +146,7 @@ export const AccountCreateScreen = () => {
         }
 
         setUser(user)
-        await AsyncStorage.setItem('token', login.data.access_token)
+        storage.set('token', login.data.access_token)
 
         navigation.reset({
           index: 0,

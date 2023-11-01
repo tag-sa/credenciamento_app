@@ -1,8 +1,8 @@
 import { Text, Image, TouchableOpacity, View } from 'react-native'
 import { COLORS } from '../../constants/Colors'
-import { DialogModalBottomSheet } from '../DialogModalBottom'
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useUserStore } from '../../store/user.store'
+import { SvgProps } from 'react-native-svg'
 
 interface AvatarProps {
   width?: number
@@ -11,13 +11,27 @@ interface AvatarProps {
   borderColor?: string
   borderWidth?: number
   uri?: string
+  emptyUriIcon?: FC<SvgProps>
+  loggedUser?: boolean
   click?: () => void
 }
 
-export const Avatar = ({ click, uri, width = 50, height = 50, borderRadius = 50, borderColor = COLORS.darkBlue, borderWidth = 2 }: AvatarProps) => {
+export const Avatar = ({
+  loggedUser = true,
+  emptyUriIcon,
+  click,
+  uri,
+  width = 50,
+  height = 50,
+  borderRadius = 50,
+  borderColor = COLORS.darkBlue,
+  borderWidth = 2
+}: AvatarProps) => {
   const { getUser } = useUserStore()
   const [imagePath, setImagePath] = useState('')
   const [userType, setUserType] = useState('')
+
+  const EmptyUriIcon = emptyUriIcon
 
   useEffect(() => {
     const user = getUser()
@@ -26,7 +40,7 @@ export const Avatar = ({ click, uri, width = 50, height = 50, borderRadius = 50,
     if (uri) {
       setImagePath(uri)
     } else {
-      if (user?.avatarUrl) {
+      if (user?.avatarUrl && loggedUser) {
         setImagePath(user.avatarUrl)
       }
     }
@@ -47,7 +61,7 @@ export const Avatar = ({ click, uri, width = 50, height = 50, borderRadius = 50,
           backgroundColor: !imagePath ? COLORS.white : 'transparent'
         }}
       >
-        {!imagePath && (
+        {!imagePath && loggedUser && (
           <Text
             style={{
               color: COLORS.darkGray,
@@ -59,6 +73,23 @@ export const Avatar = ({ click, uri, width = 50, height = 50, borderRadius = 50,
           </Text>
         )}
         {imagePath && <Image style={{ width, height }} source={{ uri: imagePath }} />}
+        {!imagePath && !loggedUser && (
+          <View
+            style={{
+              width,
+              height,
+              borderRadius,
+              overflow: 'hidden',
+              borderColor,
+              borderWidth,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: COLORS.darkBlue
+            }}
+          >
+            <EmptyUriIcon />
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   )

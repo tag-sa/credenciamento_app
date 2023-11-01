@@ -1,8 +1,6 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { UserType } from '../model/user.model'
-
 import { MMKV } from 'react-native-mmkv'
 
 interface IUserStore {
@@ -31,10 +29,14 @@ export const useUserStore = create<IUserStore>()(
       getUser: () => {
         return get().user
       },
-      setUser: (user: UserType) => set({ user }),
+      setUser: (user: UserType) => {
+        set({ user })
+      },
       logout: async (navigation) => {
         set({ user: null })
-        // await AsyncStorage.removeItem('token')
+        // storage.delete('token')
+        MMKVStorage.removeItem('token')
+
         navigation.reset({
           index: 0,
           routes: [{ name: 'Login' }]

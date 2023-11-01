@@ -19,6 +19,7 @@ import { useUserStore } from '../../../store/user.store'
 import { documentFormat } from '../../../utils/document_format'
 import { DialogModalBottomSheet } from '../../../components/DialogModalBottom'
 import * as ImagePicker from 'expo-image-picker'
+import { showMessage } from 'react-native-flash-message'
 
 export const ProfileScreen = ({ navigation }) => {
   const isFocused = useIsFocused()
@@ -80,26 +81,28 @@ export const ProfileScreen = ({ navigation }) => {
   const handleAvatarOption = async (opt: { id: number | string }) => {
     handleModalDismissed()
 
-    if (opt.id == 'g') await pickImageAsync()
+    await pickImageAsync(opt.id as 'c' | 'g')
   }
 
   useEffect(() => {
     loadData()
   }, [isFocused])
 
-  const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+  const pickImageAsync = async (type: 'c' | 'g') => {
+    const launchType = type == 'g' ? ImagePicker.launchImageLibraryAsync : ImagePicker.launchCameraAsync
+
+    const result = await launchType({
       allowsEditing: true,
       quality: 1
     })
+
     if (!result.canceled) {
-      handleAvatarUpload(result.assets[0])
-    } else {
-      alert('You did not select any image.')
+      useLoadingStore.setState({ isLoading: true })
+      handleS3Upload(result.assets[0])
     }
   }
 
-  const handleAvatarUpload = async (image: ImagePicker.ImagePickerAsset) => {
+  const handleS3Upload = async (image: ImagePicker.ImagePickerAsset) => {
     const fileExtension = image.uri.split('.').pop()
     const { data: getUrls } = await axiosApi.get(`/files/presigned-url/${fileExtension}`)
     const { pre_signed_url, file_url } = getUrls.data
@@ -107,12 +110,22 @@ export const ProfileScreen = ({ navigation }) => {
 
     const xhr = new XMLHttpRequest()
     xhr.open('PUT', pre_signed_url)
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = async function () {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-          console.log('Image successfully uploaded to S3')
+          await axiosApi.put(`/users/${user.id}`, { avatar: file_url })
+          setAvatar(file_url)
+          useLoadingStore.setState({ isLoading: false })
         } else {
-          console.log('Error while sending the image to S3.\nStatus:', xhr.status, '\nError text: ', xhr.responseText)
+          useLoadingStore.setState({ isLoading: false })
+          showMessage({
+            backgroundColor: COLORS.red,
+            hideStatusBar: true,
+            message: 'Erro',
+            description: 'Ocorreu um erro ao atualizar a foto de perfil',
+            type: 'danger',
+            icon: 'danger'
+          })
         }
       }
     }
