@@ -10,6 +10,7 @@ interface IUserStore {
   setUser: (user: UserType) => void
   getUser: () => UserType | null
   logout: (navigation: any) => void
+  setAvatar: (avatar: string) => void
 }
 
 const storage = new MMKV()
@@ -38,6 +39,13 @@ export const useUserStore = create<IUserStore>()(
           index: 0,
           routes: [{ name: 'Login' }]
         })
+      },
+      setAvatar: (avatar: string) => {
+        const user = get().user
+        if (user) {
+          user.avatarUrl = avatar
+          set({ user })
+        }
       }
     }),
     {

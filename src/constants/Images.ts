@@ -64,6 +64,8 @@ import DashboardBanner1 from '../../assets/images/icons/icon-worker-banner-1.svg
 import DashboardBanner2 from '../../assets/images/icons/icon-worker-banner-2.svg'
 import YellowStar from '../../assets/images/icons/icon-yellow-star.svg'
 import ManSeatDesk from '../../assets/images/icons/man-seat-desk.svg'
+import Camera from '../../assets/images/icons/icon-camera.svg'
+import Gallery from '../../assets/images/icons/icon-gallery.svg'
 
 export const IMAGES = {
   Logo: require('../../assets/images/logo.png'),
@@ -135,7 +137,9 @@ export const IMAGES = {
     LocationAboutEvent,
     IconCourseAwaiting,
     IconUser,
-    BullhornBlue
+    BullhornBlue,
+    Camera,
+    Gallery
   },
   DRAWER: {
     Settings,

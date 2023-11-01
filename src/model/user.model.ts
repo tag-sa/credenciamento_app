@@ -9,6 +9,7 @@ export interface UserType {
   type: 'pf' | 'pj'
   score?: number
   about?: string
+  avatarUrl?: string
 }
 
 export class User implements UserType {
@@ -22,6 +23,7 @@ export class User implements UserType {
   type: 'pf' | 'pj'
   score?: number
   about?: string
+  avatarUrl?: string
 
   constructor(params?: UserType) {
     Object.assign(this, params)

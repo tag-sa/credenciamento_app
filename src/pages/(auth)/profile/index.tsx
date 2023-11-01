@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native'
-import { useEffect, useState } from 'react'
-import { Alert, FlatList, ScrollView, Share, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Alert, FlatList, ScrollView, Share, Image, StyleSheet, Text, View } from 'react-native'
 import StarRating from 'react-native-star-rating-widget'
 import { Avatar } from '../../../components/Avatar'
 import { BackButton } from '../../../components/BackButton'
@@ -17,21 +17,20 @@ import { axiosApi } from '../../../services/axios'
 import { useLoadingStore } from '../../../store/loading.store'
 import { useUserStore } from '../../../store/user.store'
 import { documentFormat } from '../../../utils/document_format'
+import { DialogModalBottomSheet } from '../../../components/DialogModalBottom'
+import * as ImagePicker from 'expo-image-picker'
 
 export const ProfileScreen = ({ navigation }) => {
   const isFocused = useIsFocused()
 
   const [user, setUser] = useState<UserType>()
-  const { getUser } = useUserStore()
+  const { getUser, setAvatar } = useUserStore()
   const [activeTab, setActiveTab] = useState<'profile' | 'personalData' | 'qualifications' | 'customization'>('profile')
   const [rating, setRating] = useState(0)
   const [showRating, setShowRating] = useState(false)
   const [advertisers, setAdvertisers] = useState<{ id: number; name: string }[]>([])
-
   const [workerEvents, setWorkerEvents] = useState<any[]>([])
-
   const [jobs, setJobs] = useState<string[]>([])
-
   const [courses, setCourses] = useState<
     {
       id: number
@@ -41,6 +40,23 @@ export const ProfileScreen = ({ navigation }) => {
       courses: UserCourse[]
     }[]
   >([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleModalPresented = () => {
+    setIsModalOpen(true)
+  }
+
+  const handleModalDismissed = () => {
+    setIsModalOpen(false)
+  }
+
+  const handleOpenModal = () => {
+    if (isModalOpen) {
+      setIsModalOpen(false)
+    } else {
+      setIsModalOpen(true)
+    }
+  }
 
   const loadData = async () => {
     useLoadingStore.setState({ isLoading: false })
@@ -61,9 +77,52 @@ export const ProfileScreen = ({ navigation }) => {
     useLoadingStore.setState({ isLoading: false })
   }
 
+  const handleAvatarOption = async (opt: { id: number | string }) => {
+    handleModalDismissed()
+
+    if (opt.id == 'g') await pickImageAsync()
+  }
+
   useEffect(() => {
     loadData()
   }, [isFocused])
+
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1
+    })
+    if (!result.canceled) {
+      handleAvatarUpload(result.assets[0])
+    } else {
+      alert('You did not select any image.')
+    }
+  }
+
+  const handleAvatarUpload = async (image: ImagePicker.ImagePickerAsset) => {
+    const fileExtension = image.uri.split('.').pop()
+    const { data: getUrls } = await axiosApi.get(`/files/presigned-url/${fileExtension}`)
+    const { pre_signed_url, file_url } = getUrls.data
+    console.log(file_url)
+
+    const xhr = new XMLHttpRequest()
+    xhr.open('PUT', pre_signed_url)
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log('Image successfully uploaded to S3')
+        } else {
+          console.log('Error while sending the image to S3.\nStatus:', xhr.status, '\nError text: ', xhr.responseText)
+        }
+      }
+    }
+    xhr.setRequestHeader('Content-Type', 'image/jpeg')
+    xhr.send({
+      uri: image.uri,
+      type: 'image/jpeg',
+      name: image.uri.split('/').pop()
+    })
+  }
 
   return (
     <FlatList
@@ -89,9 +148,8 @@ export const ProfileScreen = ({ navigation }) => {
               </View>
               <View style={styles.advertiserContainer}>
                 <View style={styles.advertiserImageContainer}>
-                  <Avatar uri="https://via.placeholder.com/150/24f355" width={120} height={120} borderRadius={50000} borderWidth={8} />
+                  <Avatar click={handleOpenModal} width={120} height={120} borderRadius={50000} borderWidth={8} />
                 </View>
-
                 <View style={styles.actions}>
                   <IMAGES.ICONS.Share
                     onPress={async () => {
@@ -194,6 +252,16 @@ export const ProfileScreen = ({ navigation }) => {
             {activeTab === 'personalData' && <PersonalDataTab />}
             {activeTab === 'qualifications' && <QualificationsTab qualifications={courses} />}
           </View>
+          <DialogModalBottomSheet
+            data={[
+              { id: 'c', name: 'Câmera', icon: IMAGES.ICONS.Camera },
+              { id: 'g', name: 'Galeria', icon: IMAGES.ICONS.Gallery }
+            ]}
+            openModal={isModalOpen}
+            onModalPresented={handleModalPresented}
+            onModalDismissed={handleModalDismissed}
+            onSelectItem={handleAvatarOption}
+          />
         </>
       )}
     />

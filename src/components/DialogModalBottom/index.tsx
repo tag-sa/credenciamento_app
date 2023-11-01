@@ -1,10 +1,11 @@
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { FC, useCallback, useEffect, useMemo, useRef } from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS } from '../../constants/Colors'
+import { SvgProps } from 'react-native-svg'
 
 interface DialogModalProps {
-  data: Array<{ id: number | string; name: string }>
+  data: Array<{ id: number | string; name: string; icon?: FC<SvgProps> }>
   openModal: boolean
   onModalPresented?: () => void
   onModalDismissed?: () => void
@@ -95,10 +96,15 @@ export const DialogModalBottomSheet: React.FC<DialogModalProps> = ({ openModal, 
                     borderBottomWidth: 1,
                     borderBottomColor: COLORS.lightBlue,
                     paddingVertical: 15,
-                    paddingLeft: 20
+                    paddingLeft: 20,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10
                   }}
                   key={index}
                 >
+                  {item.icon && <item.icon />}
+
                   <Text
                     style={{
                       color: COLORS.mediumBlue,

@@ -46,7 +46,8 @@
     "validator": "^13.11.0",
     "zustand": "^4.4.1",
     "expo-document-picker": "~11.5.4",
-    "expo-sharing": "~11.5.0"
+    "expo-sharing": "~11.5.0",
+    "expo-image-picker": "~14.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

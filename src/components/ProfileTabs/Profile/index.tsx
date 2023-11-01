@@ -89,7 +89,7 @@ export const ProfileTab = ({ about, userType, jobs = [], advertisers = [], userI
         </View>
       )}
 
-      <View style={{ marginVertical: 30 }}>
+      <View style={{ marginTop: 30, marginBottom: 100 }}>
         <Button label={editable ? 'SALVAR' : 'EDITAR'} buttonEnabled={true} onPress={handleUpdate} />
       </View>
     </View>
