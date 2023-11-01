@@ -219,7 +219,7 @@ export const PersonalDataTab = ({}: PersonalDataTabProps) => {
         )}
       </>
 
-      <View style={{ marginVertical: 30 }}>
+      <View style={{ marginTop: 30, marginBottom: 100 }}>
         <Button label="SALVAR" buttonEnabled={!errors.length} onPress={handleUpdate} />
       </View>
 

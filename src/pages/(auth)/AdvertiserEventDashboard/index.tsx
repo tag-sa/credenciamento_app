@@ -14,7 +14,7 @@ import { PADDINGS } from '../../../constants/Paddings'
 import { axiosApi } from '../../../services/axios'
 import { useLoadingStore } from '../../../store/loading.store'
 
-export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
+export const AdvertiserEventDashboardScreen = ({ route }) => {
   const { eventId, newEvent, isPastEvent } = route.params
   const [activeTab, setActiveTab] = useState<'about' | 'teams' | 'costs'>('teams')
 
@@ -48,7 +48,6 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
   const [totalTeamsUsers, setTotalTeamsUsers] = useState<number>(0)
   const [totalTeamsUsersConfirmed, setTotalTeamsUsersConfirmed] = useState(0)
   const [totalCompletedInPercent, setTotalCompletedInPercent] = useState('0')
-  // const [totalRefusedInPercent, setTotalRefusedInPercent] = useState('0')
   const [chartData, setChartData] = useState<any[]>([])
 
   const isFocused = useIsFocused()
@@ -96,7 +95,6 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
       setTotalTeamsUsers(totalTeamsUsers)
       setTotalTeamsUsersConfirmed(totalTeamsUsersConfirmed)
 
-      // setTotalRefusedInPercent(((totalTeamsUsersRefused / totalTeamsUsers) * 100).toFixed(0))
       setTotalCompletedInPercent(((totalTeamsUsersConfirmed / totalTeamsUsers) * 100).toFixed(0))
       setTotalTeamsUsersNotConfirmedInPercent(((totalTeamsUsersNotConfirmed / totalTeamsUsers) * 100).toFixed(0))
       setChartData([
@@ -195,10 +193,6 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
                   <Text style={styles.summaryNotConfirmed}>{totalTeamsUsersNotConfirmedInPercent}%</Text>
                   <Text style={styles.summaryLabel}>sem resposta</Text>
                 </View>
-                {/* <View>
-                  <Text style={styles.summaryRefused}>{totalRefusedInPercent}%</Text>
-                  <Text style={styles.summaryLabel}>não vão</Text>
-                </View> */}
                 <View>
                   <Text style={styles.summaryConfirmed}>{totalCompletedInPercent}%</Text>
                   <Text style={styles.summaryLabel}>confirmados</Text>
@@ -228,8 +222,7 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
               <Text style={styles.generalSummaryLabel}>Vaga(s) Preenchida(s)</Text>
             </View>
           </View>
-        </View>
-        <View style={styles.tabs}>
+
           <ScrollView
             contentContainerStyle={{
               backgroundColor: COLORS.darkBlue
@@ -266,7 +259,6 @@ export const AdvertiserEventDashboardScreen = ({ route, navigation }) => {
         </View>
 
         {activeTab === 'about' && (
-          // TODO
           <AdverstiserEventAboutTab
             dateStart={event?.date_start}
             dateEnd={event?.date_end}
@@ -408,11 +400,6 @@ const styles = StyleSheet.create({
     marginTop: 2,
     fontSize: 12,
     color: COLORS.white
-  },
-  tabs: {
-    backgroundColor: COLORS.darkBlue,
-    height: 32,
-    flexDirection: 'row'
   },
   tabItemContent: {
     paddingHorizontal: PADDINGS.horizontal,

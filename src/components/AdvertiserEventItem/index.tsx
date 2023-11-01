@@ -37,7 +37,7 @@ export const AdvertiserEventItem = ({ event, onClick, onDelete, onDuplicate, isP
   return (
     <View style={styles.container}>
       <Pressable style={styles.imageContainer} onPress={onClick}>
-        <Text>Image</Text>
+        <IMAGES.ICONS.EmptyCalendarWhite />
       </Pressable>
 
       <View
@@ -60,7 +60,7 @@ export const AdvertiserEventItem = ({ event, onClick, onDelete, onDuplicate, isP
               </View>
             </>
           )}
-          <View style={{ flexDirection: 'row', marginTop: 10 }}>
+          <View style={{ flexDirection: 'row', marginTop: 5 }}>
             <View style={{ flexDirection: 'row' }}>
               <IMAGES.ICONS.Calendar />
               <Text style={styles.details}>{moment(event.date_start).format('DD/MM/YYYY')}</Text>
@@ -106,7 +106,8 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: 'center',
     paddingHorizontal: 10,
-    maxWidth: 230
+    maxWidth: 230,
+    paddingVertical: 10
   },
   name: {
     fontSize: 16,
@@ -115,14 +116,13 @@ const styles = StyleSheet.create({
   },
   vacancy: {
     fontSize: 14,
-    marginTop: 4,
     color: COLORS.lightBlue,
     fontWeight: 'bold'
   },
   imageContainer: {
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    backgroundColor: COLORS.lightGray,
+    backgroundColor: COLORS.darkBlue,
     justifyContent: 'center',
     alignItems: 'center',
     width: 70

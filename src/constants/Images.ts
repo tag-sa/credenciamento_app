@@ -12,6 +12,7 @@ import IconBarbecue from '../../assets/images/icons/icon-barbecue.svg'
 import IconBirthday from '../../assets/images/icons/icon-birthday.svg'
 import BullhornBlue from '../../assets/images/icons/icon-bullhorne-blue.svg'
 import EmptyCalendar from '../../assets/images/icons/icon-calendar-empty.svg'
+import EmptyCalendarWhite from '../../assets/images/icons/icon-calendar-empty-white.svg'
 import Calendar from '../../assets/images/icons/icon-calendar.svg'
 import IconCap from '../../assets/images/icons/icon-cap.svg'
 import IconCheckWhite from '../../assets/images/icons/icon-check-white.svg'
@@ -129,6 +130,7 @@ export const IMAGES = {
     IconProfileWhiteBackground,
     RoundedPlus,
     EmptyCalendar,
+    EmptyCalendarWhite,
     ClockAboutEvent,
     LocationAboutEvent,
     IconCourseAwaiting,

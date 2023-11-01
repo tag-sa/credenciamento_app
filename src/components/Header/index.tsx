@@ -12,7 +12,7 @@ interface HeaderComponentProps {
   RightIcon?: FC<SvgProps>
   backgroundColor?: string
 }
-export const HeaderComponent = ({ backgroundColor = COLORS.white, LeftIcon = IMAGES.ICONS.Hamburguer, RightIcon = IMAGES.ICONS.TopProfile }: HeaderComponentProps) => {
+export const HeaderComponent = ({ backgroundColor = COLORS.white, LeftIcon = IMAGES.ICONS.Hamburguer, RightIcon }: HeaderComponentProps) => {
   const { top } = useSafeAreaInsets()
   const navigation = useNavigation<any>()
 
@@ -34,7 +34,7 @@ export const HeaderComponent = ({ backgroundColor = COLORS.white, LeftIcon = IMA
         <LeftIcon />
       </TouchableOpacity>
 
-      <RightIcon />
+      {RightIcon && <RightIcon />}
     </View>
   )
 }

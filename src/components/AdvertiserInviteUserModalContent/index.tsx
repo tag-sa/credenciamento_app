@@ -10,9 +10,10 @@ import CustomInputWithTextAndIcon from '../Input/CustomInputWithTextAndIcon'
 interface AdvertiserInviteUserModalContentProps {
   setModalVisible: () => void
   advertiserId: number
+  reload: () => void
 }
 
-export const AdvertiserInviteUserModalContent = ({ setModalVisible, advertiserId }: AdvertiserInviteUserModalContentProps) => {
+export const AdvertiserInviteUserModalContent = ({ setModalVisible, advertiserId, reload }: AdvertiserInviteUserModalContentProps) => {
   const [email, setEmail] = useState('')
   const [invalidEmail, setInvalidEmail] = useState(false)
   useEffect(() => {}, [])
@@ -36,7 +37,7 @@ export const AdvertiserInviteUserModalContent = ({ setModalVisible, advertiserId
         type: 'success',
         icon: 'none'
       })
-      setModalVisible()
+      reload()
     } catch (error) {
       //TODO - tratar erros
       console.log(error.response.data)

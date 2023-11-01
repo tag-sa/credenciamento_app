@@ -23,6 +23,10 @@ export const AdverstiserPeople = ({ advertiserId, reload, users, invites }: Adve
   const [modalVisible, setModalVisible] = useState(false)
   const [idToDelete, setIdToDelete] = useState()
   const [typeToDelete, setTypeToDelete] = useState<'user' | 'invite'>()
+  const [allUsersAndInvites, setAllUsersAndInvites] = useState<any[]>([
+    ...users.map((user) => ({ ...user, type: 'user' })),
+    ...invites.map((invite) => ({ ...invite, type: 'invite' }))
+  ])
 
   const remove = async () => {
     useLoadingStore.setState({ isLoading: true })
@@ -41,8 +45,16 @@ export const AdverstiserPeople = ({ advertiserId, reload, users, invites }: Adve
     <>
       <View style={styles.content}>
         <DialogModalContent modalVisible={inviteModalVisible} setModalVisible={setInviteModalVisible}>
-          <AdvertiserInviteUserModalContent advertiserId={advertiserId} setModalVisible={() => setInviteModalVisible(false)} />
+          <AdvertiserInviteUserModalContent
+            reload={() => {
+              setInviteModalVisible(false)
+              reload()
+            }}
+            advertiserId={advertiserId}
+            setModalVisible={() => setInviteModalVisible(false)}
+          />
         </DialogModalContent>
+
         <DialogModal
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
@@ -51,76 +63,81 @@ export const AdverstiserPeople = ({ advertiserId, reload, users, invites }: Adve
           confirmAction={remove}
         />
 
-        {(!users?.length || !invites?.length) && (
+        {!allUsersAndInvites && (
           <View style={{ marginBottom: 0, paddingHorizontal: PADDINGS.horizontal }}>
             <NotFound text_1="Você ainda não convidou ninguém" text_2="Convide uma pessoa clicando no botão abaixo" />
           </View>
         )}
 
-        {users?.map((user, index) => (
-          <View
-            style={{
-              ...styles.card,
-              marginBottom: 15
-            }}
-            key={index}
-          >
-            <View style={styles.iconContainer}>
-              <IMAGES.ICONS.IconUser />
-            </View>
-            <View style={styles.contentContainer}>
-              <Text style={styles.name}>{user.user.name}</Text>
-              <Text style={styles.email}>{user.user.email}</Text>
-              <View style={{ flexDirection: 'row', gap: 5 }}>
-                <Text style={styles.function}>FUNÇÃO</Text>
-                {/* TODO: ADICIONAR FUNÇÃO */}
-              </View>
-            </View>
-            <View style={styles.TrashContainer}>
-              <TouchableOpacity
-                onPress={() => {
-                  setIdToDelete(user.id)
-                  setTypeToDelete('user')
-                  setModalVisible(true)
+        {allUsersAndInvites?.map((item, index) => {
+          if (item.type === 'invite') {
+            return (
+              <View
+                style={{
+                  ...styles.card,
+                  marginBottom: 15
                 }}
+                key={index}
               >
-                <IMAGES.ICONS.Trash />
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
+                <View style={{ ...styles.iconContainer, backgroundColor: COLORS.orange }}>
+                  <IMAGES.ICONS.IconUser />
+                </View>
+                <View style={styles.contentContainer}>
+                  <Text style={{ ...styles.email, color: COLORS.orange }}>{item.email}</Text>
+                  <View style={{ flexDirection: 'row', gap: 5 }}>
+                    {/* <Text style={{ ...styles.function, color: COLORS.orange }}>FUNÇÃO</Text> */}
+                    {/* TODO: ADICIONAR FUNÇÃO */}
+                  </View>
+                </View>
+                <View style={styles.TrashContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIdToDelete(item.id)
+                      setTypeToDelete('invite')
+                      setModalVisible(true)
+                    }}
+                  >
+                    <IMAGES.ICONS.Trash />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )
+          } else {
+            return (
+              <View
+                style={{
+                  ...styles.card,
+                  marginBottom: 15
+                }}
+                key={index}
+              >
+                <View style={styles.iconContainer}>
+                  <IMAGES.ICONS.IconUser />
+                </View>
+                <View style={styles.contentContainer}>
+                  <Text style={styles.name}>{item.user.name}</Text>
+                  <Text style={styles.email}>{item.user.email}</Text>
+                  <View style={{ flexDirection: 'row', gap: 5 }}>
+                    {/* <Text style={styles.function}>FUNÇÃO</Text> */}
+                    {/* TODO: ADICIONAR FUNÇÃO */}
+                  </View>
+                </View>
+                <View style={styles.TrashContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setIdToDelete(item.id)
+                      setTypeToDelete('user')
+                      setModalVisible(true)
+                    }}
+                  >
+                    {users.length > 1 && <IMAGES.ICONS.Trash />}
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )
+          }
+        })}
 
-        {invites?.map((inv, idx) => (
-          <View
-            style={{
-              ...styles.card,
-              marginBottom: 15
-            }}
-            key={idx}
-          >
-            <View style={{ ...styles.iconContainer, backgroundColor: COLORS.orange }}>
-              <IMAGES.ICONS.IconUser />
-            </View>
-            <View style={styles.contentContainer}>
-              <Text style={{ ...styles.email, color: COLORS.orange }}>{inv.email}</Text>
-              <View style={{ flexDirection: 'row', gap: 5 }}>
-                <Text style={{ ...styles.function, color: COLORS.orange }}>FUNÇÃO</Text>
-                {/* TODO: ADICIONAR FUNÇÃO */}
-              </View>
-            </View>
-            <View style={styles.TrashContainer}>
-              <TouchableOpacity
-                onPress={() => {
-                  setIdToDelete(inv.id)
-                  setTypeToDelete('invite')
-                  setModalVisible(true)
-                }}
-              >
-                <IMAGES.ICONS.Trash />
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
         <View style={{ marginBottom: 30 }}>
           <Button buttonEnabled={true} onPress={() => setInviteModalVisible(true)} label={'Nova pessoa'} />
         </View>

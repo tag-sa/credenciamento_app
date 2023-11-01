@@ -28,14 +28,13 @@ export function MyTabs({ route }) {
   const { screenName } = route.params
   const { getUser } = useUserStore()
   const [user, setUser] = useState<UserType>()
+  async function load() {
+    const user = getUser()
+
+    setUser(user)
+  }
 
   useEffect(() => {
-    async function load() {
-      const user = getUser()
-
-      setUser(user)
-    }
-
     load()
   }, [])
 
@@ -52,17 +51,15 @@ export function MyTabs({ route }) {
           }
         },
         tabBarStyle: {
-          paddingTop: 10,
+          position: 'absolute',
+          bottom: 0,
+          paddingVertical: 15,
           borderTopStartRadius: 30,
-          shadowRadius: 5,
-          shadowColor: COLORS.lightGray,
-          shadowOffset: {
-            width: 0,
-            height: 0
-          },
-          shadowOpacity: 0.7
+          borderStartWidth: 1,
+          borderColor: COLORS.lightGray,
+          height: 70
         },
-
+        tabBarLabel: () => null,
         header: () => <HeaderComponent />
       })}
     >
@@ -70,7 +67,7 @@ export function MyTabs({ route }) {
         name="Dashboard"
         component={DashboardScreen}
         options={{
-          tabBarLabel: ({ focused }) => <HomeItem focused={focused} />
+          tabBarIcon: ({ focused }) => <HomeItem focused={focused} />
         }}
       />
 
@@ -79,26 +76,17 @@ export function MyTabs({ route }) {
           name="Advertiser"
           component={AdvertiserScreen}
           options={{
-            tabBarLabel: ({ focused }) => <AdvertiserItem focused={focused} />
+            tabBarIcon: ({ focused }) => <AdvertiserItem focused={focused} />
           }}
         />
       )}
 
-      {/* {user?.type === 'pf' && (
-        <Tab.Screen
-          name="Jobs"
-          component={JobsScreen}
-          options={{
-            tabBarLabel: ({ focused }) => <JobsItem focused={focused} />
-          }}
-        />
-      )} */}
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
           header: () => <HeaderComponent backgroundColor={COLORS.darkBlue} LeftIcon={IMAGES.ICONS.HamburguerWhite} RightIcon={IMAGES.ICONS.IconProfileWhiteBackground} />,
-          tabBarLabel: ({ focused }) => <ProfileItem focused={focused} />
+          tabBarIcon: ({ focused }) => <ProfileItem focused={focused} />
         }}
       />
 
@@ -161,7 +149,6 @@ export function MyTabs({ route }) {
         name="ProfileAddQualificationScreen"
         component={ProfileAddQualificationScreen}
         options={{
-          // header: () => <HeaderComponent backgroundColor={COLORS.darkBlue} LeftIcon={IMAGES.ICONS.HamburguerWhite} />,
           tabBarButton: () => null
         }}
       />

@@ -22,8 +22,6 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
   const [teamsUsers, setTeamsUsers] = useState<any>([])
 
   const [totalTeamsUsersNotConfirmedInPercent, setTotalTeamsUsersNotConfirmedInPercent] = useState('0')
-  // const [totalRefusedInPercent, setTotalRefusedInPercent] = useState('0')
-
   const [totalPreview, setTotalPreview] = useState(0)
 
   const [totalMaleInPercent, setTotalMaleInPercent] = useState(0)
@@ -90,7 +88,6 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
     setTotalFemaleInPercent(totalFemaleInPercent)
 
     setTotalTeamsUsersNotConfirmedInPercent(((totalTeamsUsersNotConfirmed / data.data.teamsUsers.length) * 100).toFixed(0))
-    // setTotalRefusedInPercent(((totalTeamsUsersRefused / data.data.teamsUsers.length) * 100).toFixed(0))
 
     setCovocationProgressInPercent(convocationProgressInPercent)
     setTotalTeamsUsersConfirmed(totalTeamsUsersConfirmed)
@@ -182,15 +179,21 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
                 >
                   <Text style={styles.advertiserContainerTitle}>Convocações</Text>
                   <View style={styles.advertiserContainerSummary}>
-                    <View>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
                       <Text style={styles.summaryNotConfirmed}>{totalTeamsUsersNotConfirmedInPercent}%</Text>
                       <Text style={styles.summaryLabel}>sem resposta</Text>
                     </View>
-                    {/* <View>
-                      <Text style={styles.summaryRefused}>{totalRefusedInPercent}%</Text>
-                      <Text style={styles.summaryLabel}>não vão</Text>
-                    </View> */}
-                    <View>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
                       <Text style={styles.summaryConfirmed}>{totalUsersReplied}%</Text>
                       <Text style={styles.summaryLabel}>convocados</Text>
                     </View>
@@ -333,9 +336,7 @@ export const AdvertiserEventTeamDashboardScreen = ({ navigation, route }) => {
                 teamId={teamId}
                 notFoundText="Não há pessoas aguardando confirmação"
                 callback={(reload) => {
-                  if (reload) {
-                    loadData()
-                  }
+                  if (reload) loadData()
                 }}
               />
             )}
