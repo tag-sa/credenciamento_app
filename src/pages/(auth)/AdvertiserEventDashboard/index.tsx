@@ -150,74 +150,80 @@ export const AdvertiserEventDashboardScreen = ({ route }) => {
         <View style={styles.container}>
           <View
             style={{
-              marginTop: 20
+              paddingHorizontal: PADDINGS.horizontal
             }}
           >
-            <BackButton Icon={IMAGES.ICONS.BackButtonWhite} />
-            <View style={{ paddingTop: 25 }}>
-              <Text style={styles.eventName}>{event?.name}</Text>
-              <Text style={styles.advertiserName}>{advertiser?.name}</Text>
-            </View>
-          </View>
-          <View style={styles.advertiserContainer}>
-            <View style={styles.advertiserImageContainer}>
-              <PieChart
-                data={chartData}
-                width={135}
-                height={135}
-                chartConfig={{
-                  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`
-                }}
-                accessor={'val'}
-                backgroundColor={'transparent'}
-                paddingLeft={'0'}
-                center={[33, 0]}
-                absolute
-                hasLegend={false}
-              />
-            </View>
-            <View style={styles.actions}>
-              <IMAGES.ICONS.Like />
-              <IMAGES.ICONS.Share />
-            </View>
             <View
               style={{
-                justifyContent: 'space-between'
+                marginTop: 20
               }}
             >
-              <Text style={styles.advertiserContainerTitle}>Convocações</Text>
-              <View style={styles.advertiserContainerSummary}>
-                <View>
-                  <Text style={styles.summaryNotConfirmed}>{totalTeamsUsersNotConfirmedInPercent}%</Text>
-                  <Text style={styles.summaryLabel}>sem resposta</Text>
-                </View>
-                <View>
-                  <Text style={styles.summaryConfirmed}>{totalCompletedInPercent}%</Text>
-                  <Text style={styles.summaryLabel}>confirmados</Text>
-                </View>
+              <BackButton Icon={IMAGES.ICONS.BackButtonWhite} />
+              <View style={{ paddingTop: 25 }}>
+                <Text style={styles.eventName}>{event?.name}</Text>
+                <Text style={styles.advertiserName}>{advertiser?.name}</Text>
               </View>
             </View>
-          </View>
-          <View style={styles.generalSummaryContainer}>
-            <View>
-              <Text style={styles.generalSummaryBigNumber}>{teams?.length}</Text>
-              <Text style={styles.generalSummaryLabel}>Equipe(s)</Text>
-            </View>
-
-            <View>
-              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <Text style={styles.generalSummaryBigNumber}>{totalTeamsUsersConfirmed}</Text>
-                <Text
-                  style={{
-                    ...styles.generalSummaryBigNumber,
-                    fontSize: 15,
-                    alignSelf: 'flex-end'
+            <View style={styles.advertiserContainer}>
+              <View style={styles.advertiserImageContainer}>
+                <PieChart
+                  data={chartData}
+                  width={135}
+                  height={135}
+                  chartConfig={{
+                    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`
                   }}
-                >
-                  /{totalTeamsUsers}
-                </Text>
+                  accessor={'val'}
+                  backgroundColor={'transparent'}
+                  paddingLeft={'0'}
+                  center={[33, 0]}
+                  absolute
+                  hasLegend={false}
+                />
               </View>
-              <Text style={styles.generalSummaryLabel}>Vaga(s) Preenchida(s)</Text>
+              <View style={styles.actions}>
+                <IMAGES.ICONS.Like />
+                <IMAGES.ICONS.Share />
+              </View>
+              <View
+                style={{
+                  justifyContent: 'space-between'
+                }}
+              >
+                <Text style={styles.advertiserContainerTitle}>Convocações</Text>
+                <View style={styles.advertiserContainerSummary}>
+                  <View>
+                    <Text style={styles.summaryNotConfirmed}>{totalTeamsUsersNotConfirmedInPercent}%</Text>
+                    <Text style={styles.summaryLabel}>sem resposta</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.summaryConfirmed}>{totalCompletedInPercent}%</Text>
+                    <Text style={styles.summaryLabel}>confirmados</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={styles.generalSummaryContainer}>
+              <View>
+                <Text style={styles.generalSummaryBigNumber}>{teams?.length}</Text>
+                <Text style={styles.generalSummaryLabel}>Equipe(s)</Text>
+              </View>
+
+              <View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                  <Text style={styles.generalSummaryBigNumber}>{totalTeamsUsersConfirmed}</Text>
+                  <Text
+                    style={{
+                      ...styles.generalSummaryBigNumber,
+                      fontSize: 15,
+                      alignSelf: 'flex-end'
+                    }}
+                  >
+                    /{totalTeamsUsers}
+                  </Text>
+                </View>
+                <Text style={styles.generalSummaryLabel}>Vaga(s) Preenchida(s)</Text>
+              </View>
             </View>
           </View>
 
@@ -290,8 +296,7 @@ export const AdvertiserEventDashboardScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.darkBlue,
-    paddingHorizontal: PADDINGS.horizontal
+    backgroundColor: COLORS.darkBlue
   },
   actions: {
     flexDirection: 'row',

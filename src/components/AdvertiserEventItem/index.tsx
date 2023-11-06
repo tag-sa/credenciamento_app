@@ -8,8 +8,8 @@ type AdvertiserEventItemProps = {
   event?: any & { name: number }
   isPastEvent?: boolean
   onClick?: () => void
-  onDelete?: () => void
-  onDuplicate?: () => void
+  onDelete?: (id: number) => void
+  onDuplicate?: (id: number) => void
 }
 
 export const AdvertiserEventItem = ({ event, onClick, onDelete, onDuplicate, isPastEvent = false }: AdvertiserEventItemProps) => {
@@ -48,19 +48,21 @@ export const AdvertiserEventItem = ({ event, onClick, onDelete, onDuplicate, isP
         }}
       >
         <Pressable style={styles.textContainer} onPress={onClick}>
-          <Text style={styles.name}>{name}</Text>
+          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.name}>
+            {name}
+          </Text>
           {!isPastEvent && (
             <>
               <Text style={styles.vacancy}>
                 {totalTeamsUsersConfirmed > 0 ? ((totalTeamsUsersConfirmed / totalTeamsUsers) * 100).toFixed(0) : 0}% ({totalTeamsUsersConfirmed}/{totalTeamsUsers})
               </Text>
 
-              <View style={{ marginTop: 10 }}>
+              <View style={{ marginTop: 2 }}>
                 <Progress.Bar progress={0.3} unfilledColor={COLORS.darkGray} borderWidth={0} color={fillColor} />
               </View>
             </>
           )}
-          <View style={{ flexDirection: 'row', marginTop: 5 }}>
+          <View style={{ flexDirection: 'row', marginTop: 1 }}>
             <View style={{ flexDirection: 'row' }}>
               <IMAGES.ICONS.Calendar />
               <Text style={styles.details}>{moment(event.date_start).format('DD/MM/YYYY')}</Text>
@@ -81,8 +83,8 @@ export const AdvertiserEventItem = ({ event, onClick, onDelete, onDuplicate, isP
         </Pressable>
         {!isPastEvent && (
           <View style={styles.iconContainer}>
-            <IMAGES.ICONS.Duplicate onPress={onDuplicate} />
-            <IMAGES.ICONS.Trash onPress={onDelete} />
+            <IMAGES.ICONS.Duplicate onPress={() => onDuplicate(event.id)} />
+            <IMAGES.ICONS.Trash onPress={() => onDelete(event.id)} />
           </View>
         )}
       </View>
@@ -104,15 +106,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   textContainer: {
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
     maxWidth: 230,
-    paddingVertical: 10
+    paddingVertical: 5
   },
   name: {
-    fontSize: 16,
     color: COLORS.darkBlue,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 16
   },
   vacancy: {
     fontSize: 14,

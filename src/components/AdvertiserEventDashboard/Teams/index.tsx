@@ -106,7 +106,7 @@ export const AdverstiserEventsTeamsTab = ({ teams, event, isPastEvent, reload }:
         />
       ))}
 
-      <View style={{ marginBottom: 40 }}>{!isPastEvent && <Button onPress={() => navigation.navigate('AdvertiverEventTeamAddScreen', { event })} label={'Nova Equipe'} />}</View>
+      <View style={{ marginBottom: 100 }}>{!isPastEvent && <Button onPress={() => navigation.navigate('AdvertiverEventTeamAddScreen', { event })} label={'Nova Equipe'} />}</View>
     </View>
   )
 }

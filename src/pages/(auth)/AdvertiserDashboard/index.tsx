@@ -1,5 +1,5 @@
 import { useIsFocused } from '@react-navigation/native'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { AdverstiserAbout } from '../../../components/AdvertiserDashboard/About'
 import { AdverstiserPastEvents } from '../../../components/AdvertiserDashboard/PastEvents'
@@ -17,6 +17,7 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
   const [activeTab, setActiveTab] = useState<'about' | 'pastEvents' | 'places' | 'people'>('about')
   const [users, setUsers] = useState<any[]>([])
   const [invitedUsers, setInvitedUsers] = useState<any[]>([])
+  const scrollViewRef = useRef(null)
 
   const isFocused = useIsFocused()
   const [places, setPlaces] = useState([])
@@ -37,6 +38,7 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
       axiosApi.get(`/advertisers/${advertiserId}/places/`),
       axiosApi.get(`/advertisers/${advertiserId}/people/`)
     ])
+
     setAdvertiser(adv.data.data)
     setPlaces(pls.data.data)
     setUsers(users.data.data.users)
@@ -50,7 +52,7 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
   }, [isFocused])
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: COLORS.white }}>
+    <ScrollView style={{ flex: 1, backgroundColor: COLORS.white }} ref={scrollViewRef} onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
       <View style={{ flex: 1, backgroundColor: COLORS.white }}>
         <View style={styles.container}>
           <View
@@ -106,7 +108,7 @@ export const AdvertiserDashboardScreen = ({ route, navigation }) => {
             </TouchableOpacity>
           </ScrollView>
         </View>
-        {activeTab === 'about' && <AdverstiserAbout advertiser={advertiser} />}
+        {activeTab === 'about' && <AdverstiserAbout advertiser={advertiser} reload={loadAdvertiser} />}
         {activeTab === 'pastEvents' && <AdverstiserPastEvents advertiser={advertiser} />}
         {activeTab === 'places' && <AdverstiserPlaces places={places} advertiserId={advertiserId} reload={loadAdvertiser} />}
         {activeTab === 'people' && <AdverstiserPeople users={users} invites={invitedUsers} advertiserId={advertiserId} reload={loadAdvertiser} />}

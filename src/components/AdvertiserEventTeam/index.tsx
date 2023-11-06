@@ -53,18 +53,26 @@ export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDup
           justifyContent: 'space-between'
         }}
       >
-        <Pressable style={styles.textContainer} onPress={onClick}>
-          <Text style={styles.name}>{team?.name}</Text>
+        <Pressable
+          style={{
+            ...styles.textContainer,
+            maxWidth: isPastEvent ? 330 : 230
+          }}
+          onPress={onClick}
+        >
+          <Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.name}>
+            {team?.name}
+          </Text>
 
           <Text style={styles.vacancy}>
             {totalTeamsUsersConfirmed > 0 ? ((totalTeamsUsersConfirmed / totalTeamsUsers) * 100).toFixed(0) : 0}% ({totalTeamsUsersConfirmed}/{totalTeamsUsers})
           </Text>
 
-          <View style={{ marginTop: 10 }}>
+          <View style={{ marginTop: 2 }}>
             <Progress.Bar progress={0.3} unfilledColor={COLORS.darkGray} borderWidth={0} color={fillColor} />
           </View>
 
-          <View style={{ flexDirection: 'row', marginTop: 10 }}>
+          <View style={{ flexDirection: 'row', marginTop: 1 }}>
             <View style={{ flexDirection: 'row' }}>
               <IMAGES.ICONS.Calendar />
               <Text style={styles.details}>{moment(team.date_start).format('DD/MM/YYYY')}</Text>
@@ -78,14 +86,12 @@ export const AdvertiserEventTeam = ({ team = undefined, onClick, onDelete, onDup
           </View>
         </Pressable>
 
-        <View style={styles.iconContainer}>
-          {!isPastEvent && (
-            <>
-              <IMAGES.ICONS.Duplicate onPress={onDuplicate} />
-              <IMAGES.ICONS.Trash onPress={onDelete} />
-            </>
-          )}
-        </View>
+        {!isPastEvent && (
+          <View style={styles.iconContainer}>
+            <IMAGES.ICONS.Duplicate onPress={onDuplicate} />
+            <IMAGES.ICONS.Trash onPress={onDelete} />
+          </View>
+        )}
       </View>
     </View>
   )
@@ -105,14 +111,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   textContainer: {
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
-    maxWidth: 230
+    maxWidth: 230,
+    paddingVertical: 5
   },
   name: {
-    fontSize: 16,
     color: COLORS.darkBlue,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 16
   },
   vacancy: {
     fontSize: 14,

@@ -97,6 +97,7 @@ export const AdvertiserEventCostsTab = ({ teams, totalExecuted, totalPreview, to
             </View>
           </View>
         </View>
+        <View style={{ marginBottom: 70 }} />
       </View>
     </>
   )
