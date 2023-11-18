@@ -1,13 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useEffect, useState } from 'react'
-import AdvertiserItem from '../components/AuthBottomMenu/Advertiser'
 import HomeItem from '../components/AuthBottomMenu/Home'
 import ProfileItem from '../components/AuthBottomMenu/Profile'
 import { HeaderComponent } from '../components/Header'
 import { COLORS } from '../constants/Colors'
 import { IMAGES } from '../constants/Images'
 import { UserType } from '../model/user.model'
-import { AdvertiserScreen } from '../pages/(auth)/Advertiser'
+
 import { AdvertiverAddScreen } from '../pages/(auth)/AdvertiserAdd'
 import { AdvertiserDashboardScreen } from '../pages/(auth)/AdvertiserDashboard'
 import { AdvertiverEventAddScreen } from '../pages/(auth)/AdvertiserEventAdd'
@@ -21,13 +20,18 @@ import { ProfileScreen } from '../pages/(auth)/Profile'
 import { ProfileAddQualificationScreen } from '../pages/(auth)/ProfileAddQualification'
 import { WorkerProfiledScreen } from '../pages/(auth)/WorkerProfile'
 import { useUserStore } from '../store/user.store'
+import PanelItem from '../components/AuthBottomMenu/Panel'
+import { AdvertiserPanelScreen } from '../pages/(auth)/AdvertiserPanel'
+import { PanelScreen } from '../pages/Panel'
 
 const Tab = createBottomTabNavigator()
 
 export function MyTabs({ route }) {
   const { screenName } = route.params
   const { getUser } = useUserStore()
+
   const [user, setUser] = useState<UserType>()
+
   async function load() {
     const user = getUser()
 
@@ -71,15 +75,14 @@ export function MyTabs({ route }) {
         }}
       />
 
-      {user?.type === 'pj' && (
-        <Tab.Screen
-          name="Advertiser"
-          component={AdvertiserScreen}
-          options={{
-            tabBarIcon: ({ focused }) => <AdvertiserItem focused={focused} />
-          }}
-        />
-      )}
+      <Tab.Screen
+        name="PanelScreen"
+        component={PanelScreen}
+        options={{
+          header: () => <HeaderComponent backgroundColor={COLORS.darkBlue} LeftIcon={IMAGES.ICONS.HamburguerWhite} RightIcon={IMAGES.ICONS.IconProfileWhiteBackground} />,
+          tabBarIcon: ({ focused }) => <PanelItem focused={focused} />
+        }}
+      />
 
       <Tab.Screen
         name="Profile"

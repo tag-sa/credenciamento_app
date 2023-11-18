@@ -66,6 +66,8 @@ import YellowStar from '../../assets/images/icons/icon-yellow-star.svg'
 import ManSeatDesk from '../../assets/images/icons/man-seat-desk.svg'
 import Camera from '../../assets/images/icons/icon-camera.svg'
 import Gallery from '../../assets/images/icons/icon-gallery.svg'
+import Panel from '../../assets/images/icons/icon-panel.svg'
+import PanelActive from '../../assets/images/icons/icon-panel-active.svg'
 
 export const IMAGES = {
   Logo: require('../../assets/images/logo.png'),
@@ -85,7 +87,9 @@ export const IMAGES = {
     Jobs,
     JobsActive,
     Profile,
-    ProfileActive
+    ProfileActive,
+    Panel,
+    PanelActive
   },
   ICONS: {
     IconCap,
@@ -147,5 +151,12 @@ export const IMAGES = {
     NotificationsActive,
     Faq,
     Horn
+  },
+  PANEL: {
+    PanelMoney: require('../../assets/images/icons/icon-panel-money.png'),
+    PanelEventsDone: require('../../assets/images/icons/icon-panel-events-done.png'),
+    PanelEventsFuture: require('../../assets/images/icons/icon-panel-events-future.png'),
+    PanelSubscribers: require('../../assets/images/icons/icon-panel-subscribers.png'),
+    PanelUsers: require('../../assets/images/icons/icon-panel-users.png')
   }
 }

@@ -92,7 +92,7 @@ export const AdverstiserAbout = ({ advertiser, reload }: AdverstiserAboutProps) 
             />
           ))}
         </View>
-        <View style={{ marginBottom: 30 }}>
+        <View style={{ marginBottom: 100 }}>
           <Button
             buttonEnabled={true}
             onPress={() =>

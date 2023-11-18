@@ -1,125 +1,112 @@
-import { useNavigation } from '@react-navigation/native'
-import React, { useEffect, useState } from 'react'
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React from 'react'
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
-import { axiosApi } from '../../../services/axios'
-import { useLoadingStore } from '../../../store/loading.store'
-import formatDate from '../../../utils/formatDate'
-import formatDateTimeRange from '../../../utils/formatDateTimeRange'
-import { Avatar } from '../../Avatar'
+import moment from 'moment'
 
 type JobsListProps = {
   jobs: {
-    id?: number
-    name: string
+    quantity: number
+    occupied: number
+    id: number
+    user_id: number
+    teams_id: number
+    function_id: number
+    date_start: string
+    date_end: string
+    confirmed: number
+    created: string
     modified: string
+    teams_users_status_id: number
+    event_id: number
+    team_name: string
+    team_date_start: string
+    team_date_end: string
+    team_quantity: number
+    event_name: string
   }[]
-  onClick?: () => void
-  onButtonClick?: () => void
 }
 
-export const JobsList = ({ onClick }) => {
-  const navigation = useNavigation<any>()
-  const [jobs, setJobs] = useState([])
+export const JobsList = ({ jobs }: JobsListProps) => {
+  const renderItem = ({ item }) => (
+    <View style={styles.container}>
+      <Pressable style={styles.imageContainer}>
+        <IMAGES.ICONS.IconTeamsUsers />
+      </Pressable>
 
-  useEffect(() => {
-    const loadJobs = async () => {
-      useLoadingStore.setState({ isLoading: true })
-      try {
-        const response = await axiosApi.get(`/jobs`)
-        if (response.data && response.data.data) {
-          const jobsListData = response.data.data
-          setJobs(jobsListData)
-        } else {
-          console.error('Dados inválidos retornados da API')
-        }
-        useLoadingStore.setState({ isLoading: false })
-      } catch (error) {
-        console.error('Erro ao buscar dados da API:', error)
-        useLoadingStore.setState({ isLoading: false })
-      }
-    }
+      <View
+        style={{
+          flexGrow: 1
+        }}
+      >
+        <View
+          style={{
+            flexGrow: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+          }}
+        >
+          <Pressable style={styles.textContainer}>
+            <Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.name}>
+              {item.event_name}
+            </Text>
 
-    loadJobs()
-  }, [])
-
-  const handleViewClick = (route: any) => {
-    navigation.navigate(route)
-  }
-  return (
-    <View style={{ marginTop: 31 }}>
-      {jobs.map((item, index) => (
-        <View key={index}>
-          <TouchableOpacity style={styles.container}>
-            <Pressable style={styles.imageContainer} onPress={onClick}>
-              <Avatar borderWidth={0} uri="https://via.placeholder.com/150/24f355" />
-            </Pressable>
-            <View key={index}>
-              <Pressable style={styles.textContainer} onPress={onClick}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    marginRight: -40,
-                    marginTop: 20
-                  }}
-                >
-                  <IMAGES.ICONS.Like style={{ marginRight: 20, width: 100, height: 100 }} />
-                  <IMAGES.ICONS.Share />
-                </View>
-                <Text style={styles.name}>{item.team.event.name}</Text>
-                <Text style={styles.vacancy}>{item.team.name}</Text>
-                <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <IMAGES.ICONS.Calendar style={{ marginTop: 2 }} />
-
-                    <Text style={styles.details}>{formatDate(item.team.date_start)}</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', marginLeft: 20 }}>
-                    <IMAGES.ICONS.Clock style={{ marginTop: 2 }} />
-                    <Text style={styles.details}>{formatDateTimeRange(item.team.date_start, item.team.date_end)}</Text>
-                  </View>
-                  <Text style={styles.details}>
-                    {item.team.usedQuantity}/{item.team.quantity}
-                  </Text>
-                  <IMAGES.ICONS.IconMoney2 style={{ marginTop: 2, marginLeft: 20 }} />
-                </View>
-              </Pressable>
-              <View style={styles.iconContainer}></View>
-            </View>
-          </TouchableOpacity>
+            <Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.team}>
+              {item.team_name}
+            </Text>
+          </Pressable>
+          <View style={styles.iconContainer}>
+            <IMAGES.ICONS.Like style={{ marginRight: 10, width: 100, height: 100 }} />
+            <IMAGES.ICONS.Share />
+          </View>
         </View>
-      ))}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row' }}>
+            <IMAGES.ICONS.Calendar />
+
+            <Text style={styles.details}>{moment(item.date_start).format('DD/MM/YYYY')}</Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <IMAGES.ICONS.Clock />
+            <Text style={styles.details}>
+              {moment(item.date_start).format('HH:mm')} às {moment(item.date_end).format('HH:mm')}
+            </Text>
+          </View>
+          <Text style={styles.details}>
+            {item.occupied}/{item.quantity}
+          </Text>
+          <IMAGES.ICONS.IconMoney2 />
+        </View>
+      </View>
     </View>
   )
+
+  return <FlatList data={jobs} renderItem={renderItem} keyExtractor={(item, index) => index.toString()} style={{ marginTop: 20 }} />
 }
 
 const styles = StyleSheet.create({
   container: {
     borderColor: COLORS.lightGray,
     borderRadius: 10,
-    height: 90,
-    marginVertical: 8,
+    marginBottom: 10,
     borderWidth: 1,
     flexDirection: 'row',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    height: 90,
+    alignItems: 'center'
   },
   textContainer: {
-    justifyContent: 'center',
     paddingHorizontal: 10,
-    maxWidth: 230
+    maxWidth: 220
   },
   name: {
-    fontSize: 16,
+    fontSize: 17,
     color: COLORS.darkBlue,
-    fontWeight: 'bold',
-    marginTop: 10
+    fontWeight: 'bold'
   },
-  vacancy: {
-    fontSize: 12,
+  team: {
+    fontSize: 14,
     marginTop: 4,
     color: COLORS.mediumBlue,
     fontWeight: 'bold'
@@ -127,7 +114,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 80
+    width: 40
   },
   iconContainer: {
     flexGrow: 1,

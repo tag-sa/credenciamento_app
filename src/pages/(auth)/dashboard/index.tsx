@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ScrollView } from 'react-native'
+import { FlatList, ScrollView } from 'react-native'
 import { AdvertiserDashboardComponent } from '../../../components/Dashboard/Advertiser'
 import { WorkerDashboardComponent } from '../../../components/Dashboard/Worker'
 import { COLORS } from '../../../constants/Colors'
@@ -21,15 +21,18 @@ export const DashboardScreen = () => {
   }, [])
 
   return (
-    <ScrollView
-      automaticallyAdjustKeyboardInsets={true}
-      contentContainerStyle={{
-        flexGrow: 1,
-        backgroundColor: COLORS.white
-      }}
-    >
-      {user?.type === 'pj' && <AdvertiserDashboardComponent />}
-      {user?.type === 'pf' && <WorkerDashboardComponent />}
-    </ScrollView>
+    <FlatList
+      data={[]}
+      ListEmptyComponent={null}
+      keyExtractor={() => 'dummy'}
+      showsVerticalScrollIndicator={false}
+      renderItem={null}
+      ListHeaderComponent={() => (
+        <>
+          {user?.type === 'pj' && <AdvertiserDashboardComponent />}
+          {user?.type === 'pf' && <WorkerDashboardComponent />}
+        </>
+      )}
+    />
   )
 }

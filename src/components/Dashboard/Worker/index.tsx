@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { COLORS } from '../../../constants/Colors'
 import { IMAGES } from '../../../constants/Images'
@@ -8,14 +8,48 @@ import EventCategoryList from '../../AdvertiserEventDashboard/Carroussel'
 import JobsList from '../../AdvertiserEventDashboard/JobsList'
 import { NotFound } from '../../NotFound'
 import { WorkerDashboardBannersComponent } from '../../WorkerDashboardBanners'
+import { useLoadingStore } from '../../../store/loading.store'
+import { axiosApi } from '../../../services/axios'
+import { UserType } from '../../../model/user.model'
+import { useUserStore } from '../../../store/user.store'
 
 export const WorkerDashboardComponent = () => {
+  const { getUser } = useUserStore()
   const [jobs, setJobs] = useState([])
+  const [user, setUser] = useState<UserType>()
+
+  const loadJobs = async () => {
+    useLoadingStore.setState({ isLoading: true })
+
+    setUser(getUser())
+
+    try {
+      const { data } = await axiosApi.get(`/jobs`)
+      setJobs(data.data)
+      useLoadingStore.setState({ isLoading: false })
+    } catch (error) {
+      //TODO: handle error
+      useLoadingStore.setState({ isLoading: false })
+    }
+  }
+
+  useEffect(() => {
+    loadJobs()
+  }, [])
 
   return (
     <>
       <View style={style.body}>
-        <Text style={style.hello}>Olá</Text>
+        <Text style={style.hello}>
+          Olá{' '}
+          <Text
+            style={{
+              fontWeight: 'bold'
+            }}
+          >
+            {user?.name}
+          </Text>
+        </Text>
         <View style={{ marginVertical: 20, flexDirection: 'row' }}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <WorkerDashboardBannersComponent
@@ -24,6 +58,7 @@ export const WorkerDashboardComponent = () => {
               IconImage={IMAGES.WORKER.DashboardBanner1}
               marginRight={13}
             />
+
             <WorkerDashboardBannersComponent
               text="Aqui link para um blog com dicas de carreira, cursos gratuitos, cursos com valor simbólico, dicas de currículo e eventos patrocinados..."
               backgroundColor={COLORS.darkBlue}
@@ -33,10 +68,9 @@ export const WorkerDashboardComponent = () => {
             />
           </ScrollView>
         </View>
-        <EventCategoryList />
-        <Text style={style.howTo}>Vagas em destaque </Text>
-        {/* <Text style={style.howTo}>Como começar?</Text> */}
-        {!jobs.length ? <JobsList onClick={undefined} /> : <NotFound />}
+        {/* <EventCategoryList /> */}
+        <Text style={style.howTo}>Vagas em destaque</Text>
+        {jobs.length ? <JobsList jobs={jobs} /> : <NotFound />}
       </View>
     </>
   )

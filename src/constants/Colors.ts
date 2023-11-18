@@ -18,5 +18,9 @@ export const COLORS = {
   purple: '#7709D8',
   pink: '#C300A5',
   lightPink: '#F9C6C7',
-  red: '#E01515'
+  red: '#E01515',
+  PANEL: {
+    CARD_TOP: 'rgba(157, 229, 250, 0.19)',
+    CARD_BOTTOM: 'rgba(12, 135, 170, 0.19)'
+  }
 }

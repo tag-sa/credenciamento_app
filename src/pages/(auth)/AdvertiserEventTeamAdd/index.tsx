@@ -20,6 +20,7 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
   const [eventTimeStart, setEventTimeStart] = useState('')
   const [eventTimeEnd, setEventTimeEnd] = useState('')
   const [jobs, setJobs] = useState('')
+  const [tax, setTax] = useState('')
 
   const [functions, setFunctions] = useState<{ id: number; name: string }[]>([])
   const [eventfunction, seteventFunction] = useState<{
@@ -27,7 +28,16 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
     name: string
   }>()
 
+  const taxType: { id: string; name: string }[] = [
+    { id: 'period', name: 'Por período' },
+    { id: 'hour', name: 'Por hora' }
+  ]
+
+  const [teamTaxType, setTeamTaxType] = useState<{ id: string; name: string }>()
+
   const [errors, setErrors] = useState([])
+
+  const [isModalTaxOpen, setIsModalTaxOpen] = useState(false)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -44,6 +54,22 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
       setIsModalOpen(false)
     } else {
       setIsModalOpen(true)
+    }
+  }
+
+  const handleModalTaxPresented = () => {
+    setIsModalTaxOpen(true)
+  }
+
+  const handleModalTaxDismissed = () => {
+    setIsModalTaxOpen(false)
+  }
+
+  const handleOpenModalTax = () => {
+    if (isModalTaxOpen) {
+      setIsModalTaxOpen(false)
+    } else {
+      setIsModalTaxOpen(true)
     }
   }
 
@@ -77,7 +103,9 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
       date_end: moment(`${eventDateEnd} ${eventTimeEnd}`, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm'),
       functions_id: eventfunction?.id,
       status: 'a',
-      quantity: parseInt(jobs)
+      quantity: parseInt(jobs),
+      tax_type: teamTaxType.id,
+      tax: parseFloat(tax) / 100
     }
 
     try {
@@ -96,9 +124,6 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
       <ScrollView>
         <View style={style.container}>
           <View style={{ marginTop: 10 }}>
-            {/* navigation.navigate("AdvertiserEventDashboardScreen", {
-                eventId: event.id,
-              }); */}
             <BackButton route="AdvertiserEventDashboardScreen" routeParams={{ eventId: event.id }} />
           </View>
 
@@ -225,7 +250,38 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
             value={jobs}
           />
 
-          <View style={{ marginVertical: 30 }}>
+          <CustomSelectInput
+            placeholder="Selecione o tipo de remuneração"
+            label={'Tipo de remuneração'}
+            error={errors.includes('tax_type')}
+            marginTop={20}
+            value={teamTaxType?.name}
+            onInputPress={handleOpenModalTax}
+            erroMessage="Selecione o tipo de remuneração"
+          />
+
+          <CustomInputWithTextAndIcon
+            autoCapitalize="none"
+            marginTop={20}
+            type="currency"
+            label="Valor da remuneração"
+            placeholder="10"
+            keyboardType={'numeric'}
+            onChangeText={(_, value) => {
+              if (value === '' || parseFloat(value) <= 0) {
+                if (!errors.includes('tax')) setErrors([...errors, 'tax'])
+              } else {
+                setErrors(errors.filter((error) => error !== 'tax'))
+              }
+
+              setTax(value)
+            }}
+            value={tax}
+            error={errors.includes('tax')}
+            erroMessage="Valor da remuneração deve ser maior que 0"
+          />
+
+          <View style={{ marginTop: 30, marginBottom: 100 }}>
             <Button
               label="Salvar"
               buttonEnabled={
@@ -236,7 +292,10 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
                 eventTimeEnd !== '' &&
                 eventfunction !== undefined &&
                 jobs !== '' &&
-                errors.length === 0
+                errors.length === 0 &&
+                teamTaxType !== undefined &&
+                tax !== '' &&
+                +tax > 0
               }
               onPress={save}
             />
@@ -249,6 +308,14 @@ export const AdvertiverEventTeamAddScreen = ({ navigation, route }) => {
         onModalPresented={handleModalPresented}
         onModalDismissed={handleModalDismissed}
         onSelectItem={seteventFunction}
+      />
+
+      <DialogModalBottomSheet
+        data={taxType}
+        openModal={isModalTaxOpen}
+        onModalPresented={handleModalTaxPresented}
+        onModalDismissed={handleModalTaxDismissed}
+        onSelectItem={setTeamTaxType}
       />
     </>
   )

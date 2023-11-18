@@ -4,6 +4,7 @@ import { KeyboardTypeOptions, StyleSheet, Text, TextInput, View } from 'react-na
 
 import { MaskedTextInput } from 'react-native-mask-text'
 import { COLORS } from '../../constants/Colors'
+import { FormatType } from 'react-native-mask-text/lib/typescript/src/@types/FormatType'
 
 interface InputProps {
   label?: string
@@ -24,6 +25,7 @@ interface InputProps {
   error?: boolean
   textWeight?: 'normal' | 'bold'
   mask?: string
+  type?: FormatType
   erroMessage?: string
   addrRef?: any
   flexGrow?: number
@@ -60,7 +62,7 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
         )}
 
         <View>
-          {props.mask && (
+          {(props.mask || props.type) && (
             <MaskedTextInput
               ref={props.addrRef}
               autoCapitalize={props.autoCapitalize}
@@ -71,6 +73,17 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
               onBlur={() => {
                 setIsFocused(false)
               }}
+              type={props.type}
+              options={
+                props.type && props.type == 'currency'
+                  ? {
+                      prefix: 'R$ ',
+                      decimalSeparator: ',',
+                      groupSeparator: '.',
+                      precision: 2
+                    }
+                  : {}
+              }
               style={{
                 ...styles.inputText,
                 color: isFocused ? COLORS.darkBlue : COLORS.darkGray,
@@ -88,7 +101,7 @@ export default function CustomInputWithTextAndIcon(props: InputProps) {
             />
           )}
 
-          {!props.mask && (
+          {!props.mask && !props.type && (
             <TextInput
               ref={props.addrRef}
               autoCapitalize={props.autoCapitalize}
